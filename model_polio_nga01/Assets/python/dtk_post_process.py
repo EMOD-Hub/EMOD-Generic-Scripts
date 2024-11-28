@@ -10,7 +10,8 @@ import global_data as gdata
 import numpy as np
 
 from emod_constants import RST_FILE, RST_TIME, RST_NODE, RST_CLADE, \
-                           RST_GENOME, RST_NEW_INF
+                           RST_GENOME, RST_NEW_INF, \
+                           SQL_TIME, SQL_NODE, SQL_AGENT, SQL_LABEL
 
 # *****************************************************************************
 
@@ -53,6 +54,23 @@ def application(output_path):
             for k1 in range(subdat.shape[0]):
                 tdex = int((subdat[k1, RST_TIME]-t_ini)/gdata.t_step_days)
                 dbrick0[odex, tdex] += subdat[k1, RST_NEW_INF]
+
+    # Connect to SQL database; retreive new entries
+    connection_obj = sqlite3.connect('simulation_events.db')
+    cursor_obj = connection_obj.cursor()
+
+    sql_cmd = "SELECT * FROM SIM_EVENTS WHERE SIM_TIME >= {:.1f}".format(0.0)
+    cursor_obj.execute(sql_cmd)
+    rlist = cursor_obj.fetchall()
+
+    ndata = np.zeros((len(rlist), 4), dtype=int)
+    ndata[:, 0] = np.array([val[SQL_TIME] for val in rlist], dtype=int)
+    ndata[:, 1] = np.array([val[SQL_NODE] for val in rlist], dtype=int)
+    ndata[:, 2] = np.array([val[SQL_AGENT] for val in rlist], dtype=int)
+    ndata[:, 3] = np.array([val[SQL_LABEL] for val in rlist], dtype=int)
+
+    # Add tree data to summary output
+    parsed_dat[key_str] = ndata.tolist()
 
     # Log data for local machine
     fatime = np.argmax(dbrick0, axis=1)

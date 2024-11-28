@@ -142,6 +142,7 @@ def update_config_obj(config):
     list_mutate[CNOPV2:-1] = gdata.rev_sabin2
     cp.Enable_Genome_Mutation = 1
     cp.Genome_Mutation_Rates = list_mutate.tolist()
+    cp.Enable_Label_By_Infector = 1
 
     # list_mlabel = np.zeros(num_strains)
     # list_mlabel[-1] = 1
@@ -167,6 +168,8 @@ def update_config_obj(config):
     # Reporting
     cp.Enable_Default_Reporting = 1
     cp.Enable_Demographics_Reporting = 1
+    cp.Enable_Event_DB = 1
+    cp.SQL_Events = ["NewInfection"]
 
     cp.Custom_Reports_Filename = REPORTS_FILE
 
