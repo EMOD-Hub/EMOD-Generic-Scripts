@@ -16,7 +16,6 @@ demog_object = None
 # Other stuff
 first_call_bool = True
 
-demog_dict = dict()
 demog_node = dict()
 demog_min_pop = 50
 demog_node_map = dict() # LGA: [NodeIDs]

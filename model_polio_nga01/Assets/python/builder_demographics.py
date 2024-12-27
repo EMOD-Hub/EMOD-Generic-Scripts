@@ -44,16 +44,16 @@ def demographicsBuilder():
         demog_dat = json.load(fid01)
 
     # Aggregate population, area, lat, long, year
+    list_adm02 = sorted(list(set([val.rsplit(':',1)[0] for val in demog_dat])))
     if (not SUB_LGA):
-        ndemog_dat = dict()
+        ndemog_dat = {val: 5*[0] for val in list_adm02}
         for val in demog_dat:
             nval = val.rsplit(':',1)[0]
-            if (nval not in ndemog_dat):
-                ndemog_dat[nval] = [0, 0, 0, 0, demog_dat[val][4]]
             ndemog_dat[nval][0] += demog_dat[val][0]
             ndemog_dat[nval][1] += demog_dat[val][1]
             ndemog_dat[nval][2] += demog_dat[val][2]*demog_dat[val][1]
             ndemog_dat[nval][3] += demog_dat[val][3]*demog_dat[val][1]
+            ndemog_dat[nval][4] = demog_dat[val][4]
         demog_dat = ndemog_dat
         for val in demog_dat:
             demog_dat[val][2] /= demog_dat[val][1]
@@ -80,20 +80,15 @@ def demographicsBuilder():
 
             node_list.append(node_obj)
 
-    # Write node name bookkeeping
+    # Node name bookkeeping
     nname_dict = {node_obj.name: node_obj.forced_id for node_obj in node_list}
-    node_rep_list = sorted([nname for nname in demog_dat.keys() if
-                            any([nname.startswith(val+':') or
-                                 val == nname for val in GEOG_LIST])])
     rep_groups = {nrep: [nname_dict[val] for val in nname_dict.keys()
                          if val.startswith(nrep+':') or val == nrep]
-                  for nrep in node_rep_list}
-
+                  for nrep in list_adm02}
     gdata.demog_node_map = rep_groups
 
     node_rep_dict = {val[0]: val[1] for val in
-                     zip(node_rep_list, range(len(node_rep_list)))}
-
+                     zip(list_adm02, range(len(list_adm02)))}
     gdata.demog_rep_index = node_rep_dict
 
     # Prune small nodes
@@ -102,7 +97,6 @@ def demographicsBuilder():
     node_list = rev_node_list
     node_name_dict = {node_obj.name: node_obj.forced_id
                       for node_obj in node_list}
-
     gdata.demog_node = node_name_dict
 
     # Create primary file

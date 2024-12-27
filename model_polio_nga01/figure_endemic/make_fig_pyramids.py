@@ -10,10 +10,11 @@ import matplotlib.pyplot as plt
 # Ought to go in emodpy
 sys.path.append(os.path.abspath(os.path.join('..', '..', 'local_python')))
 sys.path.append(os.path.abspath(os.path.join('..', 'Assets', 'python')))
-from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, POP_PYR
+from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, \
+                                            POP_PYR, EXP_C
 from py_assets_common.emod_local_proc import pyr_chart
 
-from global_data import start_year, run_years
+from global_data import base_year
 
 # *****************************************************************************
 
@@ -40,11 +41,13 @@ def make_fig():
         run_years = param_dict[EXP_C]['run_years']
         pyr_mat = np.zeros((NSIMS, int(run_years)+1, 20))-1
         year_vec = np.arange(start_year, start_year+run_years+1, dtype=int)
-        chart_yrs = year_vec[np.mod(year_vec, 10) == 0]
+        chart_yrs = year_vec[::6]
         num_charts = chart_yrs.shape[0]
 
         fig01 = plt.figure(figsize=(8*num_charts, 6))
 
+        data_brick.pop('t_vec')
+        data_brick.pop('node_names')
         for sim_idx_str in data_brick:
             sim_idx = int(sim_idx_str)
             pyr_mat[sim_idx, :, :] = np.array(data_brick[sim_idx_str][POP_PYR])
