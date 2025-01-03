@@ -151,7 +151,8 @@ def calib_from_def_file(pth_pdict, pth_python, pth_exe, pth_data, pth_local):
 # *****************************************************************************
 
 
-def start_exp(path_python, path_data, path_exp_def, run_local=False):
+def start_exp(path_python, path_data, path_exp_def, run_local=False,
+              num_cores=1):
 
     # Prepare the platform
     if (run_local):
@@ -163,7 +164,7 @@ def start_exp(path_python, path_data, path_exp_def, run_local=False):
                             environment='Calculon', priority='Normal',
                             simulation_root='$COMPS_PATH(USER)',
                             node_group='idm_abcd', exclusive='False',
-                            num_cores='1', num_retries='0')
+                            num_cores=num_cores, num_retries='0')
 
     # Create experiment object
     f_dir = os.path.dirname(os.path.abspath(__file__))
