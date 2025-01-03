@@ -10,7 +10,7 @@ import global_data as gdata
 import numpy as np
 
 from emod_postproc_func import post_proc_poppyr, post_proc_prev
-from emod_constants import SQL_TIME, SQL_MCW, SQL_AGE
+from emod_constants import SQL_TIME, SQL_MCW, SQL_AGE, O_FILE, MO_DAYS
 
 # *****************************************************************************
 
@@ -41,9 +41,8 @@ def application(output_path):
     data_vec_age = np.array([val[SQL_AGE] for val in rlist], dtype=float)
 
     # Aggregate new infections by month
-    DAY_BINS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     START_TIME = 365.0*(gdata.start_year-gdata.base_year)
-    BIN_EDGES = np.cumsum(int(gdata.run_years)*DAY_BINS) + START_TIME - 0.5
+    BIN_EDGES = np.cumsum(int(gdata.run_years)*MO_DAYS) + START_TIME - 0.5
     BIN_EDGES = np.insert(BIN_EDGES, 0, START_TIME - 0.5)
 
     (inf_mo, tstamps) = np.histogram(data_vec_time,
@@ -70,7 +69,7 @@ def application(output_path):
         parsed_dat[key_str]['age_data'].append(age_hist.tolist())
 
     # Write output dictionary
-    with open('parsed_out.json', 'w') as fid01:
+    with open(O_FILE, 'w') as fid01:
         json.dump(parsed_dat, fid01)
 
     return None
