@@ -19,7 +19,8 @@ from COMPS.Data import Experiment
 from COMPS.Data.Simulation import SimulationState
 
 from py_assets_common.emod_constants import DOCK_PACK, COMPS_URL, D_FILE, \
-                                            COMPS_ID_FILE
+                                            COMPS_ID_FILE, LOCAL_EXP_DIR, \
+                                            O_FILE
 
 # *****************************************************************************
 
@@ -32,7 +33,7 @@ def getter_worker(sim):
     ret_val = None
 
     for file_info in sim_obj:
-        if (file_info.friendly_name == 'parsed_out.json'):
+        if (file_info.friendly_name == O_FILE):
             file_bytes = sim.retrieve_output_files_from_info([file_info])
             ret_val = file_bytes[0].decode()
 
@@ -107,6 +108,35 @@ def get_sim_files(exp_id=''):
     plat_obj.delete()
 
     return ret_val
+
+# *****************************************************************************
+
+
+def get_data_brick(run_local=False):
+
+    if (run_local):
+        with open(LOCAL_EXP_DIR) as fid01:
+            exp_dir = fid01.readlines()[0].strip()
+
+        data_brick = dict()
+        for dir_item in os.listdir(exp_dir):
+            fpath = os.path.join(exp_dir, dir_item, O_FILE)
+            if (os.path.isfile(fpath)):
+                with open(fpath) as fid01:
+                    data_bit = json.load(fid01)
+                data_brick.update(data_bit)
+    else:
+        # Get Experiment ID
+        (exp_id, _, _, _) = read_id_file(COMPS_ID_FILE)
+
+        # Reduce output and write data brick
+        data_brick = get_sim_files(exp_id)
+
+    with open(D_FILE, 'w') as fid01:
+        json.dump(data_brick, fid01)
+
+    return None
+
 
 # *****************************************************************************
 

@@ -7,6 +7,9 @@ API_MIN = '2.0.0'
 COMPS_ID_FILE = 'COMPS_ID.id'
 COMPS_URL = 'https://comps.idmod.org'
 
+LOCAL_EXP_ROOT = 'docker_suites'
+LOCAL_EXP_DIR = 'LOCAL_EXP_PATH.txt'
+
 DOCK_PACK = r'docker-production-public.packages.idmod.org/emodpy/' + \
             r'comps_ssmt_worker:latest'
 
@@ -24,6 +27,7 @@ P_FILE = 'param_dict.json'
 D_FILE = 'data_brick.json'
 I_FILE = 'idx_str_file.txt'
 C_FILE = 'config.json'
+O_FILE = 'parsed_out.json'
 
 EXP_C = 'EXP_CONSTANT'
 EXP_V = 'EXP_VARIABLE'

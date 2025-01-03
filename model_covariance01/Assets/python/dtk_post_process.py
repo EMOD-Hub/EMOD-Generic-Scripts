@@ -9,6 +9,8 @@ import global_data as gdata
 
 import numpy as np
 
+from emod_constants import O_FILE
+
 # *****************************************************************************
 
 
@@ -36,7 +38,7 @@ def application(output_path):
     parsed_dat[key_str]['herd_frac'] = int(epi_inf)/tot_pop
 
     # Write output dictionary
-    with open('parsed_out.json', 'w') as fid01:
+    with open(O_FILE, 'w') as fid01:
         json.dump(parsed_dat, fid01)
 
     return None

@@ -18,7 +18,8 @@ from emodpy.emod_task import EMODTask
 from py_assets_common.emod_constants import ID_EXE, ID_ENV, ID_SCHEMA, \
                                             DOCK_PACK, VE_PY_PATHS, \
                                             EXP_V, EXP_NAME, NUM_SIMS, \
-                                            COMPS_ID_FILE
+                                            COMPS_ID_FILE, LOCAL_EXP_ROOT, \
+                                            LOCAL_EXP_DIR
 
 # *****************************************************************************
 
@@ -44,13 +45,11 @@ def sweep_func(simulation, arg_tuple):
 # *****************************************************************************
 
 
-def exp_from_def_file(path_param_dict, path_python, path_exe, path_data):
+def exp_from_def_file(path_param_dict, path_python, path_exe, path_data,
+                      run_local=False):
 
     # Create EMODTask
     task_obj = EMODTask.from_files(ep4_path=path_python)
-
-    # Set singularity image for environment
-    task_obj.set_sif(os.path.join(path_exe, ID_ENV))
 
     # Set path to python
     for py_path in VE_PY_PATHS:
@@ -68,21 +67,30 @@ def exp_from_def_file(path_param_dict, path_python, path_exe, path_data):
     param_asset = Asset(absolute_path=path_param_dict)
     task_obj.common_assets.add_asset(param_asset)
 
-    # Add the executable and schema
-    f_targ = os.path.join(path_exe, ID_EXE)
-    exe_asset = AssetCollection.from_id_file(f_targ)
-    task_obj.common_assets.add_assets(exe_asset)
-    f_targ = os.path.join(path_exe, ID_SCHEMA)
-    schema_asset = AssetCollection.from_id_file(f_targ)
-    task_obj.common_assets.add_assets(schema_asset)
+    if (run_local):
+        # Executable and schema from local directory
+        f_dir = os.path.dirname(os.path.abspath(__file__))
+        path_assets = os.path.join(f_dir, 'container_assets')
+        task_obj.common_assets.add_directory(path_assets)
+    else:
+        # Environment on COMPS
+        task_obj.set_sif(os.path.join(path_exe, ID_ENV))
+        # Executable on COMPS
+        f_dir = os.path.join(path_exe, ID_EXE)
+        exe_asset = AssetCollection.from_id_file(f_dir)
+        task_obj.common_assets.add_assets(exe_asset)
+        # Schema on COMPS
+        f_dir = os.path.join(path_exe, ID_SCHEMA)
+        schema_asset = AssetCollection.from_id_file(f_dir)
+        task_obj.common_assets.add_assets(schema_asset)
 
     # Add everything in the data assets directory as assets;
     task_obj.common_assets.add_directory(path_data, relative_path='data')
 
     # Add everything in the common python scripts directory as assets;
     f_dir = os.path.dirname(os.path.abspath(__file__))
-    PATH_COMMON = os.path.join(f_dir, 'py_assets_common')
-    task_obj.common_assets.add_directory(PATH_COMMON, relative_path='python')
+    path_assets = os.path.join(f_dir, 'py_assets_common')
+    task_obj.common_assets.add_directory(path_assets, relative_path='python')
 
     # Create simulation sweep with builder
     #   Odd syntax; sweep definition needs two args: sweep function and a list.
@@ -147,7 +155,9 @@ def start_exp(path_python, path_data, path_exp_def, run_local=False):
 
     # Prepare the platform
     if (run_local):
-        plat_obj = Platform(type='Container', job_directory='docker_suites')
+        # Requires emod_env in Docker Desktop
+        plat_obj = Platform(type='Container', job_directory=LOCAL_EXP_ROOT,
+                            docker_image='emod_env:latest')
     else:
         plat_obj = Platform(type='COMPS', endpoint='https://comps.idmod.org',
                             environment='Calculon', priority='Normal',
@@ -158,15 +168,24 @@ def start_exp(path_python, path_data, path_exp_def, run_local=False):
     # Create experiment object
     f_dir = os.path.dirname(os.path.abspath(__file__))
     PATH_EXE = os.path.abspath(os.path.join(f_dir, '..', 'env_Debian12'))
-    exp_obj = exp_from_def_file(path_exp_def, path_python, PATH_EXE, path_data)
+    exp_obj = exp_from_def_file(path_exp_def, path_python, PATH_EXE, path_data,
+                                run_local)
 
-    # Send experiment to COMPS; start processing
+    # Start processing
     plat_obj.run_items(exp_obj)
 
-    # Save experiment id to file
-    exp_obj.to_id_file(COMPS_ID_FILE)
-    print()
-    print(exp_obj.uid.hex)
+    if (run_local):
+        # Write path sims
+        cpath0 = plat_obj.get_container_directory(exp_obj)
+        cpath1 = os.path.split(cpath0)
+        cpath2 = os.path.split(cpath1[0])
+        with open(LOCAL_EXP_DIR, 'w') as fid01:
+            fid01.write(os.path.join(LOCAL_EXP_ROOT, cpath2[-1], cpath1[-1]))
+    else:
+        # Save experiment id to file
+        exp_obj.to_id_file(COMPS_ID_FILE)
+        print()
+        print(exp_obj.uid.hex)
 
     return None
 
