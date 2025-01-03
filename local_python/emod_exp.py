@@ -5,6 +5,7 @@
 import json
 import os
 
+from idmtools.core.platform_factory import Platform
 from idmtools.assets import Asset, AssetCollection
 from idmtools.builders import SimulationBuilder
 from idmtools.entities.experiment import Experiment
@@ -16,7 +17,8 @@ from emodpy.emod_task import EMODTask
 
 from py_assets_common.emod_constants import ID_EXE, ID_ENV, ID_SCHEMA, \
                                             DOCK_PACK, VE_PY_PATHS, \
-                                            EXP_V, EXP_NAME, NUM_SIMS
+                                            EXP_V, EXP_NAME, NUM_SIMS, \
+                                            COMPS_ID_FILE
 
 # *****************************************************************************
 
@@ -137,5 +139,35 @@ def calib_from_def_file(pth_pdict, pth_python, pth_exe, pth_data, pth_local):
                           docker_image=DOCK_PACK)
 
     return wi_obj
+
+# *****************************************************************************
+
+
+def start_exp(path_python, path_data, path_exp_def, run_local=False):
+
+    # Prepare the platform
+    if (run_local):
+        plat_obj = Platform(type='Container', job_directory='docker_suites')
+    else:
+        plat_obj = Platform(type='COMPS', endpoint='https://comps.idmod.org',
+                            environment='Calculon', priority='Normal',
+                            simulation_root='$COMPS_PATH(USER)',
+                            node_group='idm_abcd', exclusive='False',
+                            num_cores='1', num_retries='0')
+
+    # Create experiment object
+    f_dir = os.path.dirname(os.path.abspath(__file__))
+    PATH_EXE = os.path.abspath(os.path.join(f_dir, '..', 'env_Debian12'))
+    exp_obj = exp_from_def_file(path_exp_def, path_python, PATH_EXE, path_data)
+
+    # Send experiment to COMPS; start processing
+    plat_obj.run_items(exp_obj)
+
+    # Save experiment id to file
+    exp_obj.to_id_file(COMPS_ID_FILE)
+    print()
+    print(exp_obj.uid.hex)
+
+    return None
 
 # *****************************************************************************

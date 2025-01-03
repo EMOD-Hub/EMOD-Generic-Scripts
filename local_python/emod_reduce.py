@@ -74,7 +74,7 @@ def pool_manager(exp_id=None):
 def get_sim_files(exp_id=''):
 
     # Connect to COMPS
-    plat = Platform(block='COMPS', endpoint=COMPS_URL, environment='Calculon')
+    plat = Platform(type='COMPS', endpoint=COMPS_URL, environment='Calculon')
 
     # Add everything in the common python scripts directory as assets;
     f_path = os.path.abspath(__file__)
