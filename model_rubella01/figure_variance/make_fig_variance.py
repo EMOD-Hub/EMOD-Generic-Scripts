@@ -92,7 +92,8 @@ def make_fig():
                                '3', '', '4', '', '5'], fontsize=16)
         axs01.tick_params(axis='x', labelsize=16)
 
-        for ri_val in ri_lev:
+        for k1 in range(len(ri_lev)):
+            ri_val = ri_lev[k1]
             if (ri_val not in [0.0, 0.6]):
                 continue
             gidx = (ri_vec == ri_val) & fidx
@@ -100,7 +101,9 @@ def make_fig():
             crs_mat = inf_mat_avg*np.transpose(crs_prob_vec)
             ydat = np.sum(crs_mat, axis=1)/brth_vec*norm_crs_timevec*1e3
 
-            axs01.plot(XDAT, ydat, label='RI = {:3d}%'.format(int(100*ri_val)))
+            label_str = 'RI = {:3d}%'.format(int(100*ri_val))
+            color_str = 'C{:d}'.format(k1)
+            axs01.plot(XDAT, ydat, c=color_str, label=label_str)
 
         # Figures - Sims - CRS Histogram
         axs01 = fig01.add_subplot(1, 2, 2)
@@ -117,11 +120,13 @@ def make_fig():
         xmaxv = 5
         xbinv = 0.1
         axs01.set_xlim(0.0, xmaxv)
+        axs01.set_ylim(0.0, 4.0)
 
         axs01.tick_params(axis='x', labelsize=16)
         axs01.tick_params(axis='y', labelsize=16)
 
-        for ri_val in ri_lev:
+        for k1 in range(len(ri_lev)):
+            ri_val = ri_lev[k1]
             if (ri_val not in [0.0, 0.6]):
                 continue
             gidx = (ri_vec == ri_val) & fidx
@@ -129,9 +134,12 @@ def make_fig():
             crs_mat = inf_mat_sub*np.transpose(crs_prob_vec)
             ydat = np.sum(crs_mat, axis=2)/brth_vec*norm_crs_timevec*1e3
             ydat = ydat[:, -10:].flatten()
+
+            label_str = 'RI = {:3d}%'.format(int(100*ri_val))
+            color_str = 'C{:d}'.format(k1)
             axs01.hist(ydat, bins=np.arange(0, xmaxv+xbinv, xbinv),
-                       density=True, alpha=0.7,
-                       label='RI = {:3d}%'.format(int(100*ri_val)))
+                       density=True, alpha=0.7, color=color_str,
+                       label=label_str)
             print(ri_val, np.mean(ydat), np.percentile(ydat, [5, 50, 95]))
 
         axs01.legend(fontsize=14)
