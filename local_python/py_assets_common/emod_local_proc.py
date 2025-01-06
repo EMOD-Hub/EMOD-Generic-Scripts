@@ -96,9 +96,19 @@ def pyr_chart(axs01, pop_dat, pop_dat_err, yr_lab):
     axs01.barh(ydat[1:], -pop_dat_n/2.0, height=4.75,
                xerr=pop_dat_n_err, color=CLR_M)
 
-    tpop_str = 'Total Pop\n{:5.1f}M'.format(tpop/1e6)
-    axs01.text(-11, 92.5, '{:<4d}'.format(yr_lab), fontsize=18)
-    axs01.text(5, 87.5, tpop_str, fontsize=18)
+    dval = 1e6
+    tp_str = 'Total Pop\n{:5.1f}M'
+    yr_str = '{:<4d}'
+    if (tpop < 1e6):
+        tp_str = 'Total Pop\n{:5.0f}k'
+        dval = 1e3
+    if (yr_lab < 1900):
+        yr_str = 'Year {:<4d}'
+
+    year_str = yr_str.format(yr_lab)
+    axs01.text(-11, 92.5, year_str, fontsize=18)
+    tpop_str = tp_str.format(tpop/dval)
+    axs01.text(8, 87.5, tpop_str, fontsize=18, horizontalalignment='center')
 
     return None
 
