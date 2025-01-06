@@ -13,7 +13,7 @@ from idmtools_models.python.python_task import PythonTask
 from idmtools_platform_comps.ssmt_work_items.comps_workitems \
                                         import SSMTWorkItem
 
-from emodpy.emod_task import EMODTask
+from emodpy.emod_task import EMODTask, add_ep4_from_path
 
 from py_assets_common.emod_constants import ID_EXE, ID_ENV, ID_SCHEMA, \
                                             DOCK_PACK, VE_PY_PATHS, \
@@ -49,7 +49,8 @@ def exp_from_def_file(path_param_dict, path_python, path_exe, path_data,
                       run_local=False):
 
     # Create EMODTask
-    task_obj = EMODTask.from_files(ep4_path=path_python)
+    task_obj = EMODTask(config=None, campaign=None)
+    task_obj = add_ep4_from_path(task_obj, path_python)
 
     # Set path to python
     for py_path in VE_PY_PATHS:
@@ -151,8 +152,8 @@ def calib_from_def_file(pth_pdict, pth_python, pth_exe, pth_data, pth_local):
 # *****************************************************************************
 
 
-def start_exp(path_python, path_data, path_exp_def, run_local=False,
-              num_cores=1):
+def start_exp(path_python, path_data, path_exp_def,
+              run_local=False, short_queue=False, num_cores=1):
 
     # Prepare the platform
     if (run_local):
@@ -160,10 +161,15 @@ def start_exp(path_python, path_data, path_exp_def, run_local=False,
         plat_obj = Platform(type='Container', job_directory=LOCAL_EXP_ROOT,
                             docker_image='emod_env:latest')
     else:
+        if (short_queue):
+            nodes = 'idm_48cores'
+        else:
+            nodes = 'idm_abcd'
+
         plat_obj = Platform(type='COMPS', endpoint='https://comps.idmod.org',
                             environment='Calculon', priority='Normal',
                             simulation_root='$COMPS_PATH(USER)',
-                            node_group='idm_abcd', exclusive='False',
+                            node_group=nodes, exclusive='False',
                             num_cores=num_cores, num_retries=0)
 
     # Create experiment object
