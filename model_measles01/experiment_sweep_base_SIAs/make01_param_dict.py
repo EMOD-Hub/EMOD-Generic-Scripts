@@ -31,7 +31,7 @@ def write_param_dict():
     param_dict = dict()
 
     param_dict[EXP_NAME] = 'Measles01-SweepBase_SIAs'
-    param_dict[NUM_SIMS] = 1200
+    param_dict[NUM_SIMS] = 2400
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -47,22 +47,23 @@ def write_param_dict():
     P_VAR['run_number'] = list(range(NSIMS))
 
     # Infectivity
-    P_VAR['R0'] = (10.0 + np.random.gamma(30.0, scale=0.133,
-                                          size=NSIMS)).tolist()
+    vals = 10.0 + np.random.gamma(30.0, scale=0.133, size=NSIMS)
+    P_VAR['R0'] = (np.round(vals, 2)).tolist()
 
     # RI params
-    P_VAR['MCV1'] = np.random.choice(np.arange(0.2, 1.01, 0.04),
-                                     size=NSIMS).tolist()
-    P_VAR['MCV1_age'] = (np.random.choice([180.0, 270.0],
-                         size=NSIMS)).tolist()
+    vals = np.random.choice(np.arange(0.2, 1.01, 0.04), size=NSIMS)
+    P_VAR['MCV1'] = (np.round(vals, 2)).tolist()
+    vals = np.random.choice([180.0, 270.0], size=NSIMS)
+    P_VAR['MCV1_age'] = (np.round(vals, 2)).tolist()
 
-    # Reference year for population; uses UN WPP DRC
+    # Reference year for population; uses UN WPP for DRC
     P_CON['ref_year'] = 2040
 
     # SIA parameters
     P_CON['sia_start_year'] = 18
     P_CON['sia_coverage'] = 0.60
-    P_CON['sia_min_age_yr'] = 0.75
+    vals = np.random.choice([0.5, 0.75], size=NSIMS)
+    P_VAR['sia_min_age_yr'] = (np.round(vals, 2)).tolist()
 
     # Log10 of multiplier on exogeneous case importation
     P_CON['log10_import_mult'] = 1.0

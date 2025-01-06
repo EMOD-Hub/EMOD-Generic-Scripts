@@ -47,16 +47,16 @@ def write_param_dict():
     P_VAR['run_number'] = list(range(NSIMS))
 
     # Infectivity
-    P_VAR['R0'] = (10.0 + np.random.gamma(30.0, scale=0.133,
-                                          size=NSIMS)).tolist()
+    vals = 10.0 + np.random.gamma(30.0, scale=0.133, size=NSIMS)
+    P_VAR['R0'] = (np.round(vals, 2)).tolist()
 
     # RI params
-    P_VAR['MCV1'] = np.random.choice(np.arange(0.2, 1.01, 0.04),
-                                     size=NSIMS).tolist()
-    P_VAR['MCV1_age'] = (np.random.choice([180.0, 270.0],
-                         size=NSIMS)).tolist()
+    vals = np.random.choice(np.arange(0.2, 1.01, 0.04), size=NSIMS)
+    P_VAR['MCV1'] = (np.round(vals, 2)).tolist()
+    vals = np.random.choice([180.0, 270.0], size=NSIMS)
+    P_VAR['MCV1_age'] = (np.round(vals, 2)).tolist()
 
-    # Reference year for population; uses UN WPP DRC
+    # Reference year for population; uses UN WPP for DRC
     P_CON['ref_year'] = 2040
 
     # SIA parameters

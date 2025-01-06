@@ -153,7 +153,8 @@ def calib_from_def_file(pth_pdict, pth_python, pth_exe, pth_data, pth_local):
 
 
 def start_exp(path_python, path_data, path_exp_def,
-              run_local=False, short_queue=False, num_cores=1):
+              run_local=False, short_queue=False,
+              num_cores=1, priority=2):
 
     # Prepare the platform
     if (run_local):
@@ -161,13 +162,14 @@ def start_exp(path_python, path_data, path_exp_def,
         plat_obj = Platform(type='Container', job_directory=LOCAL_EXP_ROOT,
                             docker_image='emod_env:latest')
     else:
+        p_str = ['Lowest', 'BelowNormal', 'Normal', 'AboveNormal', 'Highest']
+        p_val = p_str[priority]
+        nodes = 'idm_abcd'
         if (short_queue):
             nodes = 'idm_48cores'
-        else:
-            nodes = 'idm_abcd'
 
         plat_obj = Platform(type='COMPS', endpoint='https://comps.idmod.org',
-                            environment='Calculon', priority='Normal',
+                            environment='Calculon', priority=p_val,
                             simulation_root='$COMPS_PATH(USER)',
                             node_group=nodes, exclusive='False',
                             num_cores=num_cores, num_retries=0)
