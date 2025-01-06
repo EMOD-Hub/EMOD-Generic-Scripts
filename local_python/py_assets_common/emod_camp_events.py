@@ -13,7 +13,7 @@ CE = 'CampaignEvent'
 SEC = 'StandardEventCoordinator'
 CHWEC = 'CommunityHealthWorkerEventCoordinator'
 
-NLHT = 'NodeLevelHealthTriggeredIVScaleUpSwitch'
+NLHT = 'NodeLevelHealthTriggeredIV'
 MID = 'MultiInterventionDistributor'
 DI = 'DelayedIntervention'
 VAX = 'Vaccine'
@@ -142,9 +142,10 @@ def ce_inf_force(node_list, step_init, step_width, step_size,
 # *****************************************************************************
 
 
-def ce_RI(node_list, times, values,
-          start_day=0.0, base_take=1.0, acq_fact=0.0, age_dep=False,
-          age_one=300.0, frac_two=None, age_two=475.0, age_std=90.0):
+def ce_RI(node_list,
+          coverage=1.0, start_day=0.0, base_take=1.0,
+          age_one=300.0, frac_two=None, age_two=475.0, age_std=90.0,
+          acq_fact=0.0, age_dep=False):
 
     # Vaccine
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
@@ -164,12 +165,8 @@ def ce_RI(node_list, times, values,
     camp_coord.Intervention_Config = camp_iv01
 
     camp_iv01.Actual_IndividualIntervention_Config = camp_iv02
-    camp_iv01.Demographic_Coverage = 1.0  # Required, not used
+    camp_iv01.Demographic_Coverage = coverage
     camp_iv01.Trigger_Condition_List = ['Births']
-    camp_iv01.Demographic_Coverage_Time_Profile = 'InterpolationMap'
-    camp_iv01.Coverage_vs_Time_Interpolation_Map.Times = times + [365.0*100.0]
-    camp_iv01.Coverage_vs_Time_Interpolation_Map.Values = values + [values[-1]]
-    camp_iv01.Not_Covered_IndividualIntervention_Configs = []  # Required
 
     camp_iv02.Intervention_List = [camp_iv03]
 
@@ -213,10 +210,11 @@ def ce_RI(node_list, times, values,
 
 
 def ce_RI_OPV(node_list,
-              start_day=0.0, coverage=1.0, base_take=0.7,
-              age_one=180.0, age_std=15.0, clade=0, genome=0):
+              coverage=1.0, start_day=0.0, base_take=0.7,
+              age_one=180.0, age_std=15.0,
+              clade=0, genome=0):
 
-    # Vaccine
+    # Outbreak Individual
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
     camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
     camp_iv01 = s2c.get_class_with_defaults(NLHT, SPATH)
@@ -234,12 +232,8 @@ def ce_RI_OPV(node_list,
     camp_coord.Intervention_Config = camp_iv01
 
     camp_iv01.Actual_IndividualIntervention_Config = camp_iv02
-    camp_iv01.Demographic_Coverage = 1.0  # Required, not used
+    camp_iv01.Demographic_Coverage = coverage*base_take
     camp_iv01.Trigger_Condition_List = ['Births']
-    camp_iv01.Demographic_Coverage_Time_Profile = 'InterpolationMap'
-    camp_iv01.Coverage_vs_Time_Interpolation_Map.Times = [0.0]
-    camp_iv01.Coverage_vs_Time_Interpolation_Map.Values = [coverage*base_take]
-    camp_iv01.Not_Covered_IndividualIntervention_Configs = []  # Required
 
     camp_iv02.Intervention_List = [camp_iv03]
 

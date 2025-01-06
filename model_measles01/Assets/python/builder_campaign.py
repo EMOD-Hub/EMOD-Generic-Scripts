@@ -49,7 +49,7 @@ def campaignBuilder():
     # Add MCV
     start_day = 365.0*(gdata.start_year-gdata.base_year)
     acq_fact = MAT_FACTOR/2.0
-    camp_event = ce_RI(ALL_NODES, [0.0], [MCV1_RATE], start_day=start_day,
+    camp_event = ce_RI(ALL_NODES, coverage=MCV1_RATE, start_day=start_day,
                        base_take=0.95, acq_fact=acq_fact, age_dep=AGE_DEP,
                        age_one=MCV1_AGE, frac_two=MCV2_FRAC, age_std=60.0)
     camp_module.add(camp_event)

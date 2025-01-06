@@ -58,10 +58,6 @@ def write_param_dict():
     P_CON['demog_set'] = 'SSA'
     P_CON['num_nodes'] = 1
 
-    # RI rate multiplier for MR
-    P_CON['RI_rate_mult_yvals'] = [1.0, 1.0]
-    P_CON['RI_rate_mult_xvals'] = [2025.0, 2060.0]
-
     # Log10 of multiplier on exogeneous case importation
     P_CON['log10_import_mult'] = -0.1
 
