@@ -71,6 +71,10 @@ def make_fig():
         pops = np.interp(xyrs, tpop_xval, tpop_avg)
         mort_nrm = mort_dat[fidx, :]/pops*1e5
 
+        # Subset to only valid simulations
+        mcv1_vec = mcv1_vec[fidx]
+        mcv1_age_vec = mcv1_age_vec[fidx]
+
         # Figures
         fig01 = plt.figure(figsize=(10, 6))
 
@@ -83,7 +87,7 @@ def make_fig():
         axs01.set_axisbelow(True)
 
         # Binning
-        cval = np.mean(mort_nrm[fidx, -10:], axis=1)/12.0
+        cval = np.mean(mort_nrm[:, -10:], axis=1)/12.0
         (xvec, yvec) = np.meshgrid(mcv1_lvl, mcv1_age_lvl)
         zmat = np.zeros(xvec.shape)
         for k1 in range(xvec.shape[0]):
