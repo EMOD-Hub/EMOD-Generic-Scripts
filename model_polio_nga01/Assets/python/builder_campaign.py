@@ -97,7 +97,7 @@ def campaignBuilder():
     # Add RI
     ri_age_day = 180.0
     start_day = 365.0*(RI_START_YR-gdata.base_year) - ri_age_day
-    camp_event = ce_RI_OPV(ALL_NODES, coverage=0.8, start_day=start_day,
+    camp_event = ce_OPV_RI(ALL_NODES, coverage=0.8, start_day=start_day,
                            base_take=0.7, age_one=ri_age_day, age_std=15.0,
                            clade=1, genome=0)
     camp_module.add(camp_event)

@@ -209,7 +209,7 @@ def ce_RI(node_list,
 # *****************************************************************************
 
 
-def ce_RI_OPV(node_list,
+def ce_OPV_RI(node_list,
               coverage=1.0, start_day=0.0, base_take=0.7,
               age_one=180.0, age_std=15.0,
               clade=0, genome=0):
