@@ -13,8 +13,8 @@ import numpy as np
 
 import emod_api.campaign as camp_module
 
-from emod_camp_events import ce_import_pressure, ce_OPV_SIA, \
-                             ce_random_numbers, ce_RI_OPV
+from emod_camp_events import ce_import_pressure, ce_br_force, \
+                             ce_random_numbers, ce_OPV_SIA, ce_OPV_RI
 from emod_constants import CAMP_FILE
 
 # *****************************************************************************
@@ -85,6 +85,13 @@ def campaignBuilder():
                                     genome=cvdpv_gen,
                                     duration=gdata.seed_inf_dt,
                                     magnitude=gdata.seed_inf_num)
+    camp_module.add(camp_event)
+
+    # Time varying birth rate
+    BR_MULT_X = gdata.brate_mult_x
+    BR_MULT_Y = gdata.brate_mult_y
+    start_day = 365.0*(START_YEAR-gdata.base_year)
+    camp_event = ce_br_force(ALL_NODES, BR_MULT_X, BR_MULT_Y, start_day)
     camp_module.add(camp_event)
 
     # Add SIAs
