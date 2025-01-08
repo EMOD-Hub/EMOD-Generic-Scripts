@@ -51,7 +51,12 @@ def make_fig():
         mcv2_lvl = param_dict[EXP_C]['MCV2']
 
         sia_year = param_dict[EXP_C]['sia_start_year']
-        sia_min_age_yr = param_dict[EXP_C]['sia_min_age_yr']
+        if ('sia_min_age_yr' in param_dict[EXP_V]):
+            sia_min_age_yr_vec = np.array(param_dict[EXP_V]['sia_min_age_yr'])
+        else:
+            sia_min_age_yr_val = param_dict[EXP_C]['sia_min_age_yr']
+            sia_min_age_yr_vec = np.array(nsims*[sia_min_age_yr_val])
+        sia_min_age_yr_lvl = np.unique(sia_min_age_yr_vec).tolist()
 
         xval = np.arange(0, run_years, 1/12) + 1/24
         xyrs = np.arange(0, run_years, 1) + 1/2
@@ -87,41 +92,48 @@ def make_fig():
         axs01.grid(visible=True, which='minor', ls=':', lw=0.1)
         axs01.set_axisbelow(True)
 
-        for mcv1_age_val in mcv1_age_lvl:
-            idx02 = (mcv1_age_vec == mcv1_age_val)
-            tidx = (fidx & idx02)
-            xval = mcv1_vec[tidx]
-            xval2 = np.arange(0.2, 1.001, 0.01)
-            yval = np.mean(mort_nrm[tidx, -10:], axis=1)/12.0
-            pcoef = np.polyfit(xval, yval, 4)
-            yval2 = np.polyval(pcoef, xval2)
-
-            lidx = mcv1_age_lvl.index(mcv1_age_val)
-            cval = 'C{:d}'.format(lidx)
-            xpos = 3.76-0.24*lidx
-
-            axs01.plot(xval, yval, '.', alpha=0.1, color=cval,
-                       markeredgecolor=None)
-            axs01.plot(xval2, yval2, '-', alpha=1.0, color=cval)
-
-            mcv1_mo = int(np.round(mcv1_age_val/365*12))
-            mcv1_str = 'MCV1 {:>2d}mo'.format(mcv1_mo)
-            axs01.text(0.56, xpos, mcv1_str, fontsize=18, color=cval)
-
-            if (mcv2_lvl > 0):
-                mcv2_str = '+ MCV2 15mo'
-                axs01.text(0.74, xpos, mcv2_str, fontsize=18, color=cval)
-
-            if (sia_year < run_years):
-                sia_str = '+ SIAs >{:d}mo'.format(int(sia_min_age_yr*12))
-                axs01.text(0.74, xpos, sia_str, fontsize=18, color=cval)
-
         axs01.set_ylabel('Monthly Mortality per-100k', fontsize=16)
         axs01.set_xlabel('MCV Coverage', fontsize=16)
         axs01.set_ylim(0, 4.0)
         axs01.set_xlim(0.2, 1.0)
 
+        for k1 in range(len(mcv1_age_lvl)):
+            mcv1_age_val = mcv1_age_lvl[k1]
+            idx02 = (mcv1_age_vec == mcv1_age_val)
+            for k2 in range(len(sia_min_age_yr_lvl)):
+                sia_min_age_yr_val = sia_min_age_yr_lvl[k2]
+                idx03 = (sia_min_age_yr_vec == sia_min_age_yr_val)
+
+                lstyle = '-'
+                if(sia_min_age_yr_val < 0.7):
+                    axs01.set_ylim(0, 1.8)
+                    lstyle = '--'
+
+                tidx = (fidx & idx02 & idx03)
+                xval = mcv1_vec[tidx]
+                xval2 = np.arange(0.2, 1.001, 0.01)
+                yval = np.mean(mort_nrm[tidx, -10:], axis=1)/12.0
+                pcoef = np.polyfit(xval, yval, 5)
+                yval2 = np.polyval(pcoef, xval2)
+
+                cval = 'C{:d}'.format(k1)
+                xpos = 3.76-0.24*k1-0.48*k2
+
+                mcv1_mo = int(np.round(mcv1_age_val/365*12))
+                lstr = 'MCV1 {:>2d}mo'.format(mcv1_mo)
+                if (mcv2_lvl > 0):
+                    lstr = lstr + '+ MCV2 15mo'
+                if (sia_year < run_years):
+                    sia_mo = int(sia_min_age_yr_val*12)
+                    lstr = lstr + '+ SIAs >{:d}mo'.format(sia_mo)
+
+                axs01.plot(xval, yval, '.', alpha=0.1, color=cval,
+                           markeredgecolor=None, label=None)
+                axs01.plot(xval2, yval2, lstyle, alpha=1.0, color=cval,
+                           label=lstr)
+
         axs01.tick_params(axis='both', which='major', labelsize=14)
+        axs01.legend(fontsize=16)
 
         plt.tight_layout()
         plt.savefig('fig_trends_{:s}_01.png'.format(dirname))
