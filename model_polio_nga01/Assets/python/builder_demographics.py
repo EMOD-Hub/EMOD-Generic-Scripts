@@ -17,26 +17,26 @@ from emod_api.demographics import DemographicsTemplates as DT
 from emod_demog_func import demog_vd_calc, demog_vd_over, demog_is_over_precalc
 from emod_constants import DEMOG_FILE, MORT_XVAL
 
-from refdat_alias import data_dict as dict_alias
-from refdat_birthrate import data_dict as dict_birth
-from refdat_deathrate import data_dict as dict_death
-
 # *****************************************************************************
 
 
 def demographicsBuilder():
 
     # Variables for this simulation
-    GEOG_LIST = ['AFRO:NIGERIA']
-
     SUB_LGA = gdata.var_params['use_10k_res']
     START_YEAR = gdata.var_params['start_year']
     PROC_DISPER = gdata.var_params['proc_overdispersion']
     IND_RISK_VAR = gdata.var_params['ind_variance_risk']
 
-    PATH_OVERLAY = 'demog_overlay'
-    if (not os.path.exists(PATH_OVERLAY)):
-        os.mkdir(PATH_OVERLAY)
+    # Load reference data
+    dat_file = 'pop_dat_NGA.csv'
+    fname_pop = os.path.join('Assets', 'data', dat_file)
+    pop_input = np.loadtxt(fname_pop, dtype=int, delimiter=',')
+    year_vec = pop_input[0, :] - gdata.base_year
+    year_init = START_YEAR - gdata.base_year
+    pop_mat = pop_input[1:, :] + 0.1
+    pop_init = [np.interp(year_init, year_vec, pop_mat[idx, :])
+                for idx in range(pop_mat.shape[0])]
 
     # Populate nodes in primary file
     fname = 'demog_NGA.json'
@@ -44,20 +44,25 @@ def demographicsBuilder():
         demog_dat = json.load(fid01)
 
     # Aggregate population, area, lat, long, year
-    list_adm02 = sorted(list(set([val.rsplit(':',1)[0] for val in demog_dat])))
+    stem01 = [val.rsplit(':', 1)[0] for val in demog_dat]
+    list_adm02 = sorted(list(set(stem01)))
     if (not SUB_LGA):
-        ndemog_dat = {val: 5*[0] for val in list_adm02}
+        ndemog_dat = {val: 4*[0] for val in list_adm02}
         for val in demog_dat:
-            nval = val.rsplit(':',1)[0]
+            nval = val.rsplit(':', 1)[0]
             ndemog_dat[nval][0] += demog_dat[val][0]
             ndemog_dat[nval][1] += demog_dat[val][1]
             ndemog_dat[nval][2] += demog_dat[val][2]*demog_dat[val][1]
             ndemog_dat[nval][3] += demog_dat[val][3]*demog_dat[val][1]
-            ndemog_dat[nval][4] = demog_dat[val][4]
         demog_dat = ndemog_dat
         for val in demog_dat:
             demog_dat[val][2] /= demog_dat[val][1]
             demog_dat[val][3] /= demog_dat[val][1]
+
+    # Population fudge factor
+    file_pop = sum([demog_dat[val][0] for val in demog_dat])
+    ref_pop = np.sum(pop_init)
+    pop_ff = ref_pop/file_pop
 
     # Add nodes
     node_id = 0
@@ -66,13 +71,13 @@ def demographicsBuilder():
 
     for loc_name in demog_dat:
         if (any([loc_name.startswith(val+':') or
-                 val == loc_name for val in GEOG_LIST])):
+                 val == loc_name for val in ['AFRO:NIGERIA']])):
             ipop_time[loc_name] = demog_dat[loc_name][4] + 0.5
             node_id = node_id + 1
 
             node_obj = Node(lat=demog_dat[loc_name][3],
                             lon=demog_dat[loc_name][2],
-                            pop=demog_dat[loc_name][0],
+                            pop=demog_dat[loc_name][0]*pop_ff,
                             name=loc_name,
                             forced_id=node_id,
                             area=demog_dat[loc_name][1])
@@ -92,9 +97,13 @@ def demographicsBuilder():
     gdata.demog_rep_index = node_rep_dict
 
     # Prune small nodes
-    rev_node_list = [node_obj for node_obj in node_list
-                     if node_obj.node_attributes.initial_population >= gdata.demog_min_pop]
+    rev_node_list = list()
+    for node_obj in node_list:
+        n_init_pop = node_obj.node_attributes.initial_population
+        if (n_init_pop >= gdata.demog_min_pop):
+            rev_node_list.append(node_obj)
     node_list = rev_node_list
+
     node_name_dict = {node_obj.name: node_obj.forced_id
                       for node_obj in node_list}
     gdata.demog_node = node_name_dict
@@ -117,85 +126,41 @@ def demographicsBuilder():
     iadict['AcquisitionHeterogeneityVariance'] = IND_RISK_VAR
     demog_obj.raw['Defaults']['IndividualAttributes'].update(iadict)
 
-    # Populate vital dynamics overlays
+    # Calculate vital dynamics
+    vd_tup = demog_vd_calc(year_vec, year_init, pop_mat, pop_init)
 
-    # Remove mortality aliases from ref data
-    ddeath_keys = list(dict_death.keys())
-    for rname in ddeath_keys:
-        if (rname in dict_alias):
-            for rname_val in dict_alias[rname]:
-                dict_death[rname_val] = dict_death[rname]
-            dict_death.pop(rname)
+    mort_year = vd_tup[0]
+    mort_mat = vd_tup[1]
+    birth_rate = vd_tup[3]
+    br_mult_x = vd_tup[4]
+    br_mult_y = vd_tup[5]
 
-    # Remove birth aliases from ref data
-    for rname in dict_birth:
-        if (rname in dict_alias):
-            for rname_val in dict_alias[rname]:
-                dict_birth[rname_val] = dict_birth[rname]
-            dict_birth.pop(rname)
+    gdata.brate_mult_x = br_mult_x.tolist()
+    gdata.brate_mult_y = br_mult_y.tolist()
 
-    # Create list of vital dynamics overlays
-    vd_over_list = list()
-    for node_dict in demog_obj.nodes:
-        node_name = node_dict.name
-        node_birth = None
-        node_death = None
+    # Birth rate indexing
+    fname = 'cbr_NGA.json'
+    with open(os.path.join('Assets', 'data', fname)) as fid01:
+        cbr_mult_dict = json.load(fid01)
 
-        for rname in dict_death:
-            if (node_name.startswith(rname+':') or node_name == rname):
-                if (node_death is None):
-                    node_death = np.array(dict_death[rname])
-                else:
-                    raise Exception("Duplicate mortality data")
+    # Write vital dynamics overlay
+    k1 = 0
+    for reg_name in cbr_mult_dict:
+        n_cbr = cbr_mult_dict[reg_name]*birth_rate
+        mort_vec = np.array([np.interp(year_init, mort_year, mort_mat[idx, :])
+                             for idx in range(mort_mat.shape[0])])
+        mort_vec = mort_vec.tolist()
+        f_vec = 12*[1.0]  # No seasonal forcing
+        (_, age_x, age_y) = DT._computeAgeDist(n_cbr, MORT_XVAL,
+                                               mort_vec, f_vec)
 
-        for rname in dict_birth:
-            if (node_name.startswith(rname+':') or node_name == rname):
-                if (node_birth is None):
-                    node_birth = np.array(dict_birth[rname])
-                else:
-                    raise Exception("Duplicate birthrate data")
-
-        match_found = False
-        for data_tup in vd_over_list:
-            if (np.all(np.equal(data_tup[0], node_birth)) and
-               np.all(np.equal(data_tup[1], node_death))):
-                data_tup[2].append(node_dict)
-                match_found = True
-                break
-
-        if (not match_found):
-            vd_over_list.append((node_birth, node_death, [node_dict]))
-
-    # Write vital dynamics overlays
-    for k1 in range(len(vd_over_list)):
-        data_tup = vd_over_list[k1]
-
-        # Age initialization magic
-        brth_rate = data_tup[0].item()
-        d_rate_y = data_tup[1].tolist()
-        d_rate_x = dict_death['BIN_EDGES']
-        force_v = 12*[1.0]  # No seasonal forcing
-        (grate, age_x, age_y) = DT._computeAgeDist(brth_rate, d_rate_x,
-                                                   d_rate_y, force_v,
-                                                   max_yr=100)
-
-        # Update initial node populations; calculate target populations
-        ref_nodes = [node_obj_dict.forced_id for node_obj_dict in data_tup[2]]
-        for node_dict in demog_obj.nodes:
-            node_name = node_dict.name
-            node_id = node_dict.forced_id
-            if (node_id in ref_nodes):
-                ref_year = ipop_time[loc_name]
-                mult_fac = grate**(START_YEAR-ref_year)
-                new_pop = int(mult_fac * node_dict.node_attributes.initial_population)
-                node_dict.node_attributes.initial_population = new_pop
-
-        # Write vital dynamics overlay
-        start_year_vec = [100.0]
-        mort_mat = data_tup[1][..., np.newaxis]
-        nfn = demog_vd_over(ref_name, data_tup[2], brth_rate, start_year_vec,
-                            mort_mat, age_x, age_y, k1, d_rate_x)
-        gdata.demog_files.append(nfn)
+        n_list = [n_obj for n_obj in node_list
+                  if (n_obj.name == reg_name or
+                      n_obj.name.startswith(reg_name+':'))]
+        nfname = demog_vd_over(ref_name, n_list, n_cbr,
+                               mort_year, mort_mat, age_x, age_y, k1)
+        gdata.demog_files.append(nfname)
+        k1 = k1 + 1
 
     # Load immunity mapper data
     fname = 'sus_init_NGA_{:02d}.json'.format(gdata.init_coverage)

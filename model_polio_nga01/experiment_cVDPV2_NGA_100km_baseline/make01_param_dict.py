@@ -55,7 +55,7 @@ def write_param_dict():
 
     # Simulation start / duration
     P_CON['start_year'] = 2018
-    P_CON['run_years'] = 6.0
+    P_CON['run_years'] = 12.0
 
     # Outbreak seeding
     P_CON['seed_location'] = 'AFRO:NIGERIA:JIGAWA:DUTSE'
@@ -83,11 +83,11 @@ def write_param_dict():
     P_CON['use_10k_res'] = True
 
     # RI params
-    P_CON['ri_start_yr'] = 2030.0
+    P_CON['ri_start_yr'] = 2100.0
 
     # Apply the historic SIA calendar; events prior to sim start ignored
     P_CON['sia_calendar'] = True
-    P_CON['sia_cutoff'] = 2030.0
+    P_CON['sia_cutoff'] = 2100.0
     P_CON['sia_coverage'] = 0.5
 
     # Additional nOPV2 SIAs
