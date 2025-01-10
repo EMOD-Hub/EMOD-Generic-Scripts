@@ -50,8 +50,8 @@ def make_fig():
         cuminf = np.cumsum(totinf, axis=1)
 
         #gidx = (cuminf[:, -220] > 1.5e6) & (cuminf[:, -220] < 3.0e6) & (totinf[:, -1] > 0)
-        #gidx = (cuminf[:, -1] > 1e6)
-        gidx = (totinf[:, -1] > 0)
+        gidx = (cuminf[:, -1] > 1e3)
+        #gidx = (totinf[:, -1] > 0)
         #print(np.sum(gidx))
         #print(np.argwhere(gidx))
         #print(totinf[449, -1])
@@ -75,16 +75,16 @@ def make_fig():
         ticloc = np.arange(0, int(run_years)+1) + t_vec[0]
         axs01.set_xticks(ticks=ticloc)
 
-        obp_lab = 'Ongoing Fraction: {:4.2f}'.format(np.sum(gidx)/n_sims)
+        obp_lab = 'Fraction: {:4.2f}'.format(np.sum(gidx)/n_sims)
         axs01.text(0.05, 0.9, obp_lab, fontsize=14, transform = axs01.transAxes)
 
         #yval2 = cuminf[gidx, :]/1000
         yval2 = totinf[gidx, :]/1000
         yval1 = np.mean(yval2, axis=0)
         for k3 in range(np.sum(gidx)):
-            axs01.plot(t_vec, yval2[k3, :], '.', c='C0', alpha=0.1)
-            #axs01.plot(t_vec, yval2[k3, :])
-        axs01.plot(t_vec, yval1, c='k', lw=3)
+            #axs01.plot(t_vec, yval2[k3, :], '.', c='C0', alpha=0.1)
+            axs01.plot(t_vec, yval2[k3, :], c='C0')
+        #axs01.plot(t_vec, yval1, c='k', lw=3)
 
         axs01.set_ylabel('Incidence (thousands)', fontsize=18)
         axs01.set_xlim(t_vec[0], t_vec[-1])
