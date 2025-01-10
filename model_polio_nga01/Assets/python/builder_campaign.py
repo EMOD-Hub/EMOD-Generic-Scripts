@@ -67,7 +67,7 @@ def campaignBuilder():
                         node_list.append(NODE_DICT[nname])
 
             camp_event = ce_OPV_SIA(node_list, start_day=startday,
-                                    coverage=SIA_COVER,
+                                    coverage=SIA_COVER, take=0.70,
                                     clade=clade, genome=genome)
             camp_module.add(camp_event)
 

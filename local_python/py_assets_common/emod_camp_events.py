@@ -322,7 +322,7 @@ def ce_vax_AMT(node_list,
 
 
 def ce_OPV_SIA(node_list,
-               start_day=0.0, coverage=1.0, take=0.70, clade=0, genome=0):
+               start_day=0.0, coverage=1.0, take=1.0, clade=0, genome=0):
 
     # OutbreakIndividual
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
