@@ -102,12 +102,21 @@ def campaignBuilder():
         camp_module.add(camp_event)
 
     # Add RI
-    ri_age_day = 180.0
+    ri_age_day = 120.0
     start_day = 365.0*(RI_START_YR-gdata.base_year) - ri_age_day
-    camp_event = ce_OPV_RI(ALL_NODES, coverage=0.8, start_day=start_day,
-                           base_take=0.7, age_one=ri_age_day, age_std=15.0,
-                           clade=1, genome=0)
-    camp_module.add(camp_event)
+
+    with open(os.path.join('Assets', 'data', 'routine_NGA.json')) as fid01:
+        dict_ri = json.load(fid01)
+
+    for reg_name in dict_ri:
+        imm_value = dict_ri[reg_name]
+        n_list = [NODE_DICT[n_name] for n_name in NODE_DICT
+                  if (n_name == reg_name or
+                      n_name.startswith(reg_name+':'))]
+        camp_event = ce_OPV_RI(n_list, coverage=imm_value, start_day=start_day,
+                               base_take=1.0, age_one=ri_age_day, age_std=15.0,
+                               clade=1, genome=0)
+        camp_module.add(camp_event)
 
     # Random number stream offset
     for (yr_off, nval) in zip(RNG_LIST, RNG_VAL):
