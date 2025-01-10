@@ -44,18 +44,17 @@ def write_param_dict():
     P_CON = param_dict[EXP_C]
 
     # Run number (EMOD random seed)
+    P_VAR['run_number'] = list(range(NSIMS))
+    P_CON['rng_list_offset_yr'] = []
+    P_CON['rng_list_val'] = []
 
-    #P_VAR['run_number'] = list(range(NSIMS))
-    #P_CON['rng_list_offset_yr'] = []
-    #P_CON['rng_list_val'] = []
-
-    P_CON['run_number'] = 345
-    P_CON['rng_list_offset_yr'] = [3.0, 6.75]
-    P_CON['rng_list_val'] = [171, -1]
+    #P_CON['run_number'] = 345
+    #P_CON['rng_list_offset_yr'] = [3.0, 6.75]
+    #P_CON['rng_list_val'] = [171, -1]
 
     # Simulation start / duration
     P_CON['start_year'] = 2018
-    P_CON['run_years'] = 12.0
+    P_CON['run_years'] = 6.0
 
     # Outbreak seeding
     P_CON['seed_location'] = 'AFRO:NIGERIA:JIGAWA:DUTSE'
@@ -72,7 +71,7 @@ def write_param_dict():
     P_CON['corr_acq_trans'] = 0.8
 
     # Base agent weight; less than 10 may have memory issues
-    P_CON['agent_rate'] = 100.0
+    P_CON['agent_rate'] = 25.0
 
     # R0 values for cVDPV, Sabin, nOPV; linear interpolation;
     P_CON['R0'] = 16.0
