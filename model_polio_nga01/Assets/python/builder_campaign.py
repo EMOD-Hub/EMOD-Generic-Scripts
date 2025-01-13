@@ -90,7 +90,7 @@ def campaignBuilder():
                 camp_event = ce_OPV_SIA(nlist02, start_day=startday,
                                         coverage=cover_val, take=SIA_TAKE,
                                         clade=clade, genome=genome)
-            camp_module.add(camp_event)
+                camp_module.add(camp_event)
 
     # Seed infections
     node_list = list()
