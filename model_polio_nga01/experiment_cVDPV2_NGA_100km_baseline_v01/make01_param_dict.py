@@ -77,6 +77,7 @@ def write_param_dict():
     P_CON['R0'] = 16.0
     P_CON['R0_OPV_mult'] = 0.250
     P_CON['R0_nOPV_mult'] = 0.125
+    P_CON['R0_coverage_scale'] = 0.0
 
     # Subdivide LGAs into 100km^2 regions
     P_CON['use_10k_res'] = True
@@ -87,7 +88,9 @@ def write_param_dict():
     # Apply the historic SIA calendar; events prior to sim start ignored
     P_CON['sia_calendar'] = True
     P_CON['sia_cutoff'] = 2100.0
-    P_CON['sia_coverage'] = 0.5
+    P_CON['sia_base_coverage'] = 0.5
+    P_CON['sia_coverage_scale'] = 0.0
+    P_CON['sia_base_vax_take'] = 0.7
 
     # Additional nOPV2 SIAs
     P_CON['nopv2_sia_national'] = []

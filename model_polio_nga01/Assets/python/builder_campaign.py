@@ -26,7 +26,9 @@ def campaignBuilder():
     START_YEAR = gdata.var_params['start_year']
     SIA_CALENDAR = gdata.var_params['sia_calendar']
     SIA_STOP = gdata.var_params['sia_cutoff']
-    SIA_COVER = gdata.var_params['sia_coverage']
+    SIA_COVER = gdata.var_params['sia_base_coverage']
+    SIA_RND_SCALE = gdata.var_params['sia_coverage_scale']
+    SIA_TAKE = gdata.var_params['sia_base_vax_take']
     SIA_LIST = gdata.var_params['nopv2_sia_national']
     SEED_LOCATION = gdata.var_params['seed_location']
     SEED_OFFSET = gdata.var_params['seed_offset_yr']
@@ -35,10 +37,19 @@ def campaignBuilder():
     RI_START_YR = gdata.var_params['ri_start_yr']
     NODE_DICT = gdata.demog_node
 
-    node_opts = list(NODE_DICT.keys())
-
     # Note: campaign module itself is the file object; no Campaign class
     ALL_NODES = gdata.demog_object.node_ids
+
+    # SIA random effects multiplier
+    fname = os.path.join('Assets', 'data', 'rand_effect_sia_NGA.json')
+    with open(fname) as fid01:
+        dict_sia_rnd = json.load(fid01)
+
+    for reg_name in dict_sia_rnd:
+        p_val = dict_sia_rnd[reg_name]
+        nval01 = SIA_RND_SCALE*p_val + np.log(SIA_COVER/(1-SIA_COVER))
+        nval02 = 1.0/(1.0+np.exp(-nval01))
+        dict_sia_rnd[reg_name] = nval02
 
     # Use SIA calendar for OPV2 schedule
     if (SIA_CALENDAR):
@@ -59,21 +70,31 @@ def campaignBuilder():
                 clade = 1
                 genome = 0
 
-            node_list = list()
-            for targ_val in sia_obj['nodes']:
-                for nname in node_opts:
-                    if ((nname == targ_val) or
-                       (nname.startswith(targ_val+':'))):
-                        node_list.append(NODE_DICT[nname])
+            for reg_name in dict_sia_rnd:
+                cover_val = dict_sia_rnd[reg_name]
 
-            camp_event = ce_OPV_SIA(node_list, start_day=startday,
-                                    coverage=SIA_COVER, take=0.70,
-                                    clade=clade, genome=genome)
+                nlist01 = [nname for nname in sia_obj['nodes']
+                           if (nname == reg_name) or
+                              (nname.startswith(reg_name+':'))]
+
+                if (not nlist01):
+                    continue
+
+                nlist02 = list()
+                for targ_val in nlist01:
+                    for nname in NODE_DICT:
+                        if ((nname == targ_val) or
+                            (nname.startswith(targ_val+':'))):
+                            nlist02.append(NODE_DICT[nname])
+
+                camp_event = ce_OPV_SIA(nlist02, start_day=startday,
+                                        coverage=cover_val, take=SIA_TAKE,
+                                        clade=clade, genome=genome)
             camp_module.add(camp_event)
 
     # Seed infections
     node_list = list()
-    for nname in node_opts:
+    for nname in NODE_DICT:
         if ((nname == SEED_LOCATION) or (nname.startswith(SEED_LOCATION+':'))):
             node_list.append(NODE_DICT[nname])
 
@@ -98,7 +119,8 @@ def campaignBuilder():
     for syear in SIA_LIST:
         start_day = 365.0*(syear-gdata.base_year)
         camp_event = ce_OPV_SIA(ALL_NODES, start_day=start_day,
-                                coverage=SIA_COVER, clade=1, genome=0)
+                                coverage=SIA_COVER, take=SIA_TAKE,
+                                clade=1, genome=0)
         camp_module.add(camp_event)
 
     # Add RI

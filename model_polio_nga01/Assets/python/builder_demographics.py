@@ -27,6 +27,7 @@ def demographicsBuilder():
     START_YEAR = gdata.var_params['start_year']
     PROC_DISPER = gdata.var_params['proc_overdispersion']
     IND_RISK_VAR = gdata.var_params['ind_variance_risk']
+    R0_RND_SCALE = gdata.var_params['R0_coverage_scale']
 
     # Load reference data
     dat_file = 'pop_dat_NGA.csv'
@@ -125,6 +126,16 @@ def demographicsBuilder():
     iadict = dict()
     iadict['AcquisitionHeterogeneityVariance'] = IND_RISK_VAR
     demog_obj.raw['Defaults']['IndividualAttributes'].update(iadict)
+
+    # R0 random effects multiplier
+    fname = os.path.join('Assets', 'data', 'rand_effect_r0_NGA.json')
+    with open(fname) as fid01:
+        dict_r0_rnd = json.load(fid01)
+
+    for reg_name in dict_r0_rnd:
+        p_val = dict_r0_rnd[reg_name]
+        nval01 = np.exp(R0_RND_SCALE*p_val)
+        dict_r0_rnd[reg_name] = nval01
 
     # Calculate vital dynamics
     vd_tup = demog_vd_calc(year_vec, year_init, pop_mat, pop_init)
