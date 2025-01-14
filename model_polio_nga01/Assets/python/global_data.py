@@ -24,6 +24,8 @@ demog_rep_index = dict() # LGA: Output row number
 brate_mult_x = None
 brate_mult_y = None
 
+init_ob_thresh = 10000
+
 seed_inf_dt = 60.0
 seed_inf_num = 25.0
 

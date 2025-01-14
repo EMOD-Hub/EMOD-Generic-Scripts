@@ -15,7 +15,7 @@ from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, \
 
 from py_assets_common.emod_local_proc import shape_patch, shape_line
 
-from global_data import base_year
+from global_data import base_year, init_ob_thresh
 
 # *****************************************************************************
 
@@ -63,11 +63,9 @@ def make_fig():
         lgamat = (inf_data>0)
         totlga = np.sum(lgamat, axis=1)
 
-        #gidx = (cuminf[:, -1] > 5000)
+        gidx = (cuminf[:, -1] >= init_ob_thresh)
         #gidx = (cuminf[:, -1] > 1e6) & (cuminf[:, -1] < 2.5e6)
         #gidx = (totinf[:, -1] > 0) & (totlga[:, -240] > 15) & (totlga[:, -145] > 10)
-        gidx = (totinf[:, -1] > 0)
-        #print(np.sum(gidx))
         #print(np.argwhere(gidx))
 
         # Figure setup
@@ -89,14 +87,15 @@ def make_fig():
         ticloc02 = np.arange(0, int(run_years)+1) + t_vec[0]
         axs01.set_xticks(ticks=ticloc02)
 
-        obp_lab = 'Ongoing Fraction: {:4.2f}'.format(np.sum(gidx)/n_sims)
+        obp_lab = 'Fraction: {:4.2f}'.format(np.sum(gidx)/n_sims)
         axs01.text(0.05, 0.9, obp_lab, fontsize=14, transform = axs01.transAxes)
 
         yval2 = totlga
         yval1 = np.mean(yval2, axis=0)
         for k3 in range(yval2.shape[0]):
-            axs01.plot(t_vec, yval2[k3, ], '.', c='C0', alpha=0.1)
-        axs01.plot(t_vec, yval1, c='k', lw=3)
+            #axs01.plot(t_vec, yval2[k3, :], '.', c='C0', alpha=0.1)
+            axs01.plot(t_vec, yval2[k3, :], c='C0')
+        #axs01.plot(t_vec, yval1, c='k', lw=3)
 
         axs01.set_ylabel('LGAs with Transmission', fontsize=14)
         axs01.set_xlim(t_vec[0], t_vec[-1])

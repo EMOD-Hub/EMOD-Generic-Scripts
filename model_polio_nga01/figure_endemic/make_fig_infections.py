@@ -13,7 +13,7 @@ sys.path.append(os.path.abspath(os.path.join('..', 'Assets', 'python')))
 from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, \
                                             MO_DAYS, EXP_C
 
-from global_data import base_year
+from global_data import base_year, init_ob_thresh
 
 # *****************************************************************************
 
@@ -51,9 +51,8 @@ def make_fig():
         totinf = np.sum(inf_data, axis=1)
         cuminf = np.cumsum(totinf, axis=1)
 
+        gidx = (cuminf[:, -1] >= init_ob_thresh)
         #gidx = (cuminf[:, -220] > 1.5e6) & (cuminf[:, -220] < 3.0e6) & (totinf[:, -1] > 0)
-        gidx = (cuminf[:, -1] > 1e3)
-        #gidx = (totinf[:, -1] > 0)
         #print(np.sum(gidx))
         #print(np.argwhere(gidx))
         #print(totinf[449, -1])

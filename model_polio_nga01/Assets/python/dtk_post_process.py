@@ -63,6 +63,12 @@ def application(output_path):
     parsed_dat['t_vec'] = t_vec.tolist()
     parsed_dat['node_names'] = REP_DEX_DICT
 
+    # Blank output for sims without outbreak
+    tot_inf = np.sum(dbrick0, axis=0)
+    cum_inf = np.cumsum(tot_inf)
+    if (cum_inf[-1] < gdata.init_ob_thresh):
+        parsed_dat = dict()
+
     # Write output dictionary
     with open('parsed_out.json', 'w') as fid01:
         json.dump(parsed_dat, fid01)
