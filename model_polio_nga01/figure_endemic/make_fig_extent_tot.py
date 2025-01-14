@@ -60,10 +60,10 @@ def make_fig():
 
         totinf = np.sum(inf_data, axis=1)
         cuminf = np.cumsum(totinf, axis=1)
-        lgamat = (inf_data>0)
+        gidx = (cuminf[:, -1] >= init_ob_thresh)
+        lgamat = (inf_data[gidx,:,:]>0)
         totlga = np.sum(lgamat, axis=1)
 
-        gidx = (cuminf[:, -1] >= init_ob_thresh)
         #gidx = (cuminf[:, -1] > 1e6) & (cuminf[:, -1] < 2.5e6)
         #gidx = (totinf[:, -1] > 0) & (totlga[:, -240] > 15) & (totlga[:, -145] > 10)
         #print(np.argwhere(gidx))
@@ -87,7 +87,7 @@ def make_fig():
         ticloc02 = np.arange(0, int(run_years)+1) + t_vec[0]
         axs01.set_xticks(ticks=ticloc02)
 
-        obp_lab = 'Fraction: {:4.2f}'.format(np.sum(gidx)/n_sims)
+        obp_lab = 'Fraction: {:5.3f}'.format(np.sum(gidx)/n_sims)
         axs01.text(0.05, 0.9, obp_lab, fontsize=14, transform = axs01.transAxes)
 
         yval2 = totlga

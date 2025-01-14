@@ -37,6 +37,9 @@ def campaignBuilder():
     RI_START_YR = gdata.var_params['ri_start_yr']
     NODE_DICT = gdata.demog_node
 
+    TIME_MIN = 365.0*(START_YEAR-gdata.base_year)
+    TIME_MAX = TIME_MIN + 365.0*RUN_YEARS + gdata.t_step_days
+
     # Note: campaign module itself is the file object; no Campaign class
     ALL_NODES = gdata.demog_object.node_ids
 
@@ -59,8 +62,11 @@ def campaignBuilder():
         for sia_name in dict_sia:
             sia_obj = dict_sia[sia_name]
 
-            startday = sia_obj['date']
-            if (startday > SIA_STOP*365.0):
+            start_day = sia_obj['date']
+            if (start_day > SIA_STOP*365.0):
+                continue
+
+            if (start_day < TIME_MIN):
                 continue
 
             if (sia_obj['type'] == 'sabin2'):
@@ -87,7 +93,7 @@ def campaignBuilder():
                             (nname.startswith(targ_val+':'))):
                             nlist02.append(NODE_DICT[nname])
 
-                camp_event = ce_OPV_SIA(nlist02, start_day=startday,
+                camp_event = ce_OPV_SIA(nlist02, start_day=start_day,
                                         coverage=cover_val, take=SIA_TAKE,
                                         clade=clade, genome=genome)
                 camp_module.add(camp_event)
@@ -101,8 +107,8 @@ def campaignBuilder():
     # Preserve size of outbreak; select single node for initial location
     node_list = [node_list[-1]]
     cvdpv_gen = gdata.boxes_nopv2+gdata.boxes_sabin2
-    startday = 365.0*(START_YEAR-gdata.base_year+SEED_OFFSET)
-    camp_event = ce_import_pressure(node_list, start_day=startday,
+    start_day = 365.0*(START_YEAR-gdata.base_year+SEED_OFFSET)
+    camp_event = ce_import_pressure(node_list, start_day=start_day,
                                     genome=cvdpv_gen,
                                     duration=gdata.seed_inf_dt,
                                     magnitude=gdata.seed_inf_num)
@@ -129,6 +135,8 @@ def campaignBuilder():
 
     with open(os.path.join('Assets', 'data', 'routine_NGA.json')) as fid01:
         dict_ri = json.load(fid01)
+    if (start_day > TIME_MAX):
+        dict_ri = dict()
 
     for reg_name in dict_ri:
         imm_value = dict_ri[reg_name]
@@ -142,10 +150,10 @@ def campaignBuilder():
 
     # Random number stream offset
     for (yr_off, nval) in zip(RNG_LIST, RNG_VAL):
-        startday = 365.0*(START_YEAR-gdata.base_year+yr_off)
+        start_day = 365.0*(START_YEAR-gdata.base_year+yr_off)
         if (nval < 0):
             nval = gdata.sim_index
-        camp_event = ce_random_numbers(ALL_NODES, start_day=startday,
+        camp_event = ce_random_numbers(ALL_NODES, start_day=start_day,
                                        numbers=nval)
         camp_module.add(camp_event)
 
