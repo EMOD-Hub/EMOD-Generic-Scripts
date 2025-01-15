@@ -44,7 +44,7 @@ def application(output_path):
                         delimiter=',', skiprows=1, ndmin=2)
 
     # Construct csv file for cVDPV infections
-    dbrick0 = np.zeros((len(node_reps), t_vec.shape[0]))
+    dbrick0 = np.zeros((len(REP_DEX_DICT), t_vec.shape[0]))
 
     if (infdat.shape[0] > 0):
         for rep_name in REP_DEX_DICT:

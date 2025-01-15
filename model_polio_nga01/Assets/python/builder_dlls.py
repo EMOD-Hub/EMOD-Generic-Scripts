@@ -24,7 +24,7 @@ def dllcBuilder():
     json_set['Custom_Reports'] = dict()
 
     # Configurations
-    report_strain(json_set)
+    report_strain(json_set, every_timestep=True)
 
     #  Write file
     with open(REPORTS_FILE, 'w') as fid01:
