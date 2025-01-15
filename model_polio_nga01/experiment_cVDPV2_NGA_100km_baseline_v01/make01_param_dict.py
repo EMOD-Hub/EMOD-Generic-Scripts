@@ -89,7 +89,7 @@ def write_param_dict():
     P_CON['sia_calendar'] = True
     P_CON['sia_cutoff'] = 2100.0
     P_CON['sia_base_coverage'] = 0.5
-    P_CON['sia_coverage_scale'] = 0.0
+    P_CON['sia_coverage_scale'] = 0.3
     P_CON['sia_base_vax_take'] = 0.7
 
     # Additional nOPV2 SIAs
