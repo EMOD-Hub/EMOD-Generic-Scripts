@@ -44,11 +44,10 @@ def application(output_path):
                         delimiter=',', skiprows=1, ndmin=2)
 
     # Construct csv file for cVDPV infections
-    node_reps = list(REP_DEX_DICT.keys())
     dbrick0 = np.zeros((len(node_reps), t_vec.shape[0]))
 
     if (infdat.shape[0] > 0):
-        for rep_name in node_reps:
+        for rep_name in REP_DEX_DICT:
             odex = REP_DEX_DICT[rep_name]
             gidx = (infdat[:, RST_CLADE] == 0)
             gidx = (infdat[:, RST_GENOME] == cVDPV_genome) & gidx

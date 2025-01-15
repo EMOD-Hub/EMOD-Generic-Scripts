@@ -24,17 +24,23 @@ def campaignBuilder():
 
     # Variables for this simulation
     START_YEAR = gdata.var_params['start_year']
+    RUN_YEARS = gdata.var_params['run_years']
+
     SIA_CALENDAR = gdata.var_params['sia_calendar']
     SIA_STOP = gdata.var_params['sia_cutoff']
     SIA_COVER = gdata.var_params['sia_base_coverage']
     SIA_RND_SCALE = gdata.var_params['sia_coverage_scale']
     SIA_TAKE = gdata.var_params['sia_base_vax_take']
     SIA_LIST = gdata.var_params['nopv2_sia_national']
+
     SEED_LOCATION = gdata.var_params['seed_location']
     SEED_OFFSET = gdata.var_params['seed_offset_yr']
+
     RNG_LIST = gdata.var_params['rng_list_offset_yr']
     RNG_VAL = gdata.var_params['rng_list_val']
+
     RI_START_YR = gdata.var_params['ri_start_yr']
+
     NODE_DICT = gdata.demog_node
 
     TIME_MIN = 365.0*(START_YEAR-gdata.base_year)

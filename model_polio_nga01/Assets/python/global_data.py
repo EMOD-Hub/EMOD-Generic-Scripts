@@ -14,7 +14,8 @@ demog_files = list()
 demog_object = None
 
 # Other stuff
-first_call_bool = True
+inproc_abort_time = 43615
+inproc_abort_bool = True
 
 demog_node = dict()
 demog_min_pop = 50

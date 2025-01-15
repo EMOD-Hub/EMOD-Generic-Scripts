@@ -53,8 +53,6 @@ def update_config_obj(config):
     cp.Start_Time = 365.0*(START_YEAR-gdata.base_year)
     cp.Simulation_Duration = 365.0*RUN_YEARS + gdata.t_step_days
     cp.Simulation_Timestep = gdata.t_step_days
-    cp.Enable_Termination_On_Zero_Total_Infectivity = 1
-    cp.Minimum_End_Time = 365.0*(START_YEAR-gdata.base_year+1.0)
 
     cp.Enable_Termination_On_Total_Wall_Time = 1
     cp.Wall_Time_Maximum_In_Minutes = gdata.max_clock
