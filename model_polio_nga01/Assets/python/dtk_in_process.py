@@ -32,7 +32,7 @@ def application(timestep):
         sabin_clade = 0
         cVDPV_genome = gdata.boxes_sabin2 + gdata.boxes_nopv2
         targ_time = infdat[-1, RST_TIME]
-        print('Last timestep in report: {:.0f}'.format(targ_time))
+        print('Last timestep in strain report: {:.0f}'.format(targ_time))
 
         # Sabin derived cVDPV2 infections in most recent timestep
         gidx = (infdat[:, RST_CLADE] == sabin_clade)
