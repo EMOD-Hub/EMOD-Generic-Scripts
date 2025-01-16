@@ -62,8 +62,8 @@ def update_config_obj(config):
     ID_STD = gdata.inf_dur_std
 
     cp.Base_Infectivity_Distribution = 'GAMMA_DISTRIBUTION'
-    cp.Base_Infectivity_Shape = 1.0
-    cp.Base_Infectivity_Scale = R0/ID_MEAN
+    cp.Base_Infectivity_Shape = gdata.inf_tot_shape
+    cp.Base_Infectivity_Scale = R0/ID_MEAN/gdata.inf_tot_shape
 
     cp.Incubation_Period_Distribution = 'GAUSSIAN_DISTRIBUTION'
     cp.Incubation_Period_Gaussian_Mean = 3.0
