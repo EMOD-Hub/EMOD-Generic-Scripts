@@ -18,8 +18,7 @@ from global_data import base_year, init_ob_thresh
 # *****************************************************************************
 
 DIRNAMES = ['experiment_cVDPV2_NGA_100km_baseline_v01',
-            'experiment_cVDPV2_NGA_100km_baseline_v02',
-            'experiment_cVDPV2_NGA_100km_baseline_v03']
+            'experiment_cVDPV2_NGA_100km_baseline_v02']
 
 # *****************************************************************************
 
