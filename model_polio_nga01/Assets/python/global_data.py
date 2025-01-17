@@ -30,7 +30,7 @@ init_ob_thresh = 10000
 seed_inf_dt = 60.0
 seed_inf_num = 25.0
 
-inf_tot_shape = 10.0
+inf_tot_shape = 1.0
 inf_dur_mean = 24.0
 inf_dur_std = 11.3
 
