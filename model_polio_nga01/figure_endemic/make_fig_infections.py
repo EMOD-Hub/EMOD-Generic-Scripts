@@ -17,8 +17,7 @@ from global_data import base_year, init_ob_thresh
 
 # *****************************************************************************
 
-DIRNAMES = ['experiment_cVDPV2_NGA_100km_baseline_v01',
-            'experiment_cVDPV2_NGA_100km_baseline_v02']
+DIRNAMES = ['experiment_cVDPV2_NGA_100km_baseline_v03_noSIAs']
 
 # *****************************************************************************
 
@@ -75,11 +74,11 @@ def make_fig():
         ticloc = np.arange(0, int(run_years)+1) + t_vec[0]
         axs01.set_xticks(ticks=ticloc)
 
-        obp_lab = 'Fraction: {:4.2f}'.format(np.sum(gidx)/n_sims)
+        obp_lab = 'Fraction: {:5.3f}'.format(np.sum(gidx)/n_sims)
         axs01.text(0.05, 0.9, obp_lab, fontsize=14, transform = axs01.transAxes)
 
-        #yval2 = cuminf[gidx, :]/1000
-        yval2 = totinf[gidx, :]/1000
+        yval2 = cuminf[gidx, :]/1000
+        #yval2 = totinf[gidx, :]/1000
         yval1 = np.mean(yval2, axis=0)
         for k3 in range(np.sum(gidx)):
             #axs01.plot(t_vec, yval2[k3, :], '.', c='C0', alpha=0.1)
@@ -88,7 +87,7 @@ def make_fig():
 
         axs01.set_ylabel('Incidence (thousands)', fontsize=18)
         axs01.set_xlim(t_vec[0], t_vec[-1])
-        axs01.set_ylim(0, 100)
+        #axs01.set_ylim(0, 100)
 
         plt.tight_layout()
         plt.savefig('fig_cuminf_{:s}_01.png'.format(dirname))

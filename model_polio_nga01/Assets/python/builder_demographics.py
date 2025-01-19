@@ -14,7 +14,8 @@ import numpy as np
 from emod_api.demographics.Demographics import Demographics, Node
 from emod_api.demographics import DemographicsTemplates as DT
 
-from emod_demog_func import demog_vd_calc, demog_vd_over, demog_is_over_precalc
+from emod_demog_func import demog_vd_calc, demog_vd_over, demog_ah_over, \
+                            demog_is_over_precalc
 from emod_constants import DEMOG_FILE, MORT_XVAL
 
 # *****************************************************************************
@@ -26,8 +27,9 @@ def demographicsBuilder():
     SUB_LGA = gdata.var_params['use_10k_res']
     START_YEAR = gdata.var_params['start_year']
     PROC_DISPER = gdata.var_params['proc_overdispersion']
-    IND_RISK_VAR = gdata.var_params['ind_variance_risk']
-    R0_RND_SCALE = gdata.var_params['R0_coverage_scale']
+    AH_VAR_SCALE = gdata.var_params['ind_variance_risk']
+    R0_SCALE = gdata.var_params['R0_sig_scale']
+    R0_MIN_M = gdata.var_params['R0_min_mult']
 
     # Load reference data
     dat_file = 'pop_dat_NGA.csv'
@@ -82,7 +84,6 @@ def demographicsBuilder():
                             name=loc_name,
                             forced_id=node_id,
                             area=demog_dat[loc_name][1])
-            node_obj.node_attributes.infectivity_multiplier = 1.0
 
             node_list.append(node_obj)
 
@@ -117,25 +118,32 @@ def demographicsBuilder():
     gdata.demog_files.append(DEMOG_FILE)
 
     # Update defaults in primary file
+    demog_obj.raw['Defaults']['IndividualAttributes'].clear()
     demog_obj.raw['Defaults']['NodeAttributes'].clear()
+
     nadict = dict()
     nadict['InfectivityOverdispersion'] = PROC_DISPER
     demog_obj.raw['Defaults']['NodeAttributes'].update(nadict)
 
-    demog_obj.raw['Defaults']['IndividualAttributes'].clear()
-    iadict = dict()
-    iadict['AcquisitionHeterogeneityVariance'] = IND_RISK_VAR
-    demog_obj.raw['Defaults']['IndividualAttributes'].update(iadict)
-
-    # R0 random effects multiplier
-    fname = os.path.join('Assets', 'data', 'rand_effect_r0_NGA.json')
+    # Spatial R0 variability
+    fname = os.path.join('Assets', 'data', 'cgf_index_underweight.json')
     with open(fname) as fid01:
-        dict_r0_rnd = json.load(fid01)
+        dict_ahv = json.load(fid01)
+    ahv_mean = np.mean([dict_ahv[val] for val in dict_ahv])
 
-    for reg_name in dict_r0_rnd:
-        p_val = dict_r0_rnd[reg_name]
-        nval01 = np.exp(R0_RND_SCALE*p_val)
-        dict_r0_rnd[reg_name] = nval01
+    k1 = 0
+    for reg_name in dict_ahv:
+        p_val = dict_ahv[reg_name]
+        #ah_val = np.exp(AH_VAR_SCALE*(p_val))
+        ah_val = AH_VAR_SCALE
+        r0_val = 1.0/(1.0+np.exp(R0_SCALE*(ahv_mean-p_val))) + R0_MIN_M
+
+        n_list = [n_obj for n_obj in node_list
+                  if (n_obj.name == reg_name or
+                      n_obj.name.startswith(reg_name+':'))]
+        nfname = demog_ah_over(ref_name, n_list, r0_val, ah_val, k1)
+        gdata.demog_files.append(nfname)
+        k1 = k1 + 1
 
     # Calculate vital dynamics
     vd_tup = demog_vd_calc(year_vec, year_init, pop_mat, pop_init)

@@ -163,6 +163,30 @@ def demog_is_over_precalc(ref_name, node_list, isus_x, isus_y, idx=0):
 # *****************************************************************************
 
 
+def demog_ah_over(ref_name, node_list, R0_mult, ind_risk_var, idx=0):
+
+    if (not os.path.exists(PATH_OVERLAY)):
+        os.mkdir(PATH_OVERLAY)
+
+    dover_obj = DemographicsOverlay(idref=ref_name, nodes=node_list)
+
+    nadict = dict()
+    nadict['InfectivityMultiplier'] = R0_mult
+    dover_obj.raw['Defaults']['NodeAttributes'].update(nadict)
+
+    iadict = dict()
+    iadict['AcquisitionHeterogeneityVariance'] = ind_risk_var
+    dover_obj.raw['Defaults']['IndividualAttributes'].update(iadict)
+
+    nfname = DEMOG_FILE.rsplit('.', 1)[0] + '_ah{:03d}.json'.format(idx)
+    nfname = os.path.join(PATH_OVERLAY, nfname)
+    dover_obj.to_file(file_name=nfname)
+
+    return nfname
+
+# *****************************************************************************
+
+
 def demog_vd_calc(year_vec, year_init, pop_mat, pop_init):
 
     # Calculate vital dynamics

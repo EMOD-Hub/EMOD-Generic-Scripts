@@ -15,7 +15,7 @@ demog_object = None
 
 # Other stuff
 inproc_abort_time = 43615
-inproc_abort_bool = True
+inproc_abort_bool = False
 
 demog_node = dict()
 demog_min_pop = 50
@@ -26,6 +26,9 @@ brate_mult_x = None
 brate_mult_y = None
 
 init_ob_thresh = 10000
+
+seed_sets = [('AFRO:NIGERIA:JIGAWA:DUTSE', 2018.8),
+             ('AFRO:NIGERIA:ZAMFARA:GUSAU', 2021.1)]
 
 seed_inf_dt = 60.0
 seed_inf_num = 25.0

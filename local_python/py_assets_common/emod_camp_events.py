@@ -25,6 +25,20 @@ VEC_TAKE = [0.0, 0.0, 0.65, 0.92, 1.0]
 # *****************************************************************************
 
 
+def build_node_list(reg_list, node_dict):
+
+    node_list = list()
+
+    for reg_name in reg_list:
+        node_list += [node_dict[n_name] for n_name in node_dict
+                      if (n_name == reg_name or
+                          n_name.startswith(reg_name+':'))]
+
+    return node_list
+
+# *****************************************************************************
+
+
 def ce_import_pressure(node_list,
                        start_day=0.0, duration=1.0, magnitude=1.0,
                        age_yrs=40.0, clade=0, genome=0):
