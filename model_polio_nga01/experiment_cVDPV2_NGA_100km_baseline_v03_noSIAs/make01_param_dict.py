@@ -30,7 +30,7 @@ def write_param_dict():
     # Setup
     param_dict = dict()
 
-    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-noSIAs-ahv'
+    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-noSIAs'
     param_dict[NUM_SIMS] = 600
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
@@ -89,7 +89,7 @@ def write_param_dict():
     # Apply the historic SIA calendar; events prior to sim start ignored
     P_CON['sia_calendar'] = False
     P_CON['sia_cutoff'] = 2100.0
-    P_CON['sia_base_coverage'] = 0.5
+    P_CON['sia_base_coverage'] = 0.4
     P_CON['sia_coverage_scale'] = 0.3
     P_CON['sia_base_vax_take'] = 0.7
 

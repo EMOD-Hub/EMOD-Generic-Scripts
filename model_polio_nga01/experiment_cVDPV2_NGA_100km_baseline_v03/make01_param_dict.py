@@ -30,8 +30,8 @@ def write_param_dict():
     # Setup
     param_dict = dict()
 
-    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-noSIAs-ahv'
-    param_dict[NUM_SIMS] = 2400
+    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-noSIAs'
+    param_dict[NUM_SIMS] = 3000
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 

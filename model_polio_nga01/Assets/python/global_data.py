@@ -27,13 +27,13 @@ brate_mult_y = None
 
 init_ob_thresh = 10000
 
-seed_sets = [('AFRO:NIGERIA:JIGAWA:DUTSE', 2018.8),
-             ('AFRO:NIGERIA:ZAMFARA:GUSAU', 2021.1)]
+seed_sets = [('AFRO:NIGERIA:JIGAWA:HADEJIA', 2018.1),
+             ('AFRO:NIGERIA:ZAMFARA:KAURA_NAMODA', 2021.1)]
 
 seed_inf_dt = 60.0
 seed_inf_num = 25.0
 
-inf_tot_shape = 10.0
+inf_tot_shape = 1.0
 inf_dur_mean = 24.0
 inf_dur_std = 11.3
 
