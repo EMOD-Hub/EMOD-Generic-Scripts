@@ -54,7 +54,7 @@ def write_param_dict():
 
     # Simulation start / duration
     P_CON['start_year'] = 2018
-    P_CON['run_years'] = 6.0
+    P_CON['run_years'] = 2.0
 
     # Parameters for gravity model for network connections
     P_CON['net_inf_power'] = [2.0]
@@ -90,7 +90,7 @@ def write_param_dict():
     P_CON['sia_calendar'] = True
     P_CON['sia_cutoff'] = 2100.0
     P_CON['sia_base_coverage'] = 0.4
-    P_CON['sia_coverage_scale'] = 0.3
+    P_CON['sia_coverage_scale'] = 0.8
     P_CON['sia_base_vax_take'] = 0.7
 
     # Additional nOPV2 SIAs

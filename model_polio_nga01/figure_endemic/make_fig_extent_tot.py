@@ -59,8 +59,13 @@ def make_fig():
         totinf = np.sum(inf_data, axis=1)
         cuminf = np.cumsum(totinf, axis=1)
         gidx = (cuminf[:, -1] >= init_ob_thresh)
+        print(gidx.shape)
 
-        #gidx = gidx & (cuminf[:, -1] > 654e3) & (cuminf[:, -1] < 655e3)
+        #cumlga = np.cumsum(inf_data, axis=2)[:, :, -1]
+        #gidx = gidx & (np.sum(cumlga[:, 141:167], axis=1)>0)
+        #gidx = gidx & (cuminf[:, -1] > 100e3) & (cuminf[:, -1] < 200e3)
+        gidx = (np.array(list(range(n_sims))) == 2478)
+        print(gidx.shape)
 
         lgamat = (inf_data[gidx,:,:]>0)
         totlga = np.sum(lgamat, axis=1)

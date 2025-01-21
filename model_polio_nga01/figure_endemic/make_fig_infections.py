@@ -46,15 +46,18 @@ def make_fig():
             infmat = np.array(data_brick[sim_idx_str]['infmat'])
             inf_data[sim_idx, :, :] = infmat
 
-        totinf = np.sum(inf_data, axis=1)
+        totinf = np.sum(inf_data[:, 141:167, :], axis=1)
         cuminf = np.cumsum(totinf, axis=1)
 
-        gidx = (cuminf[:, -1] >= init_ob_thresh)
-        gidx = gidx & (cuminf[:, -1] > 654e3) & (cuminf[:, -1] < 655e3)
-        #gidx = (cuminf[:, -220] > 1.5e6) & (cuminf[:, -220] < 3.0e6) & (totinf[:, -1] > 0)
-        print(np.sum(gidx))
+        gidx = (cuminf[:, -1] >= init_ob_thresh/10)
+
+        #cumlga = np.cumsum(inf_data, axis=2)[:, :, -1]
+        #gidx = gidx & (np.sum(cumlga[:, 141:167], axis=1)>0)
+        #gidx = gidx & (cuminf[:, -1] > 100e3) & (cuminf[:, -1] < 200e3)
+
+        #print(np.sum(gidx))
         print(np.argwhere(gidx))
-        print(cuminf[1613, -1])
+        #print(cuminf[1613, -1])
 
         # Figure setup
         fig01 = plt.figure(figsize=(12, 6))
@@ -83,7 +86,7 @@ def make_fig():
         yval1 = np.mean(yval2, axis=0)
         for k3 in range(np.sum(gidx)):
             #axs01.plot(t_vec, yval2[k3, :], '.', c='C0', alpha=0.1)
-            axs01.plot(t_vec, yval2[k3, :], c='C0')
+            axs01.plot(t_vec, yval2[k3, :])#, c='C0')
         #axs01.plot(t_vec, yval1, c='k', lw=3)
 
         axs01.set_ylabel('Incidence (thousands)', fontsize=18)

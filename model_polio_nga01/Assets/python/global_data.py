@@ -27,8 +27,8 @@ brate_mult_y = None
 
 init_ob_thresh = 10000
 
-seed_sets = [('AFRO:NIGERIA:JIGAWA:HADEJIA', 2018.1),
-             ('AFRO:NIGERIA:ZAMFARA:KAURA_NAMODA', 2021.1)]
+seed_sets = [('AFRO:NIGERIA:JIGAWA:BIRINIWA', 2018.3),
+             ('AFRO:NIGERIA:ZAMFARA:SHINKAFI', 2021.2)]
 
 seed_inf_dt = 60.0
 seed_inf_num = 25.0
