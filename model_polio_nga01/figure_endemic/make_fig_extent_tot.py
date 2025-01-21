@@ -19,7 +19,7 @@ from global_data import base_year, init_ob_thresh
 
 # *****************************************************************************
 
-DIRNAMES = ['experiment_cVDPV2_NGA_100km_baseline_v03_noSIAs']
+DIRNAMES = ['experiment_cVDPV2_NGA_100km_baseline_v03']
 
 # *****************************************************************************
 
@@ -59,12 +59,11 @@ def make_fig():
         totinf = np.sum(inf_data, axis=1)
         cuminf = np.cumsum(totinf, axis=1)
         gidx = (cuminf[:, -1] >= init_ob_thresh)
+
+        #gidx = gidx & (cuminf[:, -1] > 654e3) & (cuminf[:, -1] < 655e3)
+
         lgamat = (inf_data[gidx,:,:]>0)
         totlga = np.sum(lgamat, axis=1)
-
-        #gidx = (cuminf[:, -1] > 1e6) & (cuminf[:, -1] < 2.5e6)
-        #gidx = (totinf[:, -1] > 0) & (totlga[:, -240] > 15) & (totlga[:, -145] > 10)
-        #print(np.argwhere(gidx))
 
         # Figure setup
         ax_pat = [run_years*[0], run_years*[0], run_years*[0],

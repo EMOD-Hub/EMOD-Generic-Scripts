@@ -17,7 +17,7 @@ from global_data import base_year, init_ob_thresh
 
 # *****************************************************************************
 
-DIRNAMES = ['experiment_cVDPV2_NGA_100km_baseline_v03_noSIAs']
+DIRNAMES = ['experiment_cVDPV2_NGA_100km_baseline_v03']
 
 # *****************************************************************************
 
@@ -50,10 +50,11 @@ def make_fig():
         cuminf = np.cumsum(totinf, axis=1)
 
         gidx = (cuminf[:, -1] >= init_ob_thresh)
+        gidx = gidx & (cuminf[:, -1] > 654e3) & (cuminf[:, -1] < 655e3)
         #gidx = (cuminf[:, -220] > 1.5e6) & (cuminf[:, -220] < 3.0e6) & (totinf[:, -1] > 0)
-        #print(np.sum(gidx))
-        #print(np.argwhere(gidx))
-        #print(totinf[449, -1])
+        print(np.sum(gidx))
+        print(np.argwhere(gidx))
+        print(cuminf[1613, -1])
 
         # Figure setup
         fig01 = plt.figure(figsize=(12, 6))

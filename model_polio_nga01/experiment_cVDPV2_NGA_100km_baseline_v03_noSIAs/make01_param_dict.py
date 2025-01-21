@@ -70,7 +70,7 @@ def write_param_dict():
     P_CON['agent_rate'] = 25.0
 
     # R0 values for cVDPV, Sabin, nOPV; linear interpolation;
-    P_CON['R0'] = 12.0
+    P_CON['R0'] = 14.0
     P_CON['R0_OPV_mult'] = 0.250
     P_CON['R0_nOPV_mult'] = 0.125
     P_CON['R0_sig_scale'] = 24.0
@@ -78,7 +78,7 @@ def write_param_dict():
 
     # Individual level risk variance (risk of acquisition multiplier;
     # mean = 1.0; log-normal distribution)
-    P_CON['ind_variance_risk'] = 4.0
+    P_CON['ind_variance_risk'] = 5.0
 
     # Subdivide LGAs into 100km^2 regions
     P_CON['use_10k_res'] = True
