@@ -54,7 +54,7 @@ def write_param_dict():
 
     # Simulation start / duration
     P_CON['start_year'] = 2018
-    P_CON['run_years'] = 8.0
+    P_CON['run_years'] = 12.0
 
     # Parameters for gravity model for network connections
     P_CON['net_inf_power'] = [2.0]

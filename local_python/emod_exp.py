@@ -154,7 +154,7 @@ def calib_from_def_file(pth_pdict, pth_python, pth_exe, pth_data, pth_local):
 
 def start_exp(path_python, path_data, path_exp_def,
               run_local=False, short_queue=False,
-              num_cores=1, priority=3):
+              num_cores=1, priority=2):
 
     # Prepare the platform
     if (run_local):
@@ -164,7 +164,7 @@ def start_exp(path_python, path_data, path_exp_def,
     else:
         p_str = ['Lowest', 'BelowNormal', 'Normal', 'AboveNormal', 'Highest']
         p_val = p_str[priority]
-        nodes = 'idm_ab'
+        nodes = 'idm_abcd'
         if (short_queue):
             nodes = 'idm_48cores'
 

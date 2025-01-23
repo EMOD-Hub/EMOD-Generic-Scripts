@@ -19,7 +19,7 @@ from global_data import base_year, init_ob_thresh
 
 # *****************************************************************************
 
-DIRNAMES = ['experiment_cVDPV2_NGA_100km_baseline_v03']
+DIRNAMES = ['experiment_cVDPV2_NGA_100km_baseline']
 
 # *****************************************************************************
 
@@ -64,10 +64,10 @@ def make_fig():
 
         #cumlga = np.cumsum(inf_data, axis=2)[:,:,-1]
         #gidx = gidx & (np.sum(cumlga[:, 141:167], axis=1)>0)
-        gidx = gidx & (np.max(totinf[:,-143:-110], axis=1) > 1000)
+        #gidx = gidx & (np.max(totinf[:,-143:-110], axis=1) > 1000)
         gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] > 900e3) & (cuminf[:, -1] < 1000e3)
-        print(np.argwhere(gidx))
-        gidx = (np.array(list(range(n_sims))) == 53)
+        #print(np.argwhere(gidx))
+        #gidx = (np.array(list(range(n_sims))) == 53)
 
         lgamat = (inf_data[gidx,:,:]>0)
 
@@ -91,14 +91,14 @@ def make_fig():
         axs01.set_xticks(ticks=ticloc02)
 
         obp_lab = 'Fraction: {:5.3f}'.format(np.sum(gidx)/n_sims)
-        #axs01.text(0.05, 0.9, obp_lab, fontsize=14, transform = axs01.transAxes)
+        axs01.text(0.05, 0.9, obp_lab, fontsize=14, transform = axs01.transAxes)
 
         yval1 = totinf[gidx]/1000
         yval2 = np.mean(yval1, axis=0)
         for k3 in range(yval1.shape[0]):
-            #axs01.plot(t_vec[tbool], yval1[k3, tbool], '.', c='C0', alpha=0.1)
-            axs01.plot(t_vec[tbool], yval1[k3, tbool], c='C0')
-        #axs01.plot(t_vec[tbool], yval2[tbool], c='k', lw=3)
+            axs01.plot(t_vec[tbool], yval1[k3, tbool], '.', c='C0', alpha=0.1)
+            #axs01.plot(t_vec[tbool], yval1[k3, tbool], c='C0')
+        axs01.plot(t_vec[tbool], yval2[tbool], c='k', lw=3)
 
         axs01.set_ylabel('Incidence (thousands)', fontsize=18)
         axs01.set_xlim(t_vec[0], t_vec[tbool][-1]+0.001)
