@@ -59,13 +59,14 @@ def make_fig():
         totinf = np.sum(inf_data, axis=1)
         cuminf = np.cumsum(totinf, axis=1)
         gidx = (cuminf[:, -1] >= init_ob_thresh)
-        print(gidx.shape)
+        #print(gidx.shape)
 
         #cumlga = np.cumsum(inf_data, axis=2)[:, :, -1]
         #gidx = gidx & (np.sum(cumlga[:, 141:167], axis=1)>0)
-        #gidx = gidx & (cuminf[:, -1] > 100e3) & (cuminf[:, -1] < 200e3)
-        gidx = (np.array(list(range(n_sims))) == 2478)
-        print(gidx.shape)
+        gidx = gidx & (cuminf[:, -1] > 720e3)# & (cuminf[:, -1] < 100e3)
+        #print(np.argwhere(gidx))
+        #gidx = (np.array(list(range(n_sims))) == 1732)
+        #print(gidx.shape)
 
         lgamat = (inf_data[gidx,:,:]>0)
         totlga = np.sum(lgamat, axis=1)
@@ -90,18 +91,17 @@ def make_fig():
         axs01.set_xticks(ticks=ticloc02)
 
         obp_lab = 'Fraction: {:5.3f}'.format(np.sum(gidx)/n_sims)
-        axs01.text(0.05, 0.9, obp_lab, fontsize=14, transform = axs01.transAxes)
+        #axs01.text(0.05, 0.9, obp_lab, fontsize=14, transform = axs01.transAxes)
 
-        yval2 = totlga
-        yval1 = np.mean(yval2, axis=0)
-        for k3 in range(yval2.shape[0]):
-            #axs01.plot(t_vec, yval2[k3, :], '.', c='C0', alpha=0.1)
-            axs01.plot(t_vec, yval2[k3, :], c='C0')
-        #axs01.plot(t_vec, yval1, c='k', lw=3)
+        yval1 = totinf[gidx]/1000
+        yval2 = np.mean(yval1, axis=0)
+        for k3 in range(yval1.shape[0]):
+            #axs01.plot(t_vec, yval1[k3, :], '.', c='C0', alpha=0.1)
+            axs01.plot(t_vec, yval1[k3, :], c='C0')
+        #axs01.plot(t_vec, yval2, c='k', lw=3)
 
-        axs01.set_ylabel('LGAs with Transmission', fontsize=14)
+        axs01.set_ylabel('Incidence (thousands)', fontsize=14)
         axs01.set_xlim(t_vec[0], t_vec[-1])
-        axs01.set_ylim(0, 250)
 
         nga0_prt = nga_shp00['AFRO:NIGERIA']['parts']
         nga0_pts = nga_shp00['AFRO:NIGERIA']['points']
