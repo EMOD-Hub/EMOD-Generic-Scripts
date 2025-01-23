@@ -62,10 +62,12 @@ def make_fig():
         cuminf = np.cumsum(totinf, axis=1)
         gidx = (cuminf[:, -1] >= init_ob_thresh)
 
+        #cumlga = np.cumsum(inf_data, axis=2)[:,:,-1]
         #gidx = gidx & (np.sum(cumlga[:, 141:167], axis=1)>0)
-        #gidx = gidx & (totinf[:, -1] > 0) & (cuminf[:, -1] > 900e3) & (cuminf[:, -1] < 1000e3)
-        #print(np.argwhere(gidx))
-        gidx = (np.array(list(range(n_sims))) == 663)
+        gidx = gidx & (np.max(totinf[:,-143:-110], axis=1) > 1000)
+        gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] > 900e3) & (cuminf[:, -1] < 1000e3)
+        print(np.argwhere(gidx))
+        gidx = (np.array(list(range(n_sims))) == 53)
 
         lgamat = (inf_data[gidx,:,:]>0)
 
@@ -99,7 +101,7 @@ def make_fig():
         #axs01.plot(t_vec[tbool], yval2[tbool], c='k', lw=3)
 
         axs01.set_ylabel('Incidence (thousands)', fontsize=18)
-        axs01.set_xlim(t_vec[0], t_vec[tbool][-1])
+        axs01.set_xlim(t_vec[0], t_vec[tbool][-1]+0.001)
 
         nga0_prt = nga_shp00['AFRO:NIGERIA']['parts']
         nga0_pts = nga_shp00['AFRO:NIGERIA']['points']
