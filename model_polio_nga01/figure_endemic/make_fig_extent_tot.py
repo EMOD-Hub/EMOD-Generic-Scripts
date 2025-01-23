@@ -48,7 +48,9 @@ def make_fig():
         t_vec = np.array(data_brick.pop('t_vec'))/365 + base_year
         n_dict = data_brick.pop('node_names')
         n_sims = param_dict[NUM_SIMS]
+        year_init = int(param_dict[EXP_C]['start_year'])
         run_years = int(param_dict[EXP_C]['run_years'])
+        tbool = (t_vec < (year_init+run_years))
 
         inf_data = np.zeros((n_sims, len(n_dict), t_vec.shape[0]))
         for sim_idx_str in data_brick:
@@ -59,17 +61,13 @@ def make_fig():
         totinf = np.sum(inf_data, axis=1)
         cuminf = np.cumsum(totinf, axis=1)
         gidx = (cuminf[:, -1] >= init_ob_thresh)
-        #print(gidx.shape)
 
-        #cumlga = np.cumsum(inf_data, axis=2)[:, :, -1]
         #gidx = gidx & (np.sum(cumlga[:, 141:167], axis=1)>0)
-        gidx = gidx & (cuminf[:, -1] > 720e3)# & (cuminf[:, -1] < 100e3)
+        #gidx = gidx & (totinf[:, -1] > 0) & (cuminf[:, -1] > 900e3) & (cuminf[:, -1] < 1000e3)
         #print(np.argwhere(gidx))
-        #gidx = (np.array(list(range(n_sims))) == 1732)
-        #print(gidx.shape)
+        gidx = (np.array(list(range(n_sims))) == 663)
 
         lgamat = (inf_data[gidx,:,:]>0)
-        totlga = np.sum(lgamat, axis=1)
 
         # Figure setup
         ax_pat = [run_years*[0], run_years*[0], run_years*[0],
@@ -96,12 +94,12 @@ def make_fig():
         yval1 = totinf[gidx]/1000
         yval2 = np.mean(yval1, axis=0)
         for k3 in range(yval1.shape[0]):
-            #axs01.plot(t_vec, yval1[k3, :], '.', c='C0', alpha=0.1)
-            axs01.plot(t_vec, yval1[k3, :], c='C0')
-        #axs01.plot(t_vec, yval2, c='k', lw=3)
+            #axs01.plot(t_vec[tbool], yval1[k3, tbool], '.', c='C0', alpha=0.1)
+            axs01.plot(t_vec[tbool], yval1[k3, tbool], c='C0')
+        #axs01.plot(t_vec[tbool], yval2[tbool], c='k', lw=3)
 
-        axs01.set_ylabel('Incidence (thousands)', fontsize=14)
-        axs01.set_xlim(t_vec[0], t_vec[-1])
+        axs01.set_ylabel('Incidence (thousands)', fontsize=18)
+        axs01.set_xlim(t_vec[0], t_vec[tbool][-1])
 
         nga0_prt = nga_shp00['AFRO:NIGERIA']['parts']
         nga0_pts = nga_shp00['AFRO:NIGERIA']['points']
