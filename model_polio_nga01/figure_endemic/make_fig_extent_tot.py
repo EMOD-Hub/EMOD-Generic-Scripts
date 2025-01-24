@@ -34,6 +34,10 @@ def make_fig():
     with open(tpath) as fid01:
         nga_shp02 = json.load(fid01)
 
+    tpath = os.path.join('..', 'Assets', 'data','NGA_epi.csv')
+    ref_dat_mo = np.loadtxt(tpath, dtype=int, delimiter=',')
+    tvec_ref = np.arange(2016, 2026, 1/12) + 1/24
+
     for dirname in DIRNAMES:
 
         # Sim outputs
@@ -51,6 +55,7 @@ def make_fig():
         year_init = int(param_dict[EXP_C]['start_year'])
         run_years = int(param_dict[EXP_C]['run_years'])
         tbool = (t_vec < (year_init+run_years))
+        tbool_ref = (tvec_ref > year_init) & (tvec_ref < (year_init+run_years))
 
         inf_data = np.zeros((n_sims, len(n_dict), t_vec.shape[0]))
         for sim_idx_str in data_brick:
@@ -91,7 +96,7 @@ def make_fig():
         axs01.set_xticks(ticks=ticloc02)
 
         obp_lab = 'Fraction: {:5.3f}'.format(np.sum(gidx)/n_sims)
-        axs01.text(0.05, 0.9, obp_lab, fontsize=14, transform = axs01.transAxes)
+        #axs01.text(0.05, 0.9, obp_lab, fontsize=14, transform = axs01.transAxes)
 
         yval1 = totinf[gidx]/1000
         yval2 = np.mean(yval1, axis=0)
@@ -100,8 +105,16 @@ def make_fig():
             #axs01.plot(t_vec[tbool], yval1[k3, tbool], c='C0')
         axs01.plot(t_vec[tbool], yval2[tbool], c='k', lw=3)
 
-        axs01.set_ylabel('Incidence (thousands)', fontsize=18)
+        axs01.set_ylabel('Simulated Incidence (thousands)', fontsize=18)
         axs01.set_xlim(t_vec[0], t_vec[tbool][-1]+0.001)
+        axs01.set_ylim(0, 25)
+
+        #axs02 = axs01.twinx()
+        #axs02.bar(tvec_ref[tbool_ref], ref_dat_mo[tbool_ref], width=1/12, alpha=0.2)
+        #axs02.set_xlim(t_vec[0], t_vec[tbool][-1]+0.001)
+        #axs02.set_ylim(0, 100)
+        #axs02.tick_params(axis='y', which='major', labelsize=14)
+        #axs02.set_ylabel('AFP Cases', fontsize=18)
 
         nga0_prt = nga_shp00['AFRO:NIGERIA']['parts']
         nga0_pts = nga_shp00['AFRO:NIGERIA']['points']
