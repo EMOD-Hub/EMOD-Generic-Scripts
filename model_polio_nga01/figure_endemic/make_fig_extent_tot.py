@@ -25,6 +25,9 @@ DIRNAMES = ['experiment_cVDPV2_NGA_100km_baseline']
 
 def make_fig():
 
+    dy_init = 0
+    dy_end = 0
+
     tpath = os.path.join('..', 'Assets', 'data','shapes_NGA00_COUNTRY.json')
     with open(tpath) as fid01:
         nga_shp00 = json.load(fid01)
@@ -51,8 +54,8 @@ def make_fig():
         t_vec = np.array(data_brick.pop('t_vec'))/365 + base_year
         n_dict = data_brick.pop('node_names')
         n_sims = param_dict[NUM_SIMS]
-        year_init = int(param_dict[EXP_C]['start_year'])+2
-        run_years = int(param_dict[EXP_C]['run_years'])-2
+        year_init = int(param_dict[EXP_C]['start_year']) + dy_init
+        run_years = int(param_dict[EXP_C]['run_years']) - dy_init - dy_end
         tbool = (t_vec >= year_init) & (t_vec < (year_init+run_years))
         tbool_ref = (tvec_ref >= year_init) & (tvec_ref < (year_init+run_years))
 
