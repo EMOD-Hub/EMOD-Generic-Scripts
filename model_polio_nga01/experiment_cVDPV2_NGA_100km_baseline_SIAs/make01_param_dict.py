@@ -31,7 +31,7 @@ def write_param_dict():
     param_dict = dict()
 
     param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-SIAs'
-    param_dict[NUM_SIMS] = 600
+    param_dict[NUM_SIMS] = 400
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -44,22 +44,17 @@ def write_param_dict():
     P_CON = param_dict[EXP_C]
 
     # Run number (EMOD random seed)
-
     #P_VAR['run_number'] = list(range(NSIMS))
     #P_CON['rng_list_offset_yr'] = []
     #P_CON['rng_list_val'] = []
 
-    P_CON['run_number'] = 345
-    P_CON['rng_list_offset_yr'] = [3.0, 6.75]
-    P_CON['rng_list_val'] = [171, -1]
+    P_CON['run_number'] = 1732
+    P_CON['rng_list_offset_yr'] = [1.5, 3.75, 5.5, 6.5]
+    P_CON['rng_list_val'] = [111, 663, 53, -1]
 
     # Simulation start / duration
     P_CON['start_year'] = 2018
     P_CON['run_years'] = 12.0
-
-    # Outbreak seeding
-    P_CON['seed_location'] = 'AFRO:NIGERIA:JIGAWA:DUTSE'
-    P_CON['seed_offset_yr'] = 300.0/365.0
 
     # Parameters for gravity model for network connections
     P_CON['net_inf_power'] = [2.0]
@@ -75,27 +70,31 @@ def write_param_dict():
     P_CON['agent_rate'] = 25.0
 
     # R0 values for cVDPV, Sabin, nOPV; linear interpolation;
-    P_CON['R0'] = 16.0
+    P_CON['R0'] = 14.0
     P_CON['R0_OPV_mult'] = 0.250
     P_CON['R0_nOPV_mult'] = 0.125
+    P_CON['R0_sig_scale'] = 24.0
+    P_CON['R0_min_mult'] = 0.2
+
+    # Individual level risk variance (risk of acquisition multiplier;
+    # mean = 1.0; log-normal distribution)
+    P_CON['ind_variance_risk'] = 5.0
 
     # Subdivide LGAs into 100km^2 regions
     P_CON['use_10k_res'] = True
 
     # RI params
-    P_CON['ri_start_yr'] = 2030.0
+    P_CON['ri_start_yr'] = 2100.0
 
     # Apply the historic SIA calendar; events prior to sim start ignored
     P_CON['sia_calendar'] = True
-    P_CON['sia_cutoff'] = 2030.0
-    P_CON['sia_coverage'] = 0.5
+    P_CON['sia_cutoff'] = 2100.0
+    P_CON['sia_base_coverage'] = 0.4
+    P_CON['sia_coverage_scale'] = 0.8
+    P_CON['sia_base_vax_take'] = 0.7
 
     # Additional nOPV2 SIAs
-    P_CON['nopv2_sia_national'] = [2025.5, 2026.5, 2027.5, 2028.5, 2029.5]
-
-    # Individual level risk variance (risk of acquisition multiplier;
-    # mean = 1.0; log-normal distribution)
-    P_CON['ind_variance_risk'] = 3.0
+    P_CON['nopv2_sia_national'] = [2025.8, 2026.8, 2027.8, 2028.8, 2029.8]
 
     # Write parameter dictionary
     with open(P_FILE, 'w') as fid01:

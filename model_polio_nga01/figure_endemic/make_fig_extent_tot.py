@@ -10,8 +10,7 @@ import matplotlib.pyplot as plt
 # Ought to go in emodpy
 sys.path.append(os.path.abspath(os.path.join('..', '..', 'local_python')))
 sys.path.append(os.path.abspath(os.path.join('..', 'Assets', 'python')))
-from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, \
-                                            MO_DAYS, EXP_C
+from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, EXP_C
 
 from py_assets_common.emod_local_proc import shape_patch, shape_line
 
@@ -52,10 +51,10 @@ def make_fig():
         t_vec = np.array(data_brick.pop('t_vec'))/365 + base_year
         n_dict = data_brick.pop('node_names')
         n_sims = param_dict[NUM_SIMS]
-        year_init = int(param_dict[EXP_C]['start_year'])
-        run_years = int(param_dict[EXP_C]['run_years'])
-        tbool = (t_vec < (year_init+run_years))
-        tbool_ref = (tvec_ref > year_init) & (tvec_ref < (year_init+run_years))
+        year_init = int(param_dict[EXP_C]['start_year'])+2
+        run_years = int(param_dict[EXP_C]['run_years'])-2
+        tbool = (t_vec >= year_init) & (t_vec < (year_init+run_years))
+        tbool_ref = (tvec_ref >= year_init) & (tvec_ref < (year_init+run_years))
 
         inf_data = np.zeros((n_sims, len(n_dict), t_vec.shape[0]))
         for sim_idx_str in data_brick:
@@ -88,12 +87,8 @@ def make_fig():
         axs01.tick_params(axis='x', which='major', labelsize=18)
         axs01.tick_params(axis='y', which='major', labelsize=14)
 
-        dvals = [0]+MO_DAYS*int(run_years)
-        ticloc01 = np.cumsum(dvals) + t_vec[0]
-        axs01.set_xticks(ticks=ticloc01, minor=True)
-
-        ticloc02 = np.arange(0, int(run_years)+1) + t_vec[0]
-        axs01.set_xticks(ticks=ticloc02)
+        ticloc01 = np.arange(0, int(run_years)+0.001) + t_vec[tbool][0]
+        axs01.set_xticks(ticks=ticloc01)
 
         obp_lab = 'Fraction: {:5.3f}'.format(np.sum(gidx)/n_sims)
         #axs01.text(0.05, 0.9, obp_lab, fontsize=14, transform = axs01.transAxes)
@@ -106,7 +101,7 @@ def make_fig():
         axs01.plot(t_vec[tbool], yval2[tbool], c='k', lw=3)
 
         axs01.set_ylabel('Simulated Incidence (thousands)', fontsize=18)
-        axs01.set_xlim(t_vec[0], t_vec[tbool][-1]+0.001)
+        axs01.set_xlim(t_vec[tbool][0], t_vec[tbool][-1]+0.02)
         axs01.set_ylim(0, 25)
 
         #axs02 = axs01.twinx()
@@ -123,7 +118,7 @@ def make_fig():
             axs01.axis('off')
             axs01.set_aspect('equal')
             shape_patch(axs01, nga0_pts, nga0_prt, clr=3*[0.9])
-            yidx = (t_vec>=ticloc02[k1]) & (t_vec<ticloc02[k1+1])
+            yidx = (t_vec>=ticloc01[k1]) & (t_vec<ticloc01[k1+1])
             yrdat = np.max(lgamat[:, :, yidx], axis=2)
             yrdat = np.mean(yrdat, axis=0)
             for lga_name in n_dict:
