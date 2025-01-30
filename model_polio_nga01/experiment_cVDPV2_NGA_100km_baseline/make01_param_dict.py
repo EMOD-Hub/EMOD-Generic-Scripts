@@ -31,7 +31,7 @@ def write_param_dict():
     param_dict = dict()
 
     param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base'
-    param_dict[NUM_SIMS] = 400
+    param_dict[NUM_SIMS] = 2400
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -44,17 +44,17 @@ def write_param_dict():
     P_CON = param_dict[EXP_C]
 
     # Run number (EMOD random seed)
-    #P_VAR['run_number'] = list(range(NSIMS))
-    #P_CON['rng_list_offset_yr'] = []
-    #P_CON['rng_list_val'] = []
+    P_VAR['run_number'] = list(range(NSIMS))
+    P_CON['rng_list_offset_yr'] = []
+    P_CON['rng_list_val'] = []
 
-    P_CON['run_number'] = 1732
-    P_CON['rng_list_offset_yr'] = [1.5, 3.75, 5.5, 6.5]
-    P_CON['rng_list_val'] = [111, 663, 53, -1]
+    #P_CON['run_number'] = 1732
+    #P_CON['rng_list_offset_yr'] = [1.5, 3.75, 5.5, 6.5]
+    #P_CON['rng_list_val'] = [111, 663, 53, -1]
 
     # Simulation start / duration
-    P_CON['start_year'] = 2018
-    P_CON['run_years'] = 12.0
+    P_CON['start_year'] = 2017
+    P_CON['run_years'] = 5.0
 
     # Parameters for gravity model for network connections
     P_CON['net_inf_power'] = [2.0]

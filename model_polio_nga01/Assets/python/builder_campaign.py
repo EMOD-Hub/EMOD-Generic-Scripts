@@ -15,7 +15,7 @@ import emod_api.campaign as camp_module
 
 from emod_camp_events import build_node_list, ce_OPV_SIA, ce_OPV_RI, \
                              ce_import_pressure, ce_br_force, \
-                             ce_random_numbers
+                             ce_random_numbers, ce_inf_force
 from emod_constants import CAMP_FILE
 
 # *****************************************************************************
@@ -116,6 +116,12 @@ def campaignBuilder():
     BR_MULT_Y = gdata.brate_mult_y
     start_day = 365.0*(START_YEAR-gdata.base_year)
     camp_event = ce_br_force(ALL_NODES, BR_MULT_X, BR_MULT_Y, start_day)
+    camp_module.add(camp_event)
+
+    # Seasonality
+    start_day = 365.0*(START_YEAR-gdata.base_year)
+    camp_event = ce_inf_force(ALL_NODES, 180.0, 90.0, 1.2,
+                              start_day=start_day)
     camp_module.add(camp_event)
 
     # Add SIAs

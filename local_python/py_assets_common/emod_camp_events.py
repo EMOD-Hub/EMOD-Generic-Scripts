@@ -115,7 +115,7 @@ def ce_br_force(node_list, times, values,
 # *****************************************************************************
 
 
-def ce_inf_force(node_list, step_init, step_width, step_size,
+def ce_inf_force(node_list, step_init, step_width, step_size=1.0,
                  start_day=0.0):
 
     # Infectivity multiplier
@@ -135,16 +135,17 @@ def ce_inf_force(node_list, step_init, step_width, step_size,
 
     x_init = step_init % 365.0
     x_ends = (step_init+step_width) % 365.0
-    y_bound = 1.0
 
+    y_base = (365.0 - step_width*step_size)/(365.0 - step_width)
+    y_bound = y_base
     if (x_ends < x_init):
         y_bound = step_size
 
     xyvals = set([(0.0, y_bound),
-                  (x_init-0.1, 1.0),
+                  (x_init-0.1, y_base),
                   (x_init, step_size),
                   (x_ends-0.1, step_size),
-                  (x_ends, 1.0),
+                  (x_ends, y_base),
                   (365.0, y_bound)])
     xyvals = sorted(list(xyvals), key=lambda val: val[0])
 

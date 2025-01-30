@@ -71,10 +71,11 @@ def make_fig():
 
         #cumlga = np.cumsum(inf_data, axis=2)[:,:,-1]
         #gidx = gidx & (np.sum(cumlga[:, 141:167], axis=1)>0)
-        #gidx = gidx & (np.max(totinf[:,-143:-110], axis=1) > 1000)
-        gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] > 900e3) & (cuminf[:, -1] < 1000e3)
+        #gidx = gidx & (np.max(totinf[:,:150], axis=1) < 5000)
+        #gidx = gidx & (np.max(totinf[:,:150], axis=1) > 3000)
+        #gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] > 900e3) & (cuminf[:, -1] < 1000e3)
         #print(np.argwhere(gidx))
-        #gidx = (np.array(list(range(n_sims))) == 53)
+        #gidx = (np.array(list(range(n_sims))) == 724)
 
         lgamat = (inf_data[gidx,:,:]>0)
 
@@ -94,18 +95,18 @@ def make_fig():
         axs01.set_xticks(ticks=ticloc01)
 
         obp_lab = 'Fraction: {:5.3f}'.format(np.sum(gidx)/n_sims)
-        #axs01.text(0.05, 0.9, obp_lab, fontsize=14, transform = axs01.transAxes)
+        axs01.text(0.05, 0.9, obp_lab, fontsize=14, transform = axs01.transAxes)
 
         yval1 = totinf[gidx]/1000
         yval2 = np.mean(yval1, axis=0)
         for k3 in range(yval1.shape[0]):
-            axs01.plot(t_vec[tbool], yval1[k3, tbool], '.', c='C0', alpha=0.1)
-            #axs01.plot(t_vec[tbool], yval1[k3, tbool], c='C0')
-        axs01.plot(t_vec[tbool], yval2[tbool], c='k', lw=3)
+            #axs01.plot(t_vec[tbool], yval1[k3, tbool], '.', c='C0', alpha=0.1)
+            axs01.plot(t_vec[tbool], yval1[k3, tbool])#, c='C0')
+        #axs01.plot(t_vec[tbool], yval2[tbool], c='k', lw=3)
 
         axs01.set_ylabel('Simulated Incidence (thousands)', fontsize=18)
         axs01.set_xlim(t_vec[tbool][0], t_vec[tbool][-1]+0.02)
-        axs01.set_ylim(0, 25)
+        #axs01.set_ylim(0, 25)
 
         #axs02 = axs01.twinx()
         #axs02.bar(tvec_ref[tbool_ref], ref_dat_mo[tbool_ref], width=1/12, alpha=0.2)
@@ -133,7 +134,7 @@ def make_fig():
                                 clr=[1.0, 1.0-yrdat[k2], 1.0-yrdat[k2]])
 
         plt.tight_layout()
-        plt.savefig('fig_extent_tot_{:s}_01.png'.format(dirname))
+        plt.savefig('fig_extent_working_{:s}_01.png'.format(dirname))
         plt.close()
 
     return None
