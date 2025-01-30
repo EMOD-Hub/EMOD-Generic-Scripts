@@ -66,4 +66,4 @@ To build the documentation locally, do the following:
     pip install -r docs/requirements.txt
     ```
 
--------------------
+---------------------
