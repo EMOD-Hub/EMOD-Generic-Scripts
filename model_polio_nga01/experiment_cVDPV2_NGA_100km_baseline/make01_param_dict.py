@@ -31,7 +31,7 @@ def write_param_dict():
     param_dict = dict()
 
     param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base'
-    param_dict[NUM_SIMS] = 2400
+    param_dict[NUM_SIMS] = 3600
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -53,15 +53,15 @@ def write_param_dict():
     #P_CON['rng_list_val'] = [111, 663, 53, -1]
 
     # Simulation start / duration
-    P_CON['start_year'] = 2017
-    P_CON['run_years'] = 5.0
+    P_CON['start_year'] = 2018
+    P_CON['run_years'] = 2.0
 
     # Parameters for gravity model for network connections
     P_CON['net_inf_power'] = [2.0]
     P_CON['net_inf_ln_mult'] = [-2.424]
 
     # Node level overdispersion; 0.0 = Poisson
-    P_CON['proc_overdispersion'] = 0.1
+    P_CON['proc_overdispersion'] = 0.4
 
     # Correlation between acqusition and transmission heterogeneity
     P_CON['corr_acq_trans'] = 0.8

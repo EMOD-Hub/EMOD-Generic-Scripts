@@ -71,10 +71,11 @@ def make_fig():
 
         #cumlga = np.cumsum(inf_data, axis=2)[:,:,-1]
         #gidx = gidx & (np.sum(cumlga[:, 141:167], axis=1)>0)
-        #gidx = gidx & (np.max(totinf[:,:150], axis=1) < 5000)
+        #gidx = gidx & (np.max(totinf[:,:150], axis=1) < 50000)
         #gidx = gidx & (np.max(totinf[:,:150], axis=1) > 3000)
         #gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] > 900e3) & (cuminf[:, -1] < 1000e3)
-        #print(np.argwhere(gidx))
+        gidx = gidx & (cuminf[:, -1] < 200e3) & (cuminf[:, -1] > 50e3)
+        print(np.argwhere(gidx))
         #gidx = (np.array(list(range(n_sims))) == 724)
 
         lgamat = (inf_data[gidx,:,:]>0)
