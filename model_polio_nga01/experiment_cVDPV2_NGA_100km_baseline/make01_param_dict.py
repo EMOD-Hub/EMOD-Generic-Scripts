@@ -31,7 +31,7 @@ def write_param_dict():
     param_dict = dict()
 
     param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base'
-    param_dict[NUM_SIMS] = 3600
+    param_dict[NUM_SIMS] = 2800
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -52,9 +52,13 @@ def write_param_dict():
     #P_CON['rng_list_offset_yr'] = [1.5, 3.75, 5.5, 6.5]
     #P_CON['rng_list_val'] = [111, 663, 53, -1]
 
+    #P_CON['run_number'] = 222
+    #P_CON['rng_list_offset_yr'] = [1.5]
+    #P_CON['rng_list_val'] = [-1]
+
     # Simulation start / duration
-    P_CON['start_year'] = 2018
-    P_CON['run_years'] = 2.0
+    P_CON['start_year'] = 2017
+    P_CON['run_years'] = 3.0
 
     # Parameters for gravity model for network connections
     P_CON['net_inf_power'] = [2.0]
@@ -70,7 +74,7 @@ def write_param_dict():
     P_CON['agent_rate'] = 25.0
 
     # R0 values for cVDPV, Sabin, nOPV; linear interpolation;
-    P_CON['R0'] = 14.0
+    P_CON['R0'] = 13.0
     P_CON['R0_OPV_mult'] = 0.250
     P_CON['R0_nOPV_mult'] = 0.125
     P_CON['R0_sig_scale'] = 24.0
@@ -78,7 +82,7 @@ def write_param_dict():
 
     # Individual level risk variance (risk of acquisition multiplier;
     # mean = 1.0; log-normal distribution)
-    P_CON['ind_variance_risk'] = 5.0
+    P_CON['ind_variance_risk'] = 4.0
 
     # Subdivide LGAs into 100km^2 regions
     P_CON['use_10k_res'] = True
