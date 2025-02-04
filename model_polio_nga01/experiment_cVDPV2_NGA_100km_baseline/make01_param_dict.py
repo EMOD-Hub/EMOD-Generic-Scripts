@@ -31,7 +31,7 @@ def write_param_dict():
     param_dict = dict()
 
     param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base'
-    param_dict[NUM_SIMS] = 2800
+    param_dict[NUM_SIMS] = 700
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
