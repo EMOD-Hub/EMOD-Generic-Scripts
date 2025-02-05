@@ -30,6 +30,8 @@ init_ob_thresh = 10000
 seed_sets = [('AFRO:NIGERIA:JIGAWA:BIRINIWA', 2018.1),
              ('AFRO:NIGERIA:ZAMFARA:SHINKAFI', 2020.9)]
 
+nopv2_sia_take_fac = 0.7
+
 seed_inf_dt = 60.0
 seed_inf_num = 25.0
 

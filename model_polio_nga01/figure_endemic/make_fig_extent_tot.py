@@ -74,9 +74,9 @@ def make_fig():
         #gidx = gidx & (np.max(totinf[:,:150], axis=1) < 50000)
         #gidx = gidx & (np.max(totinf[:,:150], axis=1) > 3000)
         #gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] > 900e3) & (cuminf[:, -1] < 1000e3)
-        #gidx = gidx & (cuminf[:, -1] < 150e3) & (cuminf[:, -1] > 80e3)
-        #print(np.argwhere(gidx))
-        #gidx = (np.array(list(range(n_sims))) == 222)
+        gidx = gidx & (cuminf[:, -1] < 150e3)
+        print(np.argwhere(gidx))
+        #gidx = (np.array(list(range(n_sims))) == 2109)
 
         lgamat = (inf_data[gidx,:,:]>0)
 
@@ -98,7 +98,7 @@ def make_fig():
         obp_lab = 'Fraction: {:5.3f}'.format(np.sum(gidx)/n_sims)
         axs01.text(0.05, 0.9, obp_lab, fontsize=14, transform = axs01.transAxes)
 
-        yval1 = cuminf[gidx]/1000
+        yval1 = totinf[gidx]/1000
         yval2 = np.mean(yval1, axis=0)
         for k3 in range(yval1.shape[0]):
             #axs01.plot(t_vec[tbool], yval1[k3, tbool], '.', c='C0', alpha=0.1)

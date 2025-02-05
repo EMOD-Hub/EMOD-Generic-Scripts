@@ -31,7 +31,7 @@ def campaignBuilder():
     SIA_STOP = gdata.var_params['sia_cutoff']
     SIA_COVER = gdata.var_params['sia_base_coverage']
     SIA_RND_SCALE = gdata.var_params['sia_coverage_scale']
-    SIA_TAKE = gdata.var_params['sia_base_vax_take']
+    SIA_BASE_TAKE = gdata.var_params['sia_base_vax_take']
     SIA_LIST = gdata.var_params['nopv2_sia_national']
 
     RNG_LIST = gdata.var_params['rng_list_offset_yr']
@@ -77,9 +77,11 @@ def campaignBuilder():
         if (sia_obj['type'] == 'sabin2'):
             clade = 0
             genome = gdata.boxes_nopv2
+            sia_take = SIA_BASE_TAKE
         elif (sia_obj['type'] == 'nopv2'):
             clade = 1
             genome = 0
+            sia_take = SIA_BASE_TAKE*gdata.nopv2_sia_take_fac
 
         for reg_name in dict_sia_rnd:
             cover_val = dict_sia_rnd[reg_name]
@@ -91,7 +93,7 @@ def campaignBuilder():
 
             n_list = build_node_list(n_list_sia, gdata.demog_node)
             camp_event = ce_OPV_SIA(n_list, start_day=start_day,
-                                    coverage=cover_val, take=SIA_TAKE,
+                                    coverage=cover_val, take=sia_take,
                                     clade=clade, genome=genome)
             camp_module.add(camp_event)
 
@@ -125,10 +127,11 @@ def campaignBuilder():
     camp_module.add(camp_event)
 
     # Add SIAs
+    sia_take = SIA_BASE_TAKE*gdata.nopv2_sia_take_fac
     for syear in SIA_LIST:
         start_day = 365.0*(syear-gdata.base_year)
         camp_event = ce_OPV_SIA(ALL_NODES, start_day=start_day,
-                                coverage=SIA_COVER, take=SIA_TAKE,
+                                coverage=SIA_COVER, take=sia_take,
                                 clade=1, genome=0)
         camp_module.add(camp_event)
 

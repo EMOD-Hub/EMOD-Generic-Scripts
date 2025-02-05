@@ -53,12 +53,12 @@ def write_param_dict():
     #P_CON['rng_list_val'] = [111, 663, 53, -1]
 
     P_CON['run_number'] = 2109
-    P_CON['rng_list_offset_yr'] = [1.5]
-    P_CON['rng_list_val'] = [-1]
+    P_CON['rng_list_offset_yr'] = [1.5, 3.0]
+    P_CON['rng_list_val'] = [585, -1.0]
 
     # Simulation start / duration
     P_CON['start_year'] = 2017
-    P_CON['run_years'] = 3.0
+    P_CON['run_years'] = 5.0
 
     # Parameters for gravity model for network connections
     P_CON['net_inf_power'] = [2.0]
