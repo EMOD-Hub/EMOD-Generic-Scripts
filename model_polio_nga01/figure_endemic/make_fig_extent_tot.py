@@ -25,7 +25,7 @@ DIRNAMES = ['experiment_cVDPV2_NGA_100km_baseline']
 
 def make_fig():
 
-    dy_init = 0
+    dy_init = 1
     dy_end = 0
 
     tpath = os.path.join('..', 'Assets', 'data','shapes_NGA00_COUNTRY.json')
@@ -73,12 +73,11 @@ def make_fig():
         #gidx = gidx & (np.sum(cumlga[:, 141:167], axis=1)>0)
         #gidx = gidx & (np.max(totinf[:,:150], axis=1) < 50000)
         #gidx = gidx & (np.max(totinf[:,:150], axis=1) > 3000)
-        #gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] > 900e3) & (cuminf[:, -1] < 1000e3)
-        gidx = gidx & (cuminf[:, -1] < 150e3)
-        print(np.argwhere(gidx))
-        #gidx = (np.array(list(range(n_sims))) == 2109)
-
-        lgamat = (inf_data[gidx,:,:]>0)
+        gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] > 900e3) & (cuminf[:, -1] < 1000e3)
+        #gidx = gidx & (cuminf[:, -1] - cuminf[:, -75] > 35e3)
+        #print(np.argwhere(gidx))
+        #gidx = (np.array(list(range(n_sims))) == 452)
+        #print(cuminf[gidx, -1])
 
         # Figure setup
         ax_pat = [run_years*[0], run_years*[0], run_years*[0],
@@ -101,23 +100,37 @@ def make_fig():
         yval1 = totinf[gidx]/1000
         yval2 = np.mean(yval1, axis=0)
         for k3 in range(yval1.shape[0]):
-            #axs01.plot(t_vec[tbool], yval1[k3, tbool], '.', c='C0', alpha=0.1)
-            axs01.plot(t_vec[tbool], yval1[k3, tbool])#, c='C0')
-        #axs01.plot(t_vec[tbool], yval2[tbool], c='k', lw=3)
+            axs01.plot(t_vec[tbool], yval1[k3, tbool], '.', c='C0', alpha=0.1)
+            #axs01.plot(t_vec[tbool], yval1[k3, tbool])#, c='C0')
+        axs01.plot(t_vec[tbool], yval2[tbool], c='k', lw=3)
 
         axs01.set_ylabel('Simulated Incidence (thousands)', fontsize=18)
         axs01.set_xlim(t_vec[tbool][0], t_vec[tbool][-1]+0.02)
-        #axs01.set_ylim(0, 25)
+        axs01.set_yscale('symlog', linthresh=25)
+        axs01.set_ylim(0, 100)
+        ticloc02 = list(range(0,31,5))+list(range(40,101,10))
+        ticlab02 = [str(val) for val in ticloc02]
+        ticlab02 = ticlab02[:9]+4*['']+[ticlab02[-1]]
+        axs01.set_yticks(ticks=ticloc02)
+        axs01.set_yticklabels(ticlab02)
 
-        #axs02 = axs01.twinx()
-        #axs02.bar(tvec_ref[tbool_ref], ref_dat_mo[tbool_ref], width=1/12, alpha=0.2)
-        #axs02.set_xlim(t_vec[0], t_vec[tbool][-1]+0.001)
-        #axs02.set_ylim(0, 100)
-        #axs02.tick_params(axis='y', which='major', labelsize=14)
-        #axs02.set_ylabel('AFP Cases', fontsize=18)
+        axs02 = axs01.twinx()
+        axs02.bar(tvec_ref[tbool_ref], ref_dat_mo[tbool_ref], width=1/12,
+                  alpha=0.2, facecolor='C0', edgecolor=None)
+        axs02.set_xlim(t_vec[tbool][0], t_vec[tbool][-1]+0.02)
+        axs02.set_yscale('symlog', linthresh=100)
+        axs02.set_ylim(0, 400)
+        ticloc02 = list(range(0,121,20))+list(range(160,401,40))
+        ticlab02 = [str(val) for val in ticloc02]
+        ticlab02 = ticlab02[:9]+4*['']+[ticlab02[-1]]
+        axs02.set_yticks(ticks=ticloc02)
+        axs02.set_yticklabels(ticlab02)
+        axs02.tick_params(axis='y', which='major', labelsize=14)
+        axs02.set_ylabel('Monthly AFP Cases', fontsize=18)
 
         nga0_prt = nga_shp00['AFRO:NIGERIA']['parts']
         nga0_pts = nga_shp00['AFRO:NIGERIA']['points']
+        lgamat = (inf_data[gidx,:,:]>0)
         for k1 in range(run_years):
             axs01 = axlist[k1+1]
             axs01.axis('off')
