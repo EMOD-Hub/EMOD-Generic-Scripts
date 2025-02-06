@@ -116,7 +116,7 @@ def ce_br_force(node_list, times, values,
 
 
 def ce_inf_force(node_list, step_init, step_width, step_size=1.0,
-                 start_day=0.0, nreps = -1):
+                 start_day=0.0, nreps = -1, dt=1.0):
 
     # Infectivity multiplier
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
@@ -131,7 +131,7 @@ def ce_inf_force(node_list, step_init, step_width, step_size=1.0,
 
     camp_coord.Intervention_Config = camp_iv
     camp_coord.Number_Repetitions = nreps
-    camp_coord.Timesteps_Between_Repetitions = 365.0
+    camp_coord.Timesteps_Between_Repetitions = 365.0/dt
 
     x_init = step_init % 365.0
     x_ends = (step_init+step_width) % 365.0
