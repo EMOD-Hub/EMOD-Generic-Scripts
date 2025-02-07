@@ -1,9 +1,9 @@
 {
     "Version": {
         "Creator": "outputs/Eradication",
-        "DTK_Branch": "Generic-Ongoing(cdfc200b)",
-        "DTK_Build_Date": "Nov 12 2024 20:23:19",
-        "DTK_Version": "2.21.81.0"
+        "DTK_Branch": "Generic-Ongoing(91be201e)",
+        "DTK_Build_Date": "Feb  7 2025 23:06:19",
+        "DTK_Version": "2.21.94.0"
     },
     "config": {
         "AgentConfig": {
@@ -1343,6 +1343,12 @@
                 "value_source": "ERROR,WARNING,INFO,DEBUG,VALID"
             },
             "logLevel_NodePropertyValueChanger": {
+                "default": "INFO",
+                "description": "Logging level to be used for indicated module.",
+                "type": "Constrained String",
+                "value_source": "ERROR,WARNING,INFO,DEBUG,VALID"
+            },
+            "logLevel_NodeRandomNumber": {
                 "default": "INFO",
                 "description": "Logging level to be used for indicated module.",
                 "type": "Constrained String",
@@ -14680,7 +14686,7 @@
                         "min": 0,
                         "type": "integer"
                     },
-                    "Probability_of_Infection": {
+                    "Probability_Of_Infection": {
                         "default": 1,
                         "description": "Probability an imported agent will be infected.",
                         "max": 1,
@@ -16849,6 +16855,49 @@
                     },
                     "class": "NodePropertyValueChanger"
                 },
+                "NodeRandomNumber": {
+                    "Disqualifying_Properties": {
+                        "default": [],
+                        "description": "A list of NodeProperty key:value pairs that cause an intervention to be aborted. Generally used to control the flow of health care access. For example, to prevent the same individual from accessing health care via two different routes at the same time.",
+                        "type": "Dynamic String Set",
+                        "value_source": ""
+                    },
+                    "Dont_Allow_Duplicates": {
+                        "default": 0,
+                        "description": "If an individual's container has an intervention, set to true (1) to prevent them from receiving another copy of the intervention. Supported by all intervention classes.",
+                        "type": "bool"
+                    },
+                    "Enable_Intervention_Replacement": {
+                        "default": 0,
+                        "depends-on": {
+                            "Dont_Allow_Duplicates": 1
+                        },
+                        "description": "When enabled, distributing intervention will remove all other interventions of the same name on targeted individual.",
+                        "type": "bool"
+                    },
+                    "Intervention_Name": {
+                        "default": "NodeRandomNumber",
+                        "description": "The optional name used to refer to this intervention as a means to differentiate it from others that use the same class.",
+                        "type": "string"
+                    },
+                    "New_Property_Value": {
+                        "default": "",
+                        "description": "An optional NodeProperty key:value pair that will be assigned when the intervention is distributed. Generally used to indicate the broad category of health care cascade to which an intervention belongs to prevent individuals from accessing care through multiple pathways.",
+                        "type": "Constrained String",
+                        "value_source": "'<demographics>::NodeProperties.*.Property':'<demographics>::NodeProperties.*.Values'"
+                    },
+                    "Sim_Types": [
+                        "*"
+                    ],
+                    "Total_Numbers": {
+                        "default": 0,
+                        "description": "Random numbers to generate and discard.",
+                        "max": 2147483647,
+                        "min": 0,
+                        "type": "integer"
+                    },
+                    "class": "NodeRandomNumber"
+                },
                 "Outbreak": {
                     "Clade": {
                         "default": 0,
@@ -16892,7 +16941,7 @@
                         "min": 0,
                         "type": "integer"
                     },
-                    "Probability_of_Infection": {
+                    "Probability_Of_Infection": {
                         "default": 1,
                         "description": "Probability an imported agent will be infected.",
                         "max": 1,
