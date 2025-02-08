@@ -122,7 +122,7 @@ def campaignBuilder():
 
     # Seasonality
     start_day = 365.0*(START_YEAR-gdata.base_year)
-    camp_event = ce_inf_force(ALL_NODES, 165.0, 80.0, 1.2,
+    camp_event = ce_inf_force(ALL_NODES, 165.0, 80.0, 1.2, nreps=8,
                               start_day=start_day, dt=gdata.t_step_days)
     camp_module.add(camp_event)
 
