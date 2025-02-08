@@ -48,10 +48,6 @@ def write_param_dict():
     #P_CON['rng_list_offset_yr'] = []
     #P_CON['rng_list_val'] = []
 
-    #P_CON['run_number'] = 1732
-    #P_CON['rng_list_offset_yr'] = [1.5, 3.75, 5.5, 6.5]
-    #P_CON['rng_list_val'] = [111, 663, 53, -1]
-
     P_CON['run_number'] = 526
     P_CON['rng_list_offset_yr'] = [1.3, 2.0, 2.9, 4.5, 7.0, 7.8]
     P_CON['rng_list_val'] = [451, 519, 418, 419, 39, -1]
