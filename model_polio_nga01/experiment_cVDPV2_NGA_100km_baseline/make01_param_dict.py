@@ -31,7 +31,7 @@ def write_param_dict():
     param_dict = dict()
 
     param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base'
-    param_dict[NUM_SIMS] = 700
+    param_dict[NUM_SIMS] = 400
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -53,12 +53,12 @@ def write_param_dict():
     #P_CON['rng_list_val'] = [111, 663, 53, -1]
 
     P_CON['run_number'] = 526
-    P_CON['rng_list_offset_yr'] = [1.3, 2.0, 2.9, 4.5]
-    P_CON['rng_list_val'] = [451, 519, 418, -1]
+    P_CON['rng_list_offset_yr'] = [1.3, 2.0, 2.9, 4.5, 7.0, 7.8]
+    P_CON['rng_list_val'] = [451, 519, 418, 419, 39, -1]
 
     # Simulation start / duration
     P_CON['start_year'] = 2017
-    P_CON['run_years'] = 8.0
+    P_CON['run_years'] = 18.0
 
     # Parameters for gravity model for network connections
     P_CON['net_inf_power'] = [2.0]
