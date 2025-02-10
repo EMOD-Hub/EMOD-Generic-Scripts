@@ -30,7 +30,7 @@ def write_param_dict():
     # Setup
     param_dict = dict()
 
-    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-RI'
+    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-RI-SIAs'
     param_dict[NUM_SIMS] = 400
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
@@ -95,7 +95,7 @@ def write_param_dict():
 
     # Additional nOPV2 SIAs
     P_CON['nopv2_sia_north_only'] = False
-    P_CON['nopv2_sia_national'] = []
+    P_CON['nopv2_sia_national'] = [2025.8, 2027.8, 2029.8, 2031.8, 2033.8]
 
     # Write parameter dictionary
     with open(P_FILE, 'w') as fid01:

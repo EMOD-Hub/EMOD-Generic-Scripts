@@ -30,7 +30,7 @@ def write_param_dict():
     # Setup
     param_dict = dict()
 
-    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-RI'
+    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-SIAs'
     param_dict[NUM_SIMS] = 400
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
@@ -84,7 +84,7 @@ def write_param_dict():
     P_CON['use_10k_res'] = True
 
     # RI params
-    P_CON['ri_start_yr'] = 2025.0
+    P_CON['ri_start_yr'] = 2100.0
 
     # Apply the historic SIA calendar; events prior to sim start ignored
     P_CON['sia_calendar'] = True
@@ -94,8 +94,8 @@ def write_param_dict():
     P_CON['sia_base_vax_take'] = 0.7
 
     # Additional nOPV2 SIAs
-    P_CON['nopv2_sia_north_only'] = False
-    P_CON['nopv2_sia_national'] = []
+    P_CON['nopv2_sia_national'] = [2025.8, 2026.8, 2027.8, 2028.8, 2029.8,
+                                   2030.8, 2031.8, 2032.8, 2033.8, 2034.8]
 
     # Write parameter dictionary
     with open(P_FILE, 'w') as fid01:

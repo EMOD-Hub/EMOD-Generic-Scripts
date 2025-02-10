@@ -18,7 +18,13 @@ from global_data import base_year, init_ob_thresh
 
 # *****************************************************************************
 
-DIRNAMES = ['experiment_cVDPV2_NGA_100km_baseline']
+DIRNAMES = [#('experiment_cVDPV2_NGA_100km_baseline', 0),
+            #('experiment_cVDPV2_NGA_100km_baseline_RI', 4),
+            #('experiment_cVDPV2_NGA_100km_baseline_SIA01', 1),
+            #('experiment_cVDPV2_NGA_100km_baseline_RI_SIA01', 2),
+            ('experiment_cVDPV2_NGA_100km_baseline_RI_SIA01N', 5),
+            #('experiment_cVDPV2_NGA_100km_baseline_RI_SIA02', 8),
+            ]
 
 # *****************************************************************************
 
@@ -26,7 +32,7 @@ DIRNAMES = ['experiment_cVDPV2_NGA_100km_baseline']
 def make_fig():
 
     dy_init = 1
-    dy_end = 0
+    dy_end = 3
 
     tpath = os.path.join('..', 'Assets', 'data','shapes_NGA00_COUNTRY.json')
     with open(tpath) as fid01:
@@ -40,7 +46,10 @@ def make_fig():
     ref_dat_mo = np.loadtxt(tpath, dtype=int, delimiter=',')
     tvec_ref = np.arange(2016, 2026, 1/12) + 1/24
 
-    for dirname in DIRNAMES:
+    for dir_tup in DIRNAMES:
+ 
+        dirname = dir_tup[0]
+        fig_clr = 'C{:d}'.format(dir_tup[1])
 
         # Sim outputs
         tpath = os.path.join('..', dirname)
@@ -68,21 +77,7 @@ def make_fig():
         totinf = np.sum(inf_data, axis=1)
         cuminf = np.cumsum(totinf, axis=1)
         gidx = (cuminf[:, -1] >= init_ob_thresh)
-
-        #cumlga = np.cumsum(inf_data, axis=2)[:,:,-1]
-        #gidx = gidx & (np.sum(cumlga[:, 141:167], axis=1)>0)
-        #gidx = gidx & (np.max(totinf[:,:150], axis=1) < 50000)
-        #gidx = gidx & (np.max(totinf[:,:150], axis=1) > 3000)
-        #gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] > 900e3) & (cuminf[:, -1] < 1000e3)
-        #gidx = gidx & (cuminf[:, -75] < 100e3) #& (cuminf[:, -74] > 40e3) & (cuminf[:, -1] < 60e3)
-        #gidx = gidx & (cuminf[:, -50] < 120e3) #& (cuminf[:, -74] > 40e3) & (cuminf[:, -1] < 60e3)
-        #gidx = gidx & (cuminf[:, -1] > 400e3)
-        #gidx = gidx & ((cuminf[:, -1] - cuminf[:, -73]) > 45e3)
-        #gidx = gidx & ((cuminf[:, -50] - cuminf[:, -73]) > 17e3)
-        #print(np.argwhere(gidx))
-        #gidx = gidx & (np.array(list(range(n_sims))) >= 200) & (np.array(list(range(n_sims))) < 500)
-        gidx = (np.array(list(range(n_sims))) == 39)
-        #print(cuminf[gidx, -1])
+        gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] > 900e3) & (cuminf[:, -1] < 1000e3)
 
         # Figure setup
         ax_pat = [run_years*[0], run_years*[0], run_years*[0],
@@ -105,8 +100,7 @@ def make_fig():
         yval1 = totinf[gidx]/1000
         yval2 = np.mean(yval1, axis=0)
         for k3 in range(yval1.shape[0]):
-            axs01.plot(t_vec[tbool], yval1[k3, tbool], '.', c='C0', alpha=0.1)
-            #axs01.plot(t_vec[tbool], yval1[k3, tbool])#, c='C0')
+            axs01.plot(t_vec[tbool], yval1[k3, tbool], '.', c=fig_clr, alpha=0.1)
         axs01.plot(t_vec[tbool], yval2[tbool], c='k', lw=3)
 
         axs01.set_ylabel('Simulated Incidence (thousands)', fontsize=18)
@@ -153,7 +147,7 @@ def make_fig():
                                 clr=[1.0, 1.0-yrdat[k2], 1.0-yrdat[k2]])
 
         plt.tight_layout()
-        plt.savefig('fig_extent_working_{:s}_01.png'.format(dirname))
+        plt.savefig('fig_extent_{:s}_01.png'.format(dirname))
         plt.close()
 
     return None

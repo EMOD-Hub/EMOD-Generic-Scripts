@@ -94,6 +94,7 @@ def write_param_dict():
     P_CON['sia_base_vax_take'] = 0.7
 
     # Additional nOPV2 SIAs
+    P_CON['nopv2_sia_north_only'] = False
     P_CON['nopv2_sia_national'] = []
 
     # Write parameter dictionary

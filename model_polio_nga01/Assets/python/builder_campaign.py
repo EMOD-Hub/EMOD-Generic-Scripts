@@ -32,7 +32,9 @@ def campaignBuilder():
     SIA_COVER = gdata.var_params['sia_base_coverage']
     SIA_RND_SCALE = gdata.var_params['sia_coverage_scale']
     SIA_BASE_TAKE = gdata.var_params['sia_base_vax_take']
+
     SIA_LIST = gdata.var_params['nopv2_sia_national']
+    SIA_NORTH = gdata.var_params['nopv2_sia_north_only'] 
 
     RNG_LIST = gdata.var_params['rng_list_offset_yr']
     RNG_VAL = gdata.var_params['rng_list_val']
@@ -46,6 +48,11 @@ def campaignBuilder():
 
     # Note: campaign module itself is the file object; no Campaign class
     ALL_NODES = gdata.demog_object.node_ids
+
+    # Identify sub-regions
+    fname = os.path.join('Assets', 'data', 'NGA_NAMES_LEV01_NORTH.csv')
+    with open(fname) as fid01:
+        nga_adm01_n = [val.strip() for val in fid01.readlines()]
 
     # SIA random effects multiplier
     fname = os.path.join('Assets', 'data', 'rand_effect_sia_NGA.json')
@@ -129,8 +136,11 @@ def campaignBuilder():
     # Add SIAs
     sia_take = SIA_BASE_TAKE*gdata.nopv2_sia_take_fac
     for syear in SIA_LIST:
+        n_list = ALL_NODES
+        if (SIA_NORTH):
+            n_list = build_node_list(nga_adm01_n, gdata.demog_node)
         start_day = 365.0*(syear-gdata.base_year)
-        camp_event = ce_OPV_SIA(ALL_NODES, start_day=start_day,
+        camp_event = ce_OPV_SIA(n_list, start_day=start_day,
                                 coverage=SIA_COVER, take=sia_take,
                                 clade=1, genome=0)
         camp_module.add(camp_event)
