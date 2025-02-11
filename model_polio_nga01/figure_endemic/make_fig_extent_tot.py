@@ -18,13 +18,13 @@ from global_data import base_year, init_ob_thresh
 
 # *****************************************************************************
 
-DIRNAMES = [#('experiment_cVDPV2_NGA_100km_baseline', 0),
-            #('experiment_cVDPV2_NGA_100km_baseline_RI', 4),
-            #('experiment_cVDPV2_NGA_100km_baseline_SIA01', 1),
-            #('experiment_cVDPV2_NGA_100km_baseline_RI_SIA01', 2),
+DIRNAMES = [('experiment_cVDPV2_NGA_100km_baseline', 0),
+            ('experiment_cVDPV2_NGA_100km_baseline_RI', 4),
+            ('experiment_cVDPV2_NGA_100km_baseline_SIA01', 1),
+            ('experiment_cVDPV2_NGA_100km_baseline_RI_SIA01', 2),
             ('experiment_cVDPV2_NGA_100km_baseline_RI_SIA01N', 5),
-            #('experiment_cVDPV2_NGA_100km_baseline_RI_SIA02', 8),
-            ]
+            ('experiment_cVDPV2_NGA_100km_baseline_RI_SIA02', 8),
+            ('experiment_cVDPV2_NGA_100km_baseline_RI_SIA02N', 9)]
 
 # *****************************************************************************
 
