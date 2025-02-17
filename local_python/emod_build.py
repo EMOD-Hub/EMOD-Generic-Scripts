@@ -25,7 +25,7 @@ def make_OS_asset():
     OS_NAME = os.getcwd().split('_')[1]
 
     # Prepare the platform
-    plat_obj = Platform(block='COMPS',
+    plat_obj = Platform(type='COMPS',
                         endpoint='https://comps.idmod.org',
                         environment='Calculon')
 
@@ -53,7 +53,7 @@ def make_EXE_asset():
     OS_NAME = os.getcwd().split('_')[1]
 
     # Prepare the platform
-    plat_obj = Platform(block='COMPS',
+    plat_obj = Platform(type='COMPS',
                         endpoint='https://comps.idmod.org',
                         environment='Calculon',
                         priority='Highest',
@@ -120,7 +120,7 @@ def make_ENV_asset():
     OS_NAME = os.getcwd().split('_')[1]
 
     # Prepare the platform
-    plat_obj = Platform(block='COMPS',
+    plat_obj = Platform(type='COMPS',
                         endpoint='https://comps.idmod.org',
                         environment='Calculon')
 
