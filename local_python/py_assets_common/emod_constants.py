@@ -42,6 +42,7 @@ CAMP_FILE = 'campaign.json'
 REPORTS_FILE = 'custom_dlls.json'
 DEMOG_FILE = 'demographics.json'
 RST_FILE = 'ReportStrainTracking.csv'
+SQL_FILE = 'simulation_events.db'
 
 PATH_OVERLAY = 'demog_overlay'
 

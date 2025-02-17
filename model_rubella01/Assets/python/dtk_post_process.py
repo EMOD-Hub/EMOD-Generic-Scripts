@@ -10,7 +10,8 @@ import global_data as gdata
 import numpy as np
 
 from emod_postproc_func import post_proc_poppyr, post_proc_cbr, post_proc_R0
-from emod_constants import SQL_TIME, SQL_MCW, SQL_AGE, POP_AGE_DAYS
+from emod_constants import SQL_TIME, SQL_MCW, SQL_AGE, POP_AGE_DAYS, O_FILE, \
+                           SQL_FILE
 
 # *****************************************************************************
 
@@ -32,16 +33,16 @@ def application(output_path):
     post_proc_R0(output_path, parsed_dat[key_str])
 
     # Connect to SQL database; retreive new entries
-    connection_obj = sqlite3.connect('simulation_events.db')
+    connection_obj = sqlite3.connect(SQL_FILE)
     cursor_obj = connection_obj.cursor()
 
     sql_cmd = "SELECT * FROM SIM_EVENTS WHERE SIM_TIME >= {:.1f}".format(0.0)
     cursor_obj.execute(sql_cmd)
     rlist = cursor_obj.fetchall()
 
-    data_vec_time = np.array([val[SQL_TIME] for val in rlist], dtype=float)
-    data_vec_mcw = np.array([val[SQL_MCW] for val in rlist], dtype=float)
-    data_vec_age = np.array([val[SQL_AGE] for val in rlist], dtype=float)
+    dvec_time = np.array([val[SQL_TIME] for val in rlist], dtype=float)
+    dvec_mcw = np.array([val[SQL_MCW] for val in rlist], dtype=float)
+    dvec_age = np.array([val[SQL_AGE] for val in rlist], dtype=float)
 
     # Yearly timeseries by age
     DAY_BINS = [365]
@@ -51,16 +52,16 @@ def application(output_path):
 
     inf_dat = np.zeros((int(gdata.run_years), len(POP_AGE_DAYS)-1))
     for k1 in range(inf_dat.shape[1]):
-        idx = (data_vec_age >= POP_AGE_DAYS[k1]) & \
-              (data_vec_age < POP_AGE_DAYS[k1+1])
-        (inf_yr, tstamps) = np.histogram(data_vec_time[idx],
+        idx = (dvec_age >= POP_AGE_DAYS[k1]) & \
+              (dvec_age < POP_AGE_DAYS[k1+1])
+        (inf_yr, tstamps) = np.histogram(dvec_time[idx],
                                          bins=BIN_EDGES,
-                                         weights=data_vec_mcw[idx])
+                                         weights=dvec_mcw[idx])
         inf_dat[:, k1] = inf_yr
     parsed_dat[key_str]['inf_data'] = inf_dat.tolist()
 
     # Write output dictionary
-    with open('parsed_out.json', 'w') as fid01:
+    with open(O_FILE, 'w') as fid01:
         json.dump(parsed_dat, fid01)
 
     return None
