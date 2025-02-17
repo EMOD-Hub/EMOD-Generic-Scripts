@@ -4,8 +4,6 @@
 #
 # *****************************************************************************
 
-import global_data as gdata
-
 import emod_api.campaign as camp_module
 
 from emod_camp_events import ce_import_pressure
