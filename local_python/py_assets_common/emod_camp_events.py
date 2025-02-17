@@ -3,13 +3,15 @@
 # *****************************************************************************
 
 from emod_api import schema_to_class as s2c
-from emod_api.interventions import utils
 
 from emod_constants import SPATH, YR_DAYS
 
 # *****************************************************************************
 
 CE = 'CampaignEvent'
+
+NSNL = 'NodeSetNodeList'
+
 SEC = 'StandardEventCoordinator'
 CHWEC = 'CommunityHealthWorkerEventCoordinator'
 
@@ -45,14 +47,15 @@ def ce_import_pressure(node_list,
 
     # Import pressure
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
     camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
     camp_iv = s2c.get_class_with_defaults('ImportPressure', SPATH)
 
-    node_set = utils.do_nodes(SPATH, node_list)
-
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
-    camp_event.Nodeset_Config = node_set
+    camp_event.Nodeset_Config = camp_nodes
+
+    camp_nodes.Node_List = node_list
 
     camp_coord.Intervention_Config = camp_iv
 
@@ -71,16 +74,17 @@ def ce_import_pressure(node_list,
 
 def ce_random_numbers(node_list, start_day=0.0, numbers=0):
 
-    # Import pressure
+    # Node random number
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
     camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
     camp_iv = s2c.get_class_with_defaults('NodeRandomNumber', SPATH)
 
-    node_set = utils.do_nodes(SPATH, node_list)
-
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
-    camp_event.Nodeset_Config = node_set
+    camp_event.Nodeset_Config = camp_nodes
+
+    camp_nodes.Node_List = node_list
 
     camp_coord.Intervention_Config = camp_iv
 
@@ -96,14 +100,15 @@ def ce_br_force(node_list, times, values,
 
     # Birth rate multiplier
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
     camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
     camp_iv = s2c.get_class_with_defaults('NodeBirthRateMult', SPATH)
 
-    node_set = utils.do_nodes(SPATH, node_list)
-
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
-    camp_event.Nodeset_Config = node_set
+    camp_event.Nodeset_Config = camp_nodes
+
+    camp_nodes.Node_List = node_list
 
     camp_coord.Intervention_Config = camp_iv
 
@@ -120,14 +125,15 @@ def ce_inf_force(node_list, step_init, step_width, step_size=1.0,
 
     # Infectivity multiplier
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
     camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
     camp_iv = s2c.get_class_with_defaults('NodeInfectivityMult', SPATH)
 
-    node_set = utils.do_nodes(SPATH, node_list)
-
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
-    camp_event.Nodeset_Config = node_set
+    camp_event.Nodeset_Config = camp_nodes
+
+    camp_nodes.Node_List = node_list
 
     camp_coord.Intervention_Config = camp_iv
     camp_coord.Number_Repetitions = nreps
@@ -164,18 +170,18 @@ def ce_RI(node_list,
 
     # Vaccine
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
     camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
     camp_iv01 = s2c.get_class_with_defaults(NLHT, SPATH)
     camp_iv02 = s2c.get_class_with_defaults(MID, SPATH)
-
     camp_iv03 = s2c.get_class_with_defaults(DI, SPATH)
     camp_iv04 = s2c.get_class_with_defaults(VAX, SPATH)
 
-    node_set = utils.do_nodes(SPATH, node_list)
-
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
-    camp_event.Nodeset_Config = node_set
+    camp_event.Nodeset_Config = camp_nodes
+
+    camp_nodes.Node_List = node_list
 
     camp_coord.Intervention_Config = camp_iv01
 
@@ -231,18 +237,18 @@ def ce_OPV_RI(node_list,
 
     # Outbreak Individual
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
     camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
     camp_iv01 = s2c.get_class_with_defaults(NLHT, SPATH)
     camp_iv02 = s2c.get_class_with_defaults(MID, SPATH)
-
     camp_iv03 = s2c.get_class_with_defaults(DI, SPATH)
     camp_iv04 = s2c.get_class_with_defaults(OI, SPATH)
 
-    node_set = utils.do_nodes(SPATH, node_list)
-
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
-    camp_event.Nodeset_Config = node_set
+    camp_event.Nodeset_Config = camp_nodes
+
+    camp_nodes.Node_List = node_list
 
     camp_coord.Intervention_Config = camp_iv01
 
@@ -272,15 +278,16 @@ def ce_SIA(node_list, start_day=0.0, yrs_min=0.75, yrs_max=5.0,
 
     # Vaccine
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
     camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
     camp_iv01 = s2c.get_class_with_defaults(DI, SPATH)
     camp_iv02 = s2c.get_class_with_defaults(VAX, SPATH)
 
-    node_set = utils.do_nodes(SPATH, node_list)
-
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
-    camp_event.Nodeset_Config = node_set
+    camp_event.Nodeset_Config = camp_nodes
+
+    camp_nodes.Node_List = node_list
 
     camp_coord.Intervention_Config = camp_iv01
     camp_coord.Target_Demographic = 'ExplicitAgeRanges'
@@ -312,14 +319,15 @@ def ce_vax_AMT(node_list,
 
     # Vaccine
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
     camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
     camp_iv = s2c.get_class_with_defaults(VAX, SPATH)
 
-    node_set = utils.do_nodes(SPATH, node_list)
-
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
-    camp_event.Nodeset_Config = node_set
+    camp_event.Nodeset_Config = camp_nodes
+
+    camp_nodes.Node_List = node_list
 
     camp_coord.Intervention_Config = camp_iv
 
@@ -341,14 +349,15 @@ def ce_OPV_SIA(node_list,
 
     # OutbreakIndividual
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
     camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
     camp_iv = s2c.get_class_with_defaults(OI, SPATH)
 
-    node_set = utils.do_nodes(SPATH, node_list)
-
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
-    camp_event.Nodeset_Config = node_set
+    camp_event.Nodeset_Config = camp_nodes
+
+    camp_nodes.Node_List = node_list
 
     camp_coord.Intervention_Config = camp_iv
     camp_coord.Demographic_Coverage = coverage*take
@@ -371,14 +380,15 @@ def ce_quarantine(node_list, trigger,
 
     # Vaccine
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
     camp_coord = s2c.get_class_with_defaults(CHWEC, SPATH)
     camp_iv = s2c.get_class_with_defaults(VAX, SPATH)
 
-    node_set = utils.do_nodes(SPATH, node_list)
-
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
-    camp_event.Nodeset_Config = node_set
+    camp_event.Nodeset_Config = camp_nodes
+
+    camp_nodes.Node_List = node_list
 
     camp_coord.Intervention_Config = camp_iv
     camp_coord.Trigger_Condition_List = [trigger]
@@ -406,14 +416,15 @@ def ce_matrix_swap(node_list, prop_name, matrix,
 
     # ChangeIPMatrix
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
     camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
     camp_iv = s2c.get_class_with_defaults('ChangeIPMatrix', SPATH)
 
-    node_set = utils.do_nodes(SPATH, node_list)
-
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
-    camp_event.Nodeset_Config = node_set
+    camp_event.Nodeset_Config = camp_nodes
+
+    camp_nodes.Node_List = node_list
 
     camp_coord.Intervention_Config = camp_iv
 
@@ -430,14 +441,15 @@ def ce_visit_nodes(node_orig, node_dest,
 
     # MigrateIndividuals
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
     camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
     camp_iv = s2c.get_class_with_defaults('MigrateIndividuals', SPATH)
 
-    node_set = utils.do_nodes(SPATH, [node_orig])
-
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
-    camp_event.Nodeset_Config = node_set
+    camp_event.Nodeset_Config = camp_nodes
+
+    camp_nodes.Node_List = [node_orig]
 
     camp_coord.Intervention_Config = camp_iv
     camp_coord.Demographic_Coverage = fraction
@@ -445,7 +457,7 @@ def ce_visit_nodes(node_orig, node_dest,
     if (only_group):
         camp_coord.Property_Restrictions_Within_Node = only_group
 
-    camp_iv.NodeID_To_Migrate_To = node_orig
+    camp_iv.NodeID_To_Migrate_To = node_dest
     camp_iv.Duration_Before_Leaving_Distribution = 'CONSTANT_DISTRIBUTION'
     camp_iv.Duration_Before_Leaving_Constant = 0
     camp_iv.Duration_At_Node_Distribution = 'CONSTANT_DISTRIBUTION'
