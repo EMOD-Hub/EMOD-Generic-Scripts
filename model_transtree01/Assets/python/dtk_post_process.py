@@ -10,7 +10,8 @@ import global_data as gdata
 
 import numpy as np
 
-from emod_constants import SQL_TIME, SQL_NODE, SQL_AGENT, SQL_LABEL, O_FILE
+from emod_constants import SQL_TIME, SQL_NODE, SQL_AGENT, SQL_LABEL, O_FILE, \
+                           SQL_FILE
 
 # *****************************************************************************
 
@@ -23,7 +24,7 @@ def application(output_path):
     parsed_dat = {key_str: dict()}
 
     # Connect to SQL database; retreive new entries
-    connection_obj = sqlite3.connect('simulation_events.db')
+    connection_obj = sqlite3.connect(SQL_FILE)
     cursor_obj = connection_obj.cursor()
 
     sql_cmd = "SELECT * FROM SIM_EVENTS WHERE SIM_TIME >= {:.1f}".format(0.0)
