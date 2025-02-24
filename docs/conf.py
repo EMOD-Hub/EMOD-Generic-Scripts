@@ -19,9 +19,10 @@
 import os
 import subprocess
 import sys
-import sphinx_rtd_theme
+#import sphinx_rtd_theme
 import configparser
 from datetime import datetime
+
 
 # -- General configuration ------------------------------------------------
 
@@ -36,15 +37,14 @@ from datetime import datetime
 extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.githubpages',
-    'sphinx.ext.autodoc',
-    'sphinxcontrib.napoleon',
     'sphinx.ext.todo',
     'plantweb.directive',
     'sphinxcontrib.programoutput',
     'sphinx_copybutton',
     'sphinx.ext.intersphinx',
     'sphinxext.remoteliteralinclude',
-    'sphinx_search.extension', # search across multiple docsets in domain
+    'myst_parser',
+    'sphinx_search.extension',
     'sphinx.ext.viewcode', # link to view source code
     'myst_parser', # source files written in MD or RST
 ]
@@ -68,15 +68,15 @@ myst_enable_extensions = [
 
 plantuml = 'plantweb'
 
-autodoc_default_options = {
-    'member-order': 'bysource',
-    'members': None,
-    'exclude-members': '__all__'
-}
+#autodoc_default_options = {
+#    'member-order': 'bysource',
+#    'members': None,
+#    'exclude-members': '__all__'
+#}
 
-autodoc_mock_imports = []
+#autodoc_mock_imports = []
 
-napoleon_google_docstring = True
+#napoleon_google_docstring = True
 # napoleon_numpy_docstring = True
 
 # Add any paths that contain templates here, relative to this directory.
@@ -85,8 +85,7 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-# source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = ['.rst', '.md']
 
 # The encoding of source files.
 #
@@ -176,17 +175,52 @@ rst_epilog = "\n.. include:: /variables.txt"
 # The theme to use for HTML and HTML Help pages.  See the docs for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'pydata_sphinx_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # docs.
 # #
-# html_theme_options = {
-# }
+html_theme_options = {
+    "collapse_navigation": False,
+    "navigation_depth": 3,
+    "show_prev_next": True,
+    "icon_links": [
+        {"name": "IDM docs", "url": "https://docs.idmod.org", "icon": "fas fa-home"},
+        {
+            "name": "GitHub",
+            "url": "https://github.com/institutefordiseasemodeling/EMOD-Generic-Scripts",
+            "icon": "fab fa-github-square",
+        },
+    ],
+    "navbar_end": ["theme-switcher", "navbar-icon-links"],
+    "secondary_sidebar_items": ["navbar-side"],
+    "header_links_before_dropdown": 5,
+    "footer_start": ["copyright", "footer_start"],
+    "footer_end": ["theme-version", "footer_end"],
+}
+html_sidebars = {
+    "**": ["sidebar-nav-bs", "page-toc"],
+}
+html_logo = "images/idm-logo-transparent.png"
+html_favicon = "images/favicon.ico"
+html_static_path = ['_static']
+html_baseurl = "https://docs.idmod.org/projects/EMOD-Generic-Scripts/en/latest"
+html_context = {
+    'rtd_url': 'https://docs.idmod.org/projects/EMOD-Generic-Scripts/en/latest',
+    "versions_dropdown": {
+        "latest": "devel (latest)",
+        "stable": "current (stable)",
+    },
+    "default_mode": "light",
+}
+
+# Add customizations
+def setup(app):
+    app.add_css_file("theme_overrides.css")
 
 # Add any paths that contain custom themes here, relative to this directory.
-html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+#html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # The name for this set of Sphinx documents.
 # "<project> v<release> docs" by default.
@@ -200,7 +234,7 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 #
-html_logo = "images/IDM_white.png"
+#html_logo = "images/IDM_white.png"
 
 # The name of an image file (relative to this directory) to use as a favicon of
 # the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -268,13 +302,7 @@ html_show_sphinx = False
 #
 # html_show_copyright = True
 
-# If true, an OpenSearch description file will be output, and all pages will
-# contain a <link> tag referring to it.  The value of this option must be the
-# base URL from which the finished HTML is served.
-#
-html_use_opensearch = 'www.idmod.org/docs/'
-
-# -- RTD Sphinx search for searching across the entire domain, default parent -------------
+# -- RTD Sphinx search for searching across the entire domain -------------
 
 if os.environ.get('READTHEDOCS') == 'True':
 
@@ -289,6 +317,11 @@ if os.environ.get('READTHEDOCS') == 'True':
         "Search all IDM docs": f"subprojects:{search_project_parent}/{search_version}",
     }
 
+# If true, an OpenSearch description file will be output, and all pages will
+# contain a <link> tag referring to it.  The value of this option must be the
+# base URL from which the finished HTML is served.
+#
+html_use_opensearch = 'www.idmod.org/docs/'
 
 # This is the file name suffix for HTML files (e.g. ".xhtml").
 # html_file_suffix = None
