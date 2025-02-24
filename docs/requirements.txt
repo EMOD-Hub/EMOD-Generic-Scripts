@@ -1,6 +1,6 @@
-sphinx~=6.2
-sphinx-rtd-theme~=1.2
-sphinxcontrib-napoleon~=0.7
+sphinx
+pydata-sphinx-theme
+sphinxcontrib-napoleon
 plantweb~=1.2
 sphinxcontrib-programoutput~=0.17
 nbsphinx~=0.9
