@@ -9,9 +9,9 @@ import sys
 import numpy as np
 
 # Ought to go in emodpy
-LOCAL_PATH = os.path.abspath(os.path.join('..', '..', 'local_python'))
-sys.path.insert(0, LOCAL_PATH)
-from py_assets_common.emod_constants import EXP_C, EXP_V, EXP_NAME, NUM_SIMS
+sys.path.insert(0, os.path.abspath(os.path.join('..', '..', 'local_python')))
+from py_assets_common.emod_constants import EXP_C, EXP_V, EXP_NAME, NUM_SIMS, \
+                                            P_FILE
 
 # *****************************************************************************
 
@@ -57,7 +57,7 @@ def write_param_dict():
     P_CON['pop_dat_file'] = 'NGA'
 
     # Write parameter dictionary
-    with open('param_dict.json', 'w') as fid01:
+    with open(P_FILE, 'w') as fid01:
         json.dump(param_dict, fid01)
 
     return None
