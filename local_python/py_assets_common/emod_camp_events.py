@@ -72,7 +72,8 @@ def ce_import_pressure(node_list,
 # *****************************************************************************
 
 
-def ce_random_numbers(node_list, start_day=0.0, numbers=0):
+def ce_random_numbers(node_list,
+                      start_day=0.0, numbers=0):
 
     # Node random number
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
@@ -273,7 +274,8 @@ def ce_OPV_RI(node_list,
 # *****************************************************************************
 
 
-def ce_SIA(node_list, start_day=0.0, yrs_min=0.75, yrs_max=5.0,
+def ce_SIA(node_list,
+           start_day=0.0, yrs_min=0.75, yrs_max=5.0,
            coverage=0.8, base_take=1.0, acq_fact=0.0, age_dep=False):
 
     # Vaccine
