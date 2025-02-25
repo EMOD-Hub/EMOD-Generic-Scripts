@@ -14,7 +14,7 @@ additional information about how to use these scripts.
 | model_covariance01       | [Demonstration simulations for heterogeneity in individual behavior.](https://docs.idmod.org/projects/emod-generic-scripts/en/latest/examples/model_covariance01.html) |
 | model_covid01            | Baseline simulations for SARS-CoV-2 in EMOD. Collab with MvG. |
 | model_demographics01     | Example demographics for UK measles simulations. |
-| model_demographics02     | Example demographics using UN WPP data as inputs. |
+| model_demographics_wpp01 | [Example demographics using UN WPP data as inputs.](https://docs.idmod.org/projects/emod-generic-scripts/en/latest/examples/model_demographics_wpp01.html) |
 | model_measles_cod01      | Documentation. |
 | model_measles_gha01      | Examination of RDT use and responsive campaigns for measles using Ghana as an example context. |
 | model_measles_nga01      | Documentation. |
