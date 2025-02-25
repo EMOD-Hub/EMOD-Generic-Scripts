@@ -52,6 +52,9 @@ def demographicsBuilder():
     ref_name = 'Demographics_Datafile'
     demog_obj = Demographics(nodes=node_list, idref=ref_name)
 
+    # Save filename to global data for use in other functions
+    gdata.demog_files.append(DEMOG_FILE)
+
     # Update defaults in primary file
     demog_obj.raw['Defaults']['IndividualAttributes'].clear()
     demog_obj.raw['Defaults']['NodeAttributes'].clear()
@@ -94,9 +97,6 @@ def demographicsBuilder():
 
     # Write primary demographics file
     demog_obj.generate_file(name=DEMOG_FILE)
-
-    # Save filename to global data for use in other functions
-    gdata.demog_files.append(DEMOG_FILE)
 
     # Save the demographics object for use in other functions
     gdata.demog_object = demog_obj

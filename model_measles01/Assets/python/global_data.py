@@ -18,6 +18,8 @@ first_call_bool = True
 
 init_pop = 250000
 
+inf_prd_mean = 18.0
+
 brate_mult_x = None
 brate_mult_y = None
 

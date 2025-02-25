@@ -43,7 +43,8 @@ def campaignBuilder():
 
     # Add seasonality
     start_day = 365.0*(gdata.start_year-gdata.base_year)
-    camp_event = ce_inf_force(ALL_NODES, 15.0, 60.0, 1.30)
+    camp_event = ce_inf_force(ALL_NODES, 15.0, 60.0, 1.30,
+                              dt=gdata.t_step_days)
     camp_module.add(camp_event)
 
     # Add MCV
