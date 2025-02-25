@@ -48,7 +48,7 @@ def write_param_dict():
 
     # Infectivity
     P_VAR['R0'] = (-1.0 + np.random.gamma(16.0, scale=0.25,
-                                         size=NSIMS)).tolist()
+                                          size=NSIMS)).tolist()
 
     # RI rate for MR
     P_VAR['RI_rate'] = np.random.choice([0.0, 0.2, 0.4, 0.6, 0.8, 1.0],

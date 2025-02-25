@@ -58,6 +58,7 @@ def demographicsBuilder():
     mort_year = vd_tup[0]
     mort_mat = vd_tup[1]
     age_x = vd_tup[2]
+    age_y = None
     birth_rate = vd_tup[3]
     br_mult_x = vd_tup[4]
     br_mult_y = vd_tup[5]

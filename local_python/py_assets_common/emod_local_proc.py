@@ -11,11 +11,6 @@ from py_assets_common.emod_constants import POP_AGE_DAYS, CLR_M, CLR_F
 
 # *****************************************************************************
 
-PYR_TLOCS = [-12, -10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10, 12]
-PYR_TLABS = [str(abs(val)) for val in PYR_TLOCS]
-
-# *****************************************************************************
-
 
 def haversine_dist(lat1, long1, lat2, long2):
 
@@ -60,8 +55,9 @@ def crs_proc(fert_file, XDAT, pyr_mat_avg, ss_demog=False):
     crs_prob_vec = crs_prob_vec * 0.5           # P(female)
     crs_prob_vec = crs_prob_vec * fertopt       # P(gave birth during year)
     crs_prob_vec = crs_prob_vec * 9.0/12.0      # P(pregnant during year)
-    crs_prob_vec = crs_prob_vec * (0.85*13/39 + 0.50*4/39 + 0.50*4/39)
-                                                # P(infection leads to CRS)
+    crs_prob_vec = crs_prob_vec * (0.50*4/39 +  # P(infection leads to CRS)
+                                   0.85*13/39 +
+                                   0.50*4/39)
 
     return (fert_births, crs_prob_vec)
 
@@ -79,6 +75,8 @@ def pyr_chart(axs01, pop_dat, pop_dat_err, yr_lab):
 
     pdat_yr = np.array(POP_AGE_DAYS)/365.0
 
+    PYR_TLOCS = [-12, -10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10, 12]
+    PYR_TLABS = [str(abs(val)) for val in PYR_TLOCS]
     axs01.set_xlim(min(PYR_TLOCS), max(PYR_TLOCS))
     axs01.set_ylim(pdat_yr[0], pdat_yr[-1])
 

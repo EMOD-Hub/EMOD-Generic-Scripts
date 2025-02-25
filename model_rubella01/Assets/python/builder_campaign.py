@@ -6,8 +6,6 @@
 
 import global_data as gdata
 
-import numpy as np
-
 import emod_api.campaign as camp_module
 
 from emod_camp_events import ce_br_force, ce_RI, ce_SIA
