@@ -11,3 +11,4 @@ Infected individuals are introduced in one node only (lower-left on the grid). T
 
 .. raw:: html
     :file: figures/ref_netinfect_med.svg
+|

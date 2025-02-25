@@ -7,6 +7,7 @@ This example demonstrates the implementation of superspreading behavior and its 
 One tree diagram for each simulation is shown in the figure below:
 
 .. image:: figures/ref_track_transtree.png
+|
 
 Each simulation has a default network of 16 nodes (4-by-4 grid) that are well mixed using the network infectivity feature. Simulations are implemented as multi-core (two cores per simulation) to demonstrate logging and transmisssion between nodes hosted on different cores (note that cores may or may not be co-located on a common machine.)
 
