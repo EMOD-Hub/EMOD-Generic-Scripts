@@ -10,7 +10,7 @@ EMOD-Generic-Scripts provides a set of example models. Please consider contribut
     examples/model_covariance01
     examples/model_covid01
     examples/model_demographics01
-    examples/model_demographics02
+    examples/model_demographics_wpp01
     examples/model_measles_cod01
     examples/model_measles_gha01
     examples/model_measles_nga01
