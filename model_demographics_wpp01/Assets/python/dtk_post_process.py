@@ -7,6 +7,7 @@ import json
 import global_data as gdata
 
 from emod_postproc_func import post_proc_poppyr
+from emod_constants import O_FILE
 
 # *****************************************************************************
 
@@ -22,7 +23,7 @@ def application(output_path):
     post_proc_poppyr(output_path, parsed_dat[key_str])
 
     # Write output dictionary
-    with open('parsed_out.json', 'w') as fid01:
+    with open(O_FILE, 'w') as fid01:
         json.dump(parsed_dat, fid01)
 
     return None

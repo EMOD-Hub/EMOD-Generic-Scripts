@@ -8,9 +8,9 @@ import os
 
 import global_data as gdata
 
-from emod_api.demographics.Demographics import Demographics, Node
-
 import numpy as np
+
+from emod_api.demographics.Demographics import Demographics, Node
 
 from emod_demog_func import demog_vd_calc, demog_vd_over
 from emod_constants import DEMOG_FILE
@@ -45,6 +45,9 @@ def demographicsBuilder():
     ref_name = 'Demographics_Datafile'
     demog_obj = Demographics(nodes=node_list, idref=ref_name)
 
+    # Save filename to global data for use in other functions
+    gdata.demog_files.append(DEMOG_FILE)
+
     # Update defaults in primary file
     demog_obj.raw['Defaults']['IndividualAttributes'].clear()
     demog_obj.raw['Defaults']['NodeAttributes'].clear()
@@ -63,16 +66,12 @@ def demographicsBuilder():
     gdata.brate_mult_y = br_mult_y.tolist()
 
     # Write vital dynamics overlay
-    n_list = [node_obj.forced_id for node_obj in node_list]
-    nfname = demog_vd_over(ref_name, n_list, birth_rate,
-                           mort_year, mort_mat, age_x)
+    nfname = demog_vd_over(ref_name, node_list, birth_rate,
+                           mort_year, mort_mat, age_x, age_y)
     gdata.demog_files.append(nfname)
 
     # Write primary demographics file
     demog_obj.generate_file(name=DEMOG_FILE)
-
-    # Save filename to global data for use in other functions
-    gdata.demog_files.append(DEMOG_FILE)
 
     # Save the demographics object for use in other functions
     gdata.demog_object = demog_obj
