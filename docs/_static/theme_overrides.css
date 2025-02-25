@@ -38,6 +38,10 @@ img.math {
     width: auto;
 }
 
+img.add_padding {
+    padding: 2em;
+}
+
 
 /* Layout changes */
 .bd-main .bd-content .bd-article-container {
