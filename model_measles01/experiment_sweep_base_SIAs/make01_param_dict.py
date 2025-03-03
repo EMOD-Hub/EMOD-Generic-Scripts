@@ -31,7 +31,7 @@ def write_param_dict():
     param_dict = dict()
 
     param_dict[EXP_NAME] = 'Measles01-SweepBase_SIAs'
-    param_dict[NUM_SIMS] = 2400
+    param_dict[NUM_SIMS] = 9000
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -51,7 +51,7 @@ def write_param_dict():
     P_VAR['R0'] = (np.round(vals, 2)).tolist()
 
     # RI params
-    vals = np.random.choice(np.arange(0.2, 1.01, 0.04), size=NSIMS)
+    vals = np.random.choice(np.arange(0.2, 1.01, 0.05), size=NSIMS)
     P_VAR['MCV1'] = (np.round(vals, 2)).tolist()
     vals = np.random.choice([180.0, 270.0], size=NSIMS)
     P_VAR['MCV1_age'] = (np.round(vals, 2)).tolist()

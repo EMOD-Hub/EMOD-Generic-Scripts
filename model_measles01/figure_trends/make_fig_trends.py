@@ -44,6 +44,7 @@ def make_fig():
         pyr_mat = np.zeros((nsims, int(run_years)+1, 20))-1
 
         mcv1_vec = np.array(param_dict[EXP_V]['MCV1'])
+        mcv1_lev = sorted(np.unique(mcv1_vec).tolist())
 
         mcv1_age_vec = np.array(param_dict[EXP_V]['MCV1_age'])
         mcv1_age_lvl = np.unique(mcv1_age_vec).tolist()
@@ -115,6 +116,12 @@ def make_fig():
                 yval = np.mean(mort_nrm[tidx, -10:], axis=1)/12.0
                 pcoef = np.polyfit(xval, yval, 5)
                 yval2 = np.polyval(pcoef, xval2)
+
+                #xval2 = mcv1_lev
+                #yval2 = np.zeros(len(xval2), dtype=float)
+                #for k3 in range(len(xval2)):
+                #    idx = (xval==xval2[k3])
+                #    yval2[k3] = np.mean(yval[idx])
 
                 cval = 'C{:d}'.format(k1)
                 xpos = 3.76-0.24*k1-0.48*k2
