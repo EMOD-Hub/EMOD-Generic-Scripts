@@ -19,11 +19,14 @@ from global_data import base_year, init_ob_thresh
 # *****************************************************************************
 
 DIRNAMES = [('experiment_cVDPV2_NGA_100km_baseline', 0),
-            ('experiment_cVDPV2_NGA_100km_baseline_RI', 4),
-            ('experiment_cVDPV2_NGA_100km_baseline_SIA01', 1),
-            ('experiment_cVDPV2_NGA_100km_baseline_RI_SIA01', 2),
-            ('experiment_cVDPV2_NGA_100km_baseline_RI_SIA01N', 5),
-            ('experiment_cVDPV2_NGA_100km_baseline_RI_SIA02', 8),
+            #('experiment_cVDPV2_NGA_100km_baseline_RI', 4),
+            #('experiment_cVDPV2_NGA_100km_baseline_SIA01', 1),
+            #('experiment_cVDPV2_NGA_100km_baseline_SIA01N', 7),
+            #('experiment_cVDPV2_NGA_100km_baseline_SIA02', 7),
+            ('experiment_cVDPV2_NGA_100km_baseline_SIA02N', 7),
+            #('experiment_cVDPV2_NGA_100km_baseline_RI_SIA01', 2),
+            #('experiment_cVDPV2_NGA_100km_baseline_RI_SIA01N', 5),
+            #('experiment_cVDPV2_NGA_100km_baseline_RI_SIA02', 8),
             ('experiment_cVDPV2_NGA_100km_baseline_RI_SIA02N', 9)]
 
 # *****************************************************************************
@@ -33,6 +36,10 @@ def make_fig():
 
     dy_init = 1
     dy_end = 3
+
+    tpath = os.path.join('..', 'Assets', 'data','routine_NGA.json')
+    with open(tpath) as fid01:
+        nga_ri = json.load(fid01)
 
     tpath = os.path.join('..', 'Assets', 'data','shapes_NGA00_COUNTRY.json')
     with open(tpath) as fid01:
@@ -62,6 +69,9 @@ def make_fig():
 
         t_vec = np.array(data_brick.pop('t_vec'))/365 + base_year
         n_dict = data_brick.pop('node_names')
+        afp_rate = np.zeros(len(n_dict), dtype=float)
+        for n_name in n_dict:
+            afp_rate[n_dict[n_name]] = (1.0-nga_ri[n_name]*0.50)/850.0
         n_sims = param_dict[NUM_SIMS]
         year_init = int(param_dict[EXP_C]['start_year']) + dy_init
         run_years = int(param_dict[EXP_C]['run_years']) - dy_init - dy_end
@@ -116,6 +126,20 @@ def make_fig():
         axs02 = axs01.twinx()
         axs02.bar(tvec_ref[tbool_ref], ref_dat_mo[tbool_ref], width=1/12,
                   alpha=0.2, facecolor='C0', edgecolor=None)
+
+        totafp1 = np.sum(inf_data*afp_rate[np.newaxis, :, np.newaxis], axis=1)
+        totafp2 = np.mean(totafp1[gidx], axis=0)
+        totafp2a = np.sum(totafp1[gidx,(8*73):(13*73)], axis=1)
+        print(dirname)
+        print(np.sum(totafp2[:550]))
+        print(np.sum(ref_dat_mo))
+        print(np.mean(totafp2a))
+        print(np.quantile(totafp2a,[0.05, 0.95]))
+        print()
+
+        totafp3 = totafp2*73/12 # Time step conversion for visualization
+        axs02.plot(t_vec[tbool], totafp3[tbool], c='C3', lw=2, ls='--')
+
         axs02.set_xlim(t_vec[tbool][0], t_vec[tbool][-1]+0.02)
         axs02.set_yscale('symlog', linthresh=100)
         axs02.set_ylim(0, 400)
@@ -147,7 +171,7 @@ def make_fig():
                                 clr=[1.0, 1.0-yrdat[k2], 1.0-yrdat[k2]])
 
         plt.tight_layout()
-        plt.savefig('fig_extent_{:s}_01.png'.format(dirname))
+        plt.savefig('fig_extent_{:s}_01_v2.png'.format(dirname))
         plt.close()
 
     return None
