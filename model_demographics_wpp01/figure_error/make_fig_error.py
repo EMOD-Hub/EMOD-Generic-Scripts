@@ -8,14 +8,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Ought to go in emodpy
-LOCAL_PATH = os.path.abspath(os.path.join('..', '..', 'local_python'))
-sys.path.insert(0, LOCAL_PATH)
-from py_assets_common.emod_constants import EXP_C, NUM_SIMS, P_FILE, POP_PYR
+sys.path.insert(0, os.path.abspath(os.path.join('..', '..', 'local_python')))
+from py_assets_common.emod_constants import EXP_C, NUM_SIMS, P_FILE, POP_PYR, \
+                                            D_FILE
 
 # *****************************************************************************
 
-DIRNAMES = ['experiment_demog_WPP_estimates01',
-            'experiment_demog_WPP_projections01']
+DIRNAMES = ['experiment_estimates01',
+            'experiment_projections01']
 
 # *****************************************************************************
 
@@ -36,27 +36,27 @@ def make_fig():
     axs01.set_ylabel('Error - Total Population (%)', fontsize=14)
 
     axs01.set_xlim(1950, 2090)
-    axs01.set_ylim(-20, 20)
+    axs01.set_ylim(-15, 15)
 
-    ticloc = np.arange(1950, 2100, 10)
-    ticlab = ['1950', '', '1970', '', '1990', '', '2010', '',
-              '2030', '', '2050', '', '2070', '', '2090']
+    xlimtup = axs01.get_xlim()
+    ticloc = np.arange(xlimtup[0], xlimtup[1]+1, 10)
+    ticlab = [str(int(val)) for val in ticloc]
     axs01.set_xticks(ticks=ticloc)
     axs01.set_xticklabels(ticlab)
 
-    ticloc = np.arange(-20, 21, 5)
-    ticlab = ['-20', '-15', '-10', '-5', '0',
-              '5', '10', '15', '20']
+    ylimtup = axs01.get_ylim()
+    ticloc = np.arange(ylimtup[0], ylimtup[1]+1, 5)
+    ticlab = [str(val) for val in ticloc]
     axs01.set_yticks(ticks=ticloc)
-    axs01.set_yticklabels(ticlab)
+    axs01.set_yticklabels(ticlab, fontsize=12)
 
-    axs01.plot([1950, 2090], [0, 0], c=[0.4, 0.4, 0.4])
+    axs01.plot([xlimtup[0], xlimtup[1]], [0, 0], c='C7')
 
     # Sim outputs
     for dirname in DIRNAMES:
         tpath = os.path.join('..', dirname)
 
-        with open(os.path.join(tpath, 'data_brick.json')) as fid01:
+        with open(os.path.join(tpath, D_FILE)) as fid01:
             data_brick = json.load(fid01)
 
         with open(os.path.join(tpath, P_FILE)) as fid01:

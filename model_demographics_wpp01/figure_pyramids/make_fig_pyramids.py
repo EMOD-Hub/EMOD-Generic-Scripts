@@ -8,15 +8,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Ought to go in emodpy
-LOCAL_PATH = os.path.abspath(os.path.join('..', '..', 'local_python'))
-sys.path.insert(0, LOCAL_PATH)
+sys.path.insert(0, os.path.abspath(os.path.join('..', '..', 'local_python')))
+from py_assets_common.emod_local_proc import pyr_chart
 from py_assets_common.emod_constants import POP_AGE_DAYS, CLR_M, CLR_F, \
-                                            EXP_C, NUM_SIMS, P_FILE, POP_PYR
+                                            EXP_C, NUM_SIMS, P_FILE, POP_PYR, \
+                                            D_FILE
 
 # *****************************************************************************
 
-DIRNAMES = ['experiment_demog_WPP_estimates01',
-            'experiment_demog_WPP_projections01']
+DIRNAMES = ['experiment_estimates01',
+            'experiment_projections01']
 
 TLABS = ['12', '10', '8', '6', '4', '2', '0', '2', '4', '6', '8', '10', '12']
 TLOCS = [-12, -10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10, 12]
@@ -26,14 +27,11 @@ TLOCS = [-12, -10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10, 12]
 
 def make_fig():
 
-    # Figure
-    fig01 = None
-
     # Sim outputs
-    for k0 in range(len(DIRNAMES)):
-        tpath = os.path.join('..', DIRNAMES[k0])
+    for dirname in DIRNAMES:
+        tpath = os.path.join('..', dirname)
 
-        with open(os.path.join(tpath, 'data_brick.json')) as fid01:
+        with open(os.path.join(tpath, D_FILE)) as fid01:
             data_brick = json.load(fid01)
 
         with open(os.path.join(tpath, P_FILE)) as fid01:
@@ -49,8 +47,7 @@ def make_fig():
         chart_yrs = year_vec[np.mod(year_vec, 10) == 0]
         num_charts = chart_yrs.shape[0]
 
-        if (fig01 is None):
-            fig01 = plt.figure(figsize=(7*num_charts, 30))
+        fig01 = plt.figure(figsize=(6*num_charts, 10))
 
         for sim_idx_str in data_brick:
             sim_idx = int(sim_idx_str)
@@ -72,16 +69,12 @@ def make_fig():
         for k1 in range(num_charts):
 
             gidx = np.argwhere(year_vec == chart_yrs[k1])[0][0]
+            pop_dat = pyr_mat_avg[gidx, :]
+            pop_dat_err = pyr_mat_std[gidx, :]
 
-            axs01 = fig01.add_subplot(5, num_charts, k1+1+k0*3*num_charts)
+            axs01 = fig01.add_subplot(2, num_charts, k1+1)
             plt.sca(axs01)
-
-            axs01.grid(visible=True, which='major', ls='-', lw=0.5, label='')
-            axs01.grid(visible=True, which='minor', ls=':', lw=0.1)
-            axs01.set_axisbelow(True)
-
-            axs01.set_xlabel('Percentage', fontsize=14)
-            axs01.set_ylabel('Age (yrs)', fontsize=14)
+            pyr_chart(axs01, pop_dat, pop_dat_err, chart_yrs[k1])
 
             if (k1 == num_charts-1):
                 axs02 = axs01.twinx()
@@ -89,44 +82,16 @@ def make_fig():
                 axs02.set_yticks(ticks=[0, 1])
                 axs02.set_yticklabels(['', ''])
 
-            axs01.set_xlim(-12,  12)
-            axs01.set_ylim(0, 100)
-            axs01.set_xticks(ticks=TLOCS)
-            axs01.set_xticklabels(TLABS)
-
-            ydat = np.array(POP_AGE_DAYS)/365.0 - 2.5
-            pop_dat = pyr_mat_avg[gidx, :]
-            pop_dat_err = pyr_mat_std[gidx, :]
-            tpop = np.sum(pop_dat)
-
-            pop_dat_n = 100*pop_dat/tpop
-            pop_dat_n_err = 100*pop_dat_err/tpop
-
-            axs01.barh(ydat[1:], pop_dat_n/2.0, height=4.75,
-                       xerr=pop_dat_n_err, color=CLR_F)
-            axs01.barh(ydat[1:], -pop_dat_n/2.0, height=4.75,
-                       xerr=pop_dat_n_err, color=CLR_M)
-
-            year_str = '{:04d}'.format(year_vec[gidx])
-            tpop_str = 'Total Pop\n {:4.1f}M'.format(tpop/1e6)
-            axs01.text(-11, 92.5, year_str, fontsize=18)
-            axs01.text(5, 87.5, tpop_str, fontsize=18)
-
         # Figures - Reference
         for k1 in range(num_charts):
 
             gidx = np.argwhere(year_vec_dat == chart_yrs[k1])[0][0]
+            pop_dat = pop_mat_dat[:-1, gidx]
+            pop_dat_err = 0*pop_dat
 
-            chart_idx = k1+1+num_charts+k0*3*num_charts
-            axs01 = fig01.add_subplot(5, num_charts, chart_idx)
+            axs01 = fig01.add_subplot(2, num_charts, k1+1+num_charts)
             plt.sca(axs01)
-
-            axs01.grid(visible=True, which='major', ls='-', lw=0.5, label='')
-            axs01.grid(visible=True, which='minor', ls=':', lw=0.1)
-            axs01.set_axisbelow(True)
-
-            axs01.set_xlabel('Percentage', fontsize=14)
-            axs01.set_ylabel('Age (yrs)', fontsize=14)
+            pyr_chart(axs01, pop_dat, pop_dat_err, chart_yrs[k1])
 
             if (k1 == num_charts-1):
                 axs02 = axs01.twinx()
@@ -134,29 +99,10 @@ def make_fig():
                 axs02.set_yticks(ticks=[0, 1])
                 axs02.set_yticklabels(['', ''])
 
-            axs01.set_xlim(-12,  12)
-            axs01.set_ylim(0, 100)
-            axs01.set_xticks(ticks=TLOCS)
-            axs01.set_xticklabels(TLABS)
-
-            ydat = np.array(POP_AGE_DAYS)/365.0 - 2.5
-            pop_dat = pop_mat_dat[:, gidx]
-            tpop = np.sum(pop_dat)
-
-            pop_dat_n = 100*(pop_dat[:-1]/tpop)
-
-            axs01.barh(ydat[1:], pop_dat_n/2.0, height=4.75, color=CLR_F)
-            axs01.barh(ydat[1:], -pop_dat_n/2.0, height=4.75, color=CLR_M)
-
-            year_str = '{:04d}'.format(year_vec_dat[gidx])
-            tpop_str = 'Total Pop\n {:4.1f}M'.format(tpop/1e6)
-            axs01.text(-11, 92.5, year_str, fontsize=18)
-            axs01.text(5, 87.5, tpop_str, fontsize=18)
-
-    # Save figure
-    plt.tight_layout()
-    plt.savefig('fig_pyr_{:s}_01.png'.format(pop_dat_str))
-    plt.close()
+        # Save figure
+        plt.tight_layout()
+        plt.savefig('fig_pyr_{:s}_{:s}.png'.format(pop_dat_str, dirname))
+        plt.close()
 
     return None
 
