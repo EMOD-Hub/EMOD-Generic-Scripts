@@ -22,20 +22,21 @@ DIRNAMES = [('experiment_cVDPV2_NGA_100km_baseline', 0),
             #('experiment_cVDPV2_NGA_100km_baseline_RI', 4),
             #('experiment_cVDPV2_NGA_100km_baseline_SIA01', 1),
             #('experiment_cVDPV2_NGA_100km_baseline_SIA01N', 7),
-            #('experiment_cVDPV2_NGA_100km_baseline_SIA02', 7),
-            ('experiment_cVDPV2_NGA_100km_baseline_SIA02N', 7),
+            ('experiment_cVDPV2_NGA_100km_baseline_SIA02', 7),
+            #('experiment_cVDPV2_NGA_100km_baseline_SIA02N', 7),
             #('experiment_cVDPV2_NGA_100km_baseline_RI_SIA01', 2),
             #('experiment_cVDPV2_NGA_100km_baseline_RI_SIA01N', 5),
             #('experiment_cVDPV2_NGA_100km_baseline_RI_SIA02', 8),
-            ('experiment_cVDPV2_NGA_100km_baseline_RI_SIA02N', 9)]
+            #('experiment_cVDPV2_NGA_100km_baseline_RI_SIA02N', 9),
+            ]
 
 # *****************************************************************************
 
 
 def make_fig():
 
-    dy_init = 1
-    dy_end = 3
+    dy_init = 0
+    dy_end = 0
 
     tpath = os.path.join('..', 'Assets', 'data','routine_NGA.json')
     with open(tpath) as fid01:
@@ -125,7 +126,7 @@ def make_fig():
 
         axs02 = axs01.twinx()
         axs02.bar(tvec_ref[tbool_ref], ref_dat_mo[tbool_ref], width=1/12,
-                  alpha=0.2, facecolor='C0', edgecolor=None)
+                  alpha=0.2, facecolor='C3', edgecolor=None)
 
         totafp1 = np.sum(inf_data*afp_rate[np.newaxis, :, np.newaxis], axis=1)
         totafp2 = np.mean(totafp1[gidx], axis=0)
@@ -149,7 +150,7 @@ def make_fig():
         axs02.set_yticks(ticks=ticloc02)
         axs02.set_yticklabels(ticlab02)
         axs02.tick_params(axis='y', which='major', labelsize=14)
-        axs02.set_ylabel('Monthly AFP Cases', fontsize=18)
+        axs02.set_ylabel('Monthly AFP Cases', fontsize=18, c='C3')
 
         nga0_prt = nga_shp00['AFRO:NIGERIA']['parts']
         nga0_pts = nga_shp00['AFRO:NIGERIA']['points']
