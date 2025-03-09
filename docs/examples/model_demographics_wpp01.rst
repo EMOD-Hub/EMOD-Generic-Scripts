@@ -16,3 +16,10 @@ Total population remains close to its target value for multiple decades of simul
 Simulations do not include immigration. Mortality rates are adjusted to best match population structure, but must be non-negative. Simulated populations in countries with substantial immigration will not match UN WPP values as closely. Error in total population estimates for the United Kingdom is shown below.
 
 .. figure:: figures/ref_demog_wpp_gbr_error.png
+
+Outcomes below show the simulated population pyramids for the United Kingdom over two time periods: estimates (1950 - 2020) and median projections (2020 - 2090).
+
+.. figure:: figures/ref_demog_wpp_pyr_gbr_estimates.png
+.. figure:: figures/ref_demog_wpp_pyr_gbr_projections.png
+
+Although total population is substantially below its target value, the age distributions are consistent with the WPP reference.
