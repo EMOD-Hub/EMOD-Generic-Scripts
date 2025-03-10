@@ -27,8 +27,6 @@ def campaignBuilder():
     START_YEAR = gdata.var_params['start_year']
     RUN_YEARS = gdata.var_params['run_years']
 
-    SIA_CALENDAR = gdata.var_params['sia_calendar']
-    SIA_STOP = gdata.var_params['sia_cutoff']
     SIA_COVER = gdata.var_params['sia_base_coverage']
     SIA_RND_SCALE = gdata.var_params['sia_coverage_scale']
     SIA_BASE_TAKE = gdata.var_params['sia_base_vax_take']
@@ -65,19 +63,15 @@ def campaignBuilder():
         nval02 = 1.0/(1.0+np.exp(-nval01))
         dict_sia_rnd[reg_name] = nval02
 
-    # Use SIA calendar for OPV2 schedule
-    dict_sia = dict()
-    if (SIA_CALENDAR):
-        with open(os.path.join('Assets', 'data', 'sia_dat_NGA.json')) as fid01:
-            dict_sia = json.load(fid01)
+    # Apply historic SIA calendar
+    with open(os.path.join('Assets', 'data', 'sia_dat_NGA.json')) as fid01:
+        dict_sia = json.load(fid01)
 
     # Build SIA campaign events
     for sia_name in dict_sia:
         sia_obj = dict_sia[sia_name]
 
         start_day = sia_obj['date']
-        if (start_day > SIA_STOP*365.0):
-            continue
         if (start_day < TIME_MIN):
             continue
 

@@ -87,8 +87,6 @@ def write_param_dict():
     P_CON['ri_start_yr'] = 2100.0
 
     # Apply the historic SIA calendar; events prior to sim start ignored
-    P_CON['sia_calendar'] = True
-    P_CON['sia_cutoff'] = 2100.0
     P_CON['sia_base_coverage'] = 0.4
     P_CON['sia_coverage_scale'] = 0.8
     P_CON['sia_base_vax_take'] = 0.7
