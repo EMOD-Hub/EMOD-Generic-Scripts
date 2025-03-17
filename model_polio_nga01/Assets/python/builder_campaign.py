@@ -57,15 +57,17 @@ def campaignBuilder():
         dict_sia_rnd[reg_name] = nval02
 
     # Apply historic SIA calendar
-    with open(os.path.join('Assets', 'data', 'sia_dat.json')) as fid01:
+    fname = os.path.join('Assets', 'data', 'sia_dat.json')
+    with open(fname) as fid01:
         dict_sia = json.load(fid01)
 
     # Apply planned SIA calendar
     if (SIA_SCENARIO):
-        with open(os.path.join('Assets', 'data', SIA_SCENARIO)) as fid01:
+        fname = os.path.join('Assets', 'data', SIA_SCENARIO+'.json')
+        with open(fname) as fid01:
             dict_sia.update(json.load(fid01))
 
-    # Build SIA campaign events
+    # Build SIA events
     for sia_name in dict_sia:
         sia_obj = dict_sia[sia_name]
 
