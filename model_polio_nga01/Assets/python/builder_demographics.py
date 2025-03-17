@@ -134,7 +134,6 @@ def demographicsBuilder():
     k1 = 0
     for reg_name in dict_ahv:
         p_val = dict_ahv[reg_name]
-        #ah_val = np.exp(AH_VAR_SCALE*(p_val))
         ah_val = AH_VAR_SCALE
         r0_val = 1.0/(1.0+np.exp(R0_SCALE*(ahv_mean-p_val))) + R0_MIN_M
 
@@ -182,7 +181,7 @@ def demographicsBuilder():
         k1 = k1 + 1
 
     # Load immunity mapper data
-    fname = 'sus_init_NGA_{:02d}.json'.format(gdata.init_coverage)
+    fname = 'sus_init_{:02d}.json'.format(gdata.init_coverage)
     with open(os.path.join('Assets', 'data', fname)) as fid01:
         isus_dat = json.load(fid01)
 

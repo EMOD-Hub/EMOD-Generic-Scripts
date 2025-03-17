@@ -46,7 +46,7 @@ def campaignBuilder():
     ALL_NODES = gdata.demog_object.node_ids
 
     # SIA random effects multiplier
-    fname = os.path.join('Assets', 'data', 'rand_effect_sia_NGA.json')
+    fname = os.path.join('Assets', 'data', 'rand_effect_sia.json')
     with open(fname) as fid01:
         dict_sia_rnd = json.load(fid01)
 
@@ -129,7 +129,7 @@ def campaignBuilder():
     ri_age_day = 120.0
     start_day = 365.0*(RI_START_YR-gdata.base_year) - ri_age_day
 
-    with open(os.path.join('Assets', 'data', 'routine_NGA.json')) as fid01:
+    with open(os.path.join('Assets', 'data', 'routine.json')) as fid01:
         dict_ri = json.load(fid01)
     if (start_day > TIME_MAX):
         dict_ri = dict()
