@@ -30,9 +30,7 @@ def campaignBuilder():
     SIA_COVER = gdata.var_params['sia_base_coverage']
     SIA_RND_SCALE = gdata.var_params['sia_coverage_scale']
     SIA_BASE_TAKE = gdata.var_params['sia_base_vax_take']
-
-    SIA_LIST = gdata.var_params['nopv2_sia_national']
-    SIA_NORTH = gdata.var_params['nopv2_sia_north_only'] 
+    SIA_SCENARIO = gdata.var_params['sia_plan_file']
 
     RNG_LIST = gdata.var_params['rng_list_offset_yr']
     RNG_VAL = gdata.var_params['rng_list_val']
@@ -47,11 +45,6 @@ def campaignBuilder():
     # Note: campaign module itself is the file object; no Campaign class
     ALL_NODES = gdata.demog_object.node_ids
 
-    # Identify sub-regions
-    fname = os.path.join('Assets', 'data', 'NGA_NAMES_LEV01_NORTH.csv')
-    with open(fname) as fid01:
-        nga_adm01_n = [val.strip() for val in fid01.readlines()]
-
     # SIA random effects multiplier
     fname = os.path.join('Assets', 'data', 'rand_effect_sia_NGA.json')
     with open(fname) as fid01:
@@ -64,8 +57,13 @@ def campaignBuilder():
         dict_sia_rnd[reg_name] = nval02
 
     # Apply historic SIA calendar
-    with open(os.path.join('Assets', 'data', 'sia_dat_NGA.json')) as fid01:
+    with open(os.path.join('Assets', 'data', 'sia_dat.json')) as fid01:
         dict_sia = json.load(fid01)
+
+    # Apply planned SIA calendar
+    if (SIA_SCENARIO):
+        with open(os.path.join('Assets', 'data', SIA_SCENARIO)) as fid01:
+            dict_sia.update(json.load(fid01))
 
     # Build SIA campaign events
     for sia_name in dict_sia:
@@ -126,18 +124,6 @@ def campaignBuilder():
     camp_event = ce_inf_force(ALL_NODES, 165.0, 80.0, 1.2, nreps=8,
                               start_day=start_day, dt=gdata.t_step_days)
     camp_module.add(camp_event)
-
-    # Add SIAs
-    sia_take = SIA_BASE_TAKE*gdata.nopv2_sia_take_fac
-    for syear in SIA_LIST:
-        n_list = ALL_NODES
-        if (SIA_NORTH):
-            n_list = build_node_list(nga_adm01_n, gdata.demog_node)
-        start_day = 365.0*(syear-gdata.base_year)
-        camp_event = ce_OPV_SIA(n_list, start_day=start_day,
-                                coverage=SIA_COVER, take=sia_take,
-                                clade=1, genome=0)
-        camp_module.add(camp_event)
 
     # Add RI
     ri_age_day = 120.0

@@ -86,14 +86,11 @@ def write_param_dict():
     # RI params
     P_CON['ri_start_yr'] = 2100.0
 
-    # Apply the historic SIA calendar; events prior to sim start ignored
+    # Apply SIA calendars
     P_CON['sia_base_coverage'] = 0.4
     P_CON['sia_coverage_scale'] = 0.8
     P_CON['sia_base_vax_take'] = 0.7
-
-    # Additional nOPV2 SIAs
-    P_CON['nopv2_sia_north_only'] = False
-    P_CON['nopv2_sia_national'] = []
+    P_CON['sia_plan_file'] = ''
 
     # Write parameter dictionary
     with open(P_FILE, 'w') as fid01:
