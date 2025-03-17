@@ -90,7 +90,7 @@ def write_param_dict():
     P_CON['sia_base_coverage'] = 0.4
     P_CON['sia_coverage_scale'] = 0.8
     P_CON['sia_base_vax_take'] = 0.7
-    P_CON['sia_plan_file'] = 'sia_plan_NORTH_1Y.csv'
+    P_CON['sia_plan_file'] = 'sia_plan_NORTH_1Y'
 
     # Write parameter dictionary
     with open(P_FILE, 'w') as fid01:
