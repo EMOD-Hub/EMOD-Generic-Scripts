@@ -77,12 +77,10 @@ def get_sim_files(exp_id=''):
     # Connect to COMPS
     plat = Platform(type='COMPS', endpoint=COMPS_URL, environment='Calculon')
 
-    # Add everything in the common python scripts directory as assets;
+    # Create python task for SSMT work item
     f_path = os.path.abspath(__file__)
     f_dir = os.path.dirname(f_path)
     f_name = os.path.basename(f_path)
-
-    # Create python task for SSMT work item
     task_obj = PythonTask(python_path='python3', script_path=f_name)
 
     # Add script for python task and exp id file to assets
