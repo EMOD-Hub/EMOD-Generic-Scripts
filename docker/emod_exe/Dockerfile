@@ -17,7 +17,7 @@ RUN apt-get -y install scons
 #
 RUN apt-get clean
 #
-RUN git clone https://github.com/InstituteforDiseaseModeling/EMOD-Generic
+RUN git clone https://github.com/EMOD-Hub/EMOD-Generic
 #
 RUN git --git-dir=/EMOD-Generic/.git fetch
 RUN git --git-dir=/EMOD-Generic/.git checkout Generic-Ongoing
