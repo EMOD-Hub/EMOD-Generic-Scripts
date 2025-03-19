@@ -92,7 +92,7 @@ def campaignBuilder():
             if (not n_list_sia):
                 continue
 
-            n_list = build_node_list(n_list_sia, gdata.demog_node)
+            n_list = build_node_list(n_list_sia, NODE_DICT)
             camp_event = ce_OPV_SIA(n_list, start_day=start_day,
                                     coverage=cover_val, take=sia_take,
                                     clade=clade, genome=genome)
@@ -102,7 +102,7 @@ def campaignBuilder():
     for seed_set in gdata.seed_sets:
         reg_name = seed_set[0]
         seed_time = seed_set[1]
-        n_list = build_node_list([reg_name], gdata.demog_node)
+        n_list = build_node_list([reg_name], NODE_DICT)
 
         # Preserve size of outbreak; select single node for initial location
         n_list = [n_list[-1]]
@@ -115,11 +115,13 @@ def campaignBuilder():
         camp_module.add(camp_event)
 
     # Time varying birth rate
-    BR_MULT_X = gdata.brate_mult_x
-    BR_MULT_Y = gdata.brate_mult_y
     start_day = 365.0*(START_YEAR-gdata.base_year)
-    camp_event = ce_br_force(ALL_NODES, BR_MULT_X, BR_MULT_Y, start_day)
-    camp_module.add(camp_event)
+    for br_tup in gdata.brate_mult_tup:
+        BR_MULT_X = br_tup[0]
+        BR_MULT_Y = br_tup[1]
+        NODE_VALS = br_tup[2]
+        camp_event = ce_br_force(NODE_VALS, BR_MULT_X, BR_MULT_Y, start_day)
+        camp_module.add(camp_event)
 
     # Seasonality
     start_day = 365.0*(START_YEAR-gdata.base_year)
@@ -138,7 +140,7 @@ def campaignBuilder():
 
     for reg_name in dict_ri:
         imm_value = dict_ri[reg_name]
-        n_list = build_node_list([reg_name], gdata.demog_node)
+        n_list = build_node_list([reg_name], NODE_DICT)
         camp_event = ce_OPV_RI(n_list, coverage=imm_value, start_day=start_day,
                                base_take=1.0, age_one=ri_age_day, age_std=15.0,
                                clade=1, genome=0)

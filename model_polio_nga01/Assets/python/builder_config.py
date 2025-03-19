@@ -167,6 +167,10 @@ def update_config_obj(config):
 
     # Logging
     cp.logLevel_StandardEventCoordinator = 'WARNING'
+    
+    # Memory
+    cp.Memory_Usage_Halting_Threshold_Working_Set_MB = 12000
+    cp.Memory_Usage_Warning_Threshold_Working_Set_MB = 11000
 
     return config
 
