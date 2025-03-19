@@ -22,10 +22,14 @@ demog_min_pop = 50
 demog_node_map = dict() # LGA: [NodeIDs]
 demog_rep_index = dict() # LGA: Output row number
 
-brate_mult_x = None
-brate_mult_y = None
+brate_mult_tup = list()
 
 init_ob_thresh = 10000
+
+targ_adm00 = ['AFRO:CAMEROON',
+              'AFRO:CHAD',
+              'AFRO:NIGER',
+              'AFRO:NIGERIA']
 
 seed_sets = [('AFRO:NIGERIA:JIGAWA:BIRINIWA', 2018.1),
              ('AFRO:NIGERIA:ZAMFARA:SHINKAFI', 2020.9)]

@@ -44,13 +44,13 @@ def write_param_dict():
     P_CON = param_dict[EXP_C]
 
     # Run number (EMOD random seed)
-    #P_VAR['run_number'] = list(range(NSIMS))
-    #P_CON['rng_list_offset_yr'] = []
-    #P_CON['rng_list_val'] = []
+    P_VAR['run_number'] = list(range(NSIMS))
+    P_CON['rng_list_offset_yr'] = []
+    P_CON['rng_list_val'] = []
 
-    P_CON['run_number'] = 526
-    P_CON['rng_list_offset_yr'] = [1.3, 2.0, 2.9, 4.5, 7.0, 7.8]
-    P_CON['rng_list_val'] = [451, 519, 418, 419, 39, -1]
+    #P_CON['run_number'] = 526
+    #P_CON['rng_list_offset_yr'] = [1.3, 2.0, 2.9, 4.5, 7.0, 7.8]
+    #P_CON['rng_list_val'] = [451, 519, 418, 419, 39, -1]
 
     # Simulation start / duration
     P_CON['start_year'] = 2017
