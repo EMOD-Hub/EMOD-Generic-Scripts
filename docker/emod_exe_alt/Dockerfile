@@ -1,24 +1,6 @@
-FROM rockylinux/rockylinux:9.5
-#
-RUN dnf clean all
-RUN dnf upgrade -y
-RUN dnf install python-devel -y
-RUN dnf install mpich-devel -y
-RUN dnf install sqlite-devel -y
-RUN dnf install git -y
-RUN dnf install glibc-devel -y
-RUN dnf install gcc-c++ -y
-RUN dnf clean all
-#
-RUN python3 -m pip install pip --upgrade
-RUN python3 -m pip install scons
-#
+FROM dtk-centos-buildenv:3.0
 #
 ARG USER=DockerComposeUser
-ARG PATH=$PATH:/usr/lib64/mpich/bin
-ARG LD_LIBRARY_PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib64/mpich/bin
-RUN echo $PATH
-RUN echo $LD_LIBRARY_PATH
 #
 RUN git clone https://github.com/EMOD-Hub/EMOD-Generic
 #
@@ -26,6 +8,8 @@ RUN git --git-dir=/EMOD-Generic/.git fetch
 RUN git --git-dir=/EMOD-Generic/.git checkout Generic-Ongoing
 #
 RUN scons --Release --jobs=4 --Disease=Generic --directory=/EMOD-Generic/
+#
+RUN strip EMOD-Generic/build/x64/Release/Eradication/Eradication
 #
 RUN mkdir outputs
 RUN cp EMOD-Generic/build/x64/Release/Eradication/Eradication outputs/Eradication
