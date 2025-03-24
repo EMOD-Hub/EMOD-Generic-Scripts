@@ -13,6 +13,7 @@ CE = 'CampaignEvent'
 NSNL = 'NodeSetNodeList'
 
 SEC = 'StandardEventCoordinator'
+CNEC = 'CoverageByNodeEventCoordinator'
 CHWEC = 'CommunityHealthWorkerEventCoordinator'
 
 NLHT = 'NodeLevelHealthTriggeredIV'
@@ -346,23 +347,25 @@ def ce_vax_AMT(node_list,
 # *****************************************************************************
 
 
-def ce_OPV_SIA(node_list,
-               start_day=0.0, coverage=1.0, take=1.0, clade=0, genome=0):
+def ce_OPV_SIA(node_dict,
+               start_day=0.0, take=1.0, clade=0, genome=0):
 
     # OutbreakIndividual
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
     camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
-    camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
+    camp_coord = s2c.get_class_with_defaults(CNEC, SPATH)
     camp_iv = s2c.get_class_with_defaults(OI, SPATH)
 
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
     camp_event.Nodeset_Config = camp_nodes
 
-    camp_nodes.Node_List = node_list
+    camp_nodes.Node_List = list(node_dict.keys())
 
     camp_coord.Intervention_Config = camp_iv
-    camp_coord.Demographic_Coverage = coverage*take
+    camp_coord.Coverage_By_Node = {{'Node_Id': nid,
+                                    'Coverage': node_dict[nid]*take}
+                                   for nid in node_dict}
     camp_coord.Target_Demographic = 'ExplicitAgeRanges'
     camp_coord.Target_Age_Min = 0.50
     camp_coord.Target_Age_Max = 5.00
