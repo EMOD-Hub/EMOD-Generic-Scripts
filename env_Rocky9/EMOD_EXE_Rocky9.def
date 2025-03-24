@@ -19,7 +19,6 @@ From: Assets/EMOD_OS_Rocky9.sif
     export USER=CalculonUser-EMOD
 
     export PATH=$PATH:/usr/lib64/mpich/bin
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/mpich/lib
 
     git clone https://github.com/EMOD-Hub/EMOD-Generic
 
@@ -31,6 +30,9 @@ From: Assets/EMOD_OS_Rocky9.sif
     scons --Release --jobs=4 --Disease=Generic
 
     cd ..
+
+    strip EMOD-Generic/build/x64/Release/Eradication/Eradication
+    strip EMOD-Generic/build/x64/Release/reporter_plugins/*.so
 
     mkdir outputs
     cp EMOD-Generic/build/x64/Release/Eradication/Eradication outputs/Eradication
