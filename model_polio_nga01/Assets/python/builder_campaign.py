@@ -46,7 +46,7 @@ def campaignBuilder():
     ALL_NODES = gdata.demog_object.node_ids
 
     # SIA random effects multiplier
-    fname = os.path.join('Assets', 'data', 'rand_effect_sia.json')
+    fname = os.path.join('Assets', 'data', 'sia_rnd_effect.json')
     with open(fname) as fid01:
         dict_sia_rnd = json.load(fid01)
 
@@ -55,6 +55,15 @@ def campaignBuilder():
         nval01 = SIA_RND_SCALE*p_val + np.log(SIA_COVER/(1-SIA_COVER))
         nval02 = 1.0/(1.0+np.exp(-nval01))
         dict_sia_rnd[reg_name] = nval02
+
+    # SIA coverage-by-node
+    sia_cover_dict = dict()
+    for nname in NODE_DICT:
+        sia_cover_dict[NODE_DICT[nname]] = SIA_COVER
+        for reg_name in dict_sia_rnd:
+            if (nname.startswith(reg_name+':') or nname == reg_name):
+                sia_cover_dict[NODE_DICT[nname]] = dict_sia_rnd[reg_name]
+                break
 
     # Apply historic SIA calendar
     fname = os.path.join('Assets', 'data', 'sia_dat.json')
@@ -69,34 +78,26 @@ def campaignBuilder():
 
     # Build SIA events
     for sia_name in dict_sia:
-        sia_obj = dict_sia[sia_name]
 
-        start_day = sia_obj['date']
+        start_day = dict_sia[sia_name]['date']
         if (start_day < TIME_MIN):
             continue
 
-        if (sia_obj['type'] == 'sabin2'):
+        if (dict_sia[sia_name]['type'] == 'sabin2'):
             clade = 0
             genome = gdata.boxes_nopv2
             sia_take = SIA_BASE_TAKE
-        elif (sia_obj['type'] == 'nopv2'):
+        elif (dict_sia[sia_name]['type'] == 'nopv2'):
             clade = 1
             genome = 0
             sia_take = SIA_BASE_TAKE*gdata.nopv2_sia_take_fac
 
-        for reg_name in dict_sia_rnd:
-            cover_val = dict_sia_rnd[reg_name]
-            nname_dict = {nname: nname for nname in sia_obj['nodes']}
+        n_list = build_node_list(dict_sia[sia_name]['nodes'], nname_dict)
+        n_dict = {nid: sia_cover_dict[nid] for nid in n_list}
 
-            n_list_sia = build_node_list([reg_name], nname_dict)
-            if (not n_list_sia):
-                continue
-
-            n_list = build_node_list(n_list_sia, NODE_DICT)
-            camp_event = ce_OPV_SIA(n_list, start_day=start_day,
-                                    coverage=cover_val, take=sia_take,
-                                    clade=clade, genome=genome)
-            camp_module.add(camp_event)
+        camp_event = ce_OPV_SIA(n_dict, start_day=start_day, take=sia_take,
+                                clade=clade, genome=genome)
+        camp_module.add(camp_event)
 
     # Seed infections
     for seed_set in gdata.seed_sets:

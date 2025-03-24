@@ -141,14 +141,12 @@ def demographicsBuilder():
     k1 = 0
     for reg_name in dict_ahv:
         p_val = dict_ahv[reg_name]
-        ah_val = AH_VAR_SCALE
-        ahv_mean = 0.21172
-        r0_val = 1.0/(1.0+np.exp(R0_SCALE*(ahv_mean-p_val))) + R0_MIN_M
+        r0_val = 1.0/(1.0+np.exp(R0_SCALE*(gdata.r0_mid_val-p_val))) + R0_MIN_M
 
         n_list = [n_obj for n_obj in node_list
                   if (n_obj.name == reg_name or
                       n_obj.name.startswith(reg_name+':'))]
-        nfname = demog_ah_over(ref_name, n_list, r0_val, ah_val, k1)
+        nfname = demog_ah_over(ref_name, n_list, r0_val, AH_VAR_SCALE, k1)
         gdata.demog_files.append(nfname)
         k1 = k1 + 1
 
