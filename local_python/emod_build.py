@@ -80,8 +80,8 @@ def make_EXE_asset():
     s_exe = 'singularity exec Assets/EMOD_EXE_'+OS_NAME+'.sif '
 
     # Command to generate schema
-    cmd_opts = ' --get-schema --schema-path schema.json -P /PyScripts'
-    cmd_line = s_exe + '/outputs/Eradication' + cmd_opts
+    cmd_opts = ' --get-schema --schema-path schema.json'
+    cmd_line = s_exe + '/Eradication' + cmd_opts
 
     # Create CommandTask
     task_obj = CommandTask(command=cmd_line)
@@ -95,7 +95,7 @@ def make_EXE_asset():
     print(ao_obj01.asset_collection.uid.hex)
 
     # Command to copy executable and reporters
-    cmd_line = s_exe + 'cp -r /outputs/. .'
+    cmd_line = s_exe + 'cp /Eradication .'
 
     # Create CommandTask
     task_obj = CommandTask(command=cmd_line)

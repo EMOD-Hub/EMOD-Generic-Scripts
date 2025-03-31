@@ -4,31 +4,21 @@
 #
 # *****************************************************************************
 
-import json
-
-from emod_report_func import report_strain
-from emod_constants import REPORTS_FILE
+from emod_report_func import build_file, write_file
 
 # *****************************************************************************
 
 
-def dllcBuilder():
-
-    # Get variables for this simulation
-    # N/A
+def reportsBuilder():
 
     # Dictionary to be written
-    json_set = dict()
-
-    # Custom reports object
-    json_set['Custom_Reports'] = dict()
+    json_set = build_file()
 
     # Configurations
-    report_strain(json_set, every_timestep=True)
+    pass
 
     #  Write file
-    with open(REPORTS_FILE, 'w') as fid01:
-        json.dump(json_set, fid01, sort_keys=True, indent=4)
+    write_file(json_set)
 
     return None
 

@@ -16,7 +16,8 @@ DOCK_PACK = r'docker-production-public.packages.idmod.org/emodpy/' + \
 VE_PY_PATHS = ['/py_env/lib/python3.9/site-packages/',
                '/py_env/lib/python3.10/site-packages/',
                '/py_env/lib/python3.11/site-packages/',
-               '/py_env/lib/python3.12/site-packages/']
+               '/py_env/lib/python3.12/site-packages/',
+               '/py_env/lib/python3.13/site-packages/']
 
 ID_OS = 'EMOD_OS.id'
 ID_EXE = 'EMOD_EXE.id'
@@ -39,10 +40,12 @@ NUM_ITER = 'NUM_ITER'
 SPATH = 'Assets/schema.json'
 
 CAMP_FILE = 'campaign.json'
-REPORTS_FILE = 'custom_dlls.json'
+REPORTS_FILE = 'reports.json'
 DEMOG_FILE = 'demographics.json'
 RST_FILE = 'ReportStrainTracking.csv'
 SQL_FILE = 'simulation_events.db'
+
+REPORTS_KEY = 'Reports'
 
 PATH_OVERLAY = 'demog_overlay'
 

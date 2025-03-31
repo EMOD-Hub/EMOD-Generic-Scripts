@@ -11,7 +11,7 @@ import global_data as gdata
 from builder_config import update_config_obj
 from builder_demographics import demographicsBuilder
 from builder_campaign import campaignBuilder
-from builder_dlls import dllcBuilder
+from builder_reports import reportsBuilder
 
 import numpy as np
 
@@ -101,7 +101,7 @@ def standard_pre_process():
     time.sleep(1)
 
     # Custom reporter file
-    dllcBuilder()
+    reportsBuilder()
     time.sleep(1)
 
     # Simulation configuration file

@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: debian:12.9
+From: debian:12.10
 
 %post
     apt-get clean

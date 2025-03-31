@@ -32,14 +32,7 @@ From: Assets/EMOD_OS_Ubuntu24.sif
 
     cd ..
 
-    mkdir outputs
-    cp EMOD-Generic/build/x64/Release/Eradication/Eradication outputs/Eradication
-
-    mkdir outputs/reporter_plugins
-    cp EMOD-Generic/build/x64/Release/reporter_plugins/*.so outputs/reporter_plugins
-
-    mkdir PyScripts
-    cp EMOD-Generic/Scripts/*.py PyScripts
+    cp EMOD-Generic/build/x64/Release/Eradication/Eradication /Eradication
 
     rm -r EMOD-Generic
 
