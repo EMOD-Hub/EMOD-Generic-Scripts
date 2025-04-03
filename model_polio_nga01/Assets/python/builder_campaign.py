@@ -56,10 +56,9 @@ def campaignBuilder():
         nval02 = 1.0/(1.0+np.exp(-nval01))
         dict_sia_rnd[reg_name] = nval02
 
-    # SIA coverage-by-node
-    sia_cover_dict = dict()
+    # SIA coverage-by-node {node_id: sia_coverage}
+    sia_cover_dict = {NODE_DICT[nname]: SIA_COVER for nname in NODE_DICT}
     for nname in NODE_DICT:
-        sia_cover_dict[NODE_DICT[nname]] = SIA_COVER
         for reg_name in dict_sia_rnd:
             if (nname.startswith(reg_name+':') or nname == reg_name):
                 sia_cover_dict[NODE_DICT[nname]] = dict_sia_rnd[reg_name]
@@ -83,6 +82,8 @@ def campaignBuilder():
         if (start_day < TIME_MIN):
             continue
 
+        age_yr_max = dict_sia[sia_name]['age_yr_max']
+
         if (dict_sia[sia_name]['type'] == 'sabin2'):
             clade = 0
             genome = gdata.boxes_nopv2
@@ -96,6 +97,7 @@ def campaignBuilder():
         n_dict = {nid: sia_cover_dict[nid] for nid in n_list}
 
         camp_event = ce_OPV_SIA(n_dict, start_day=start_day, take=sia_take,
+                                yrs_min=0.2, yrs_max=age_yr_max,
                                 clade=clade, genome=genome)
         camp_module.add(camp_event)
 
@@ -134,7 +136,7 @@ def campaignBuilder():
     ri_age_day = 120.0
     start_day = 365.0*(RI_START_YR-gdata.base_year) - ri_age_day
 
-    with open(os.path.join('Assets', 'data', 'routine.json')) as fid01:
+    with open(os.path.join('Assets', 'data', 'routine_dat.json')) as fid01:
         dict_ri = json.load(fid01)
     if (start_day > TIME_MAX):
         dict_ri = dict()

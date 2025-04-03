@@ -348,7 +348,8 @@ def ce_vax_AMT(node_list,
 
 
 def ce_OPV_SIA(node_dict,
-               start_day=0.0, take=1.0, clade=0, genome=0):
+               start_day=0.0, yrs_min=0.75, yrs_max=5.0,
+               take=1.0, clade=0, genome=0):
 
     # OutbreakIndividual
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
@@ -367,8 +368,8 @@ def ce_OPV_SIA(node_dict,
                                     'Coverage': node_dict[nid]*take}
                                    for nid in node_dict}
     camp_coord.Target_Demographic = 'ExplicitAgeRanges'
-    camp_coord.Target_Age_Min = 0.50
-    camp_coord.Target_Age_Max = 5.00
+    camp_coord.Target_Age_Min = yrs_min
+    camp_coord.Target_Age_Max = yrs_max
 
     camp_iv.Clade = clade
     camp_iv.Genome = genome

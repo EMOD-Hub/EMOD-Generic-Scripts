@@ -24,6 +24,7 @@ from emod_constants import DEMOG_FILE, MORT_XVAL
 def demographicsBuilder():
 
     # Variables for this simulation
+    ADM_TARG = gdata.var_params['targ_adm00']
     SUB_ADM02 = gdata.var_params['use_10k_res']
     START_YEAR = gdata.var_params['start_year']
     PROC_DISPER = gdata.var_params['proc_overdispersion']
@@ -31,73 +32,68 @@ def demographicsBuilder():
     R0_SCALE = gdata.var_params['R0_sig_scale']
     R0_MIN_M = gdata.var_params['R0_min_mult']
 
-    # Populate nodes in primary file
-    fname = 'demog_data.json'
-    with open(os.path.join('Assets', 'data', fname)) as fid01:
-        demog_dat = json.load(fid01)
+    # Load ISO3 codes dict
+    fname = os.path.join('Assets', 'data', 'dict_iso3.json')
+    with open(fname) as fid01:
+        iso3_dict = json.load(fid01)
 
-    # Reference population structure
-    pop_ratio = dict()
+    # Load population data
+    fname = 'demog_data_POLIS_ADM02.csv'
+    if (SUB_ADM02):
+        fname = 'demog_data_POLIS_ADM02_sub_100km.csv'
+    fname = os.path.join('Assets', 'data', fname)
+    with open(fname) as fid01:
+        flines = [lval.strip().split(',') for lval in fid01.readlines()[1:]]
+    n_nam = np.array([lval[0] for lval in flines], dtype=str)
+    n_lng = np.array([lval[1] for lval in flines], dtype=float)
+    n_lat = np.array([lval[2] for lval in flines], dtype=float)
+    n_pop = np.array([lval[3] for lval in flines], dtype=int)
+    p_mul = np.zeros(n_pop.shape[0], dtype=float)
+
+    # Nameset for admin02
+    adm02_subset = n_nam.tolist()
+    if (SUB_ADM02):
+        adm02_subset = [n_val.rsplit(':', 1)[0] for n_val in n_nam]
+    list_adm02 = sorted(list(set(adm02_subset)))
+
+    # Load demographic data
     vd_data = dict()
-    for adm00 in gdata.targ_adm00:
-        cname = adm00.split(':')[-1]
-        dat_file = 'pop_dat_{:s}.csv'.format(cname)
-        fname_pop = os.path.join('Assets', 'data', dat_file)
-        pop_input = np.loadtxt(fname_pop, dtype=int, delimiter=',')
+    for cname in ADM_TARG:
+        dat_file = 'pop_dat_{:s}.csv'.format(iso3_dict[cname])
+        fname = os.path.join('Assets', 'data', dat_file)
+        pop_input = np.loadtxt(fname, dtype=int, delimiter=',')
 
-        year_vec = pop_input[0, :] - gdata.base_year
-        year_init = START_YEAR - gdata.base_year
+        year_vec = pop_input[0, :] - BASE_YEAR
+        year_init = START_YEAR - BASE_YEAR
         pop_mat = pop_input[1:, :] + 0.1
         pop_init = [np.interp(year_init, year_vec, pop_mat[idx, :])
                     for idx in range(pop_mat.shape[0])]
 
-        # Vital dynamics data
+        n_idx = np.array([n_val.startswith(cname+':') for n_val in n_nam])
+        pol_pop = np.sum(n_pop[n_idx])
+        ref_pop = np.sum(pop_init)
+        p_mul[n_idx] = ref_pop/pol_pop
+
         vd_data[adm00] = demog_vd_calc(year_vec, year_init, pop_mat, pop_init)
 
-        # Population fudge factor
-        file_pop = sum([demog_dat[val][0] for val in demog_dat
-                        if val.startswith(adm00+':') or val == adm00])
-        ref_pop = np.sum(pop_init)
-        pop_ratio[cname] = ref_pop/file_pop
-
-
-    # Aggregate population, area, lat, long
-    stem01 = [val.rsplit(':', 1)[0] for val in demog_dat]
-    list_adm02 = sorted(list(set(stem01)))
-    if (not SUB_ADM02):
-        ndemog_dat = {val: 4*[0] for val in list_adm02}
-        for val in demog_dat:
-            nval = val.rsplit(':', 1)[0]
-            ndemog_dat[nval][0] += demog_dat[val][0]
-            ndemog_dat[nval][1] += demog_dat[val][1]
-            ndemog_dat[nval][2] += demog_dat[val][2]*demog_dat[val][1]
-            ndemog_dat[nval][3] += demog_dat[val][3]*demog_dat[val][1]
-        demog_dat = ndemog_dat
-        for val in demog_dat:
-            demog_dat[val][2] /= demog_dat[val][1]
-            demog_dat[val][3] /= demog_dat[val][1]
-
-    # Add nodes
-    node_id = 0
-    node_list = list()
-
-    for loc_name in demog_dat:
-        if (any([loc_name.startswith(val+':') or
-                 val == loc_name for val in gdata.targ_adm00])):
-            node_id = node_id + 1
-            cname = loc_name.split(':')[1]
-            pop_ff = pop_ratio[cname]
-            node_obj = Node(lat=demog_dat[loc_name][3],
-                            lon=demog_dat[loc_name][2],
-                            pop=demog_dat[loc_name][0]*pop_ff,
-                            name=loc_name,
-                            forced_id=node_id,
-                            area=demog_dat[loc_name][1])
-            node_list.append(node_obj)
+    # Construct node list
+    p_mod = n_pop*p_mul
+    list_nam = n_nam[p_mod>gdata.demog_min_pop]
+    list_lat = n_lat[p_mod>gdata.demog_min_pop]
+    list_lng = n_lng[p_mod>gdata.demog_min_pop]
+    list_pop = p_mod[p_mod>gdata.demog_min_pop]
+    node_list = [Node(lat=list_lat[k1],
+                      lon=list_lat[k1],
+                      pop=list_pop[k1],
+                      name=list_nam[k1],
+                      forced_id=(k1+1)) for k1 in range(list_nam.shape[0])]
 
     # Node name bookkeeping
-    nname_dict = {node_obj.name: node_obj.forced_id for node_obj in node_list}
-    rep_groups = {nrep: [nname_dict[val] for val in nname_dict.keys()
+    node_name_dict = {node_obj.name: node_obj.forced_id
+                      for node_obj in node_list}
+    gdata.demog_node = node_name_dict
+
+    rep_groups = {nrep: [node_name_dict[val] for val in node_name_dict.keys()
                          if val.startswith(nrep+':') or val == nrep]
                   for nrep in list_adm02}
     gdata.demog_node_map = rep_groups
@@ -105,18 +101,6 @@ def demographicsBuilder():
     node_rep_dict = {val[0]: val[1] for val in
                      zip(list_adm02, range(len(list_adm02)))}
     gdata.demog_rep_index = node_rep_dict
-
-    # Prune small nodes
-    rev_node_list = list()
-    for node_obj in node_list:
-        n_init_pop = node_obj.node_attributes.initial_population
-        if (n_init_pop >= gdata.demog_min_pop):
-            rev_node_list.append(node_obj)
-    node_list = rev_node_list
-
-    node_name_dict = {node_obj.name: node_obj.forced_id
-                      for node_obj in node_list}
-    gdata.demog_node = node_name_dict
 
     # Create primary file
     ref_name = 'polio-custom'
@@ -202,6 +186,12 @@ def demographicsBuilder():
     isus_name = np.array(isus_dat['name'])
     isus_ages = np.array(isus_dat['ages'])
     isus_data = np.array(isus_dat['data'])
+
+    use_reg = np.array([any([(n_val == adm_val) for adm_val in ADM_TARG])
+                        for n_val in isus_name], dtype=bool)
+
+    isus_name = isus_name[use_reg]
+    isus_data = isus_data[use_reg, :, :]
 
     # Create list of initial susceptibility overlays
     is_over_list = list()
