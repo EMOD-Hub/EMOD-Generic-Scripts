@@ -79,7 +79,7 @@ def campaignBuilder():
     for sia_name in dict_sia:
 
         start_day = dict_sia[sia_name]['date']
-        if (start_day < TIME_MIN):
+        if (start_day < TIME_MIN or start_day > TIME_MAX):
             continue
 
         age_yr_max = dict_sia[sia_name]['age_yr_max']
@@ -143,7 +143,7 @@ def campaignBuilder():
         camp_module.add(camp_event)
 
     # Add RI
-    ri_age_day = 120.0
+    ri_age_day = 90.0
     start_day = 365.0*(RI_START_YR-gdata.base_year) - ri_age_day
 
     with open(os.path.join('Assets', 'data', 'routine_dat.json')) as fid01:

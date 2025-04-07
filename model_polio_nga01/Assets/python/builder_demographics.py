@@ -26,6 +26,7 @@ def demographicsBuilder():
     # Variables for this simulation
     ADM_TARG = gdata.var_params['targ_adm00']
     SUB_ADM02 = gdata.var_params['use_10k_res']
+
     START_YEAR = gdata.var_params['start_year']
     PROC_DISPER = gdata.var_params['proc_overdispersion']
     AH_VAR_SCALE = gdata.var_params['ind_variance_risk']
