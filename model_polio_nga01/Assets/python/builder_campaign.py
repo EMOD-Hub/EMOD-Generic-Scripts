@@ -126,11 +126,21 @@ def campaignBuilder():
         camp_event = ce_br_force(NODE_VALS, BR_MULT_X, BR_MULT_Y, start_day)
         camp_module.add(camp_event)
 
-    # Seasonality
+    # Add seasonality
     start_day = 365.0*(START_YEAR-gdata.base_year)
-    camp_event = ce_inf_force(ALL_NODES, 165.0, 80.0, 1.2, nreps=8,
-                              start_day=start_day, dt=gdata.t_step_days)
-    camp_module.add(camp_event)
+
+    fname = os.path.join('Assets', 'data', 'r0_seasonality.json')
+    with open(fname) as fid01:
+        dict_r0_season = json.load(fid01)
+
+    for reg_name in dict_r0_season:
+        n_list = build_node_list([reg_name], NODE_DICT)
+        camp_event = ce_inf_force(n_list,
+                                  dict_r0_season[reg_name]['day_start'],
+                                  dict_r0_season[reg_name]['day_length'],
+                                  dict_r0_season[reg_name]['mult_val'],
+                                  start_day=start_day, dt=gdata.t_step_days)
+        camp_module.add(camp_event)
 
     # Add RI
     ri_age_day = 120.0
