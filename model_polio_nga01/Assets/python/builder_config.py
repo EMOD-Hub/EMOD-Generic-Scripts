@@ -41,7 +41,6 @@ def update_config_obj(config):
     START_YEAR = gdata.var_params['start_year']
     RUN_YEARS = gdata.var_params['run_years']
     AGENT_RATE = gdata.var_params['agent_rate']
-    CORR_ACQ_TRANS = gdata.var_params['corr_acq_trans']
 
     # Config parameters object (read only dictionary)
     cp = config.parameters
@@ -78,7 +77,7 @@ def update_config_obj(config):
 
     cp.Enable_Disease_Mortality = 0
 
-    cp.Acquisition_Transmission_Correlation = CORR_ACQ_TRANS
+    cp.Acquisition_Transmission_Correlation = 0.8
 
     # Network
     max_k = max_coeff_ref(NI_POWER)

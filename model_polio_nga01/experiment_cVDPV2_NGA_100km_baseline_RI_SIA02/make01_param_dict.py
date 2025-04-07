@@ -63,9 +63,6 @@ def write_param_dict():
     # Node level overdispersion; 0.0 = Poisson
     P_CON['proc_overdispersion'] = 0.4
 
-    # Correlation between acqusition and transmission heterogeneity
-    P_CON['corr_acq_trans'] = 0.8
-
     # Base agent weight; less than 10 may have memory issues
     P_CON['agent_rate'] = 25.0
 
