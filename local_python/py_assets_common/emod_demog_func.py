@@ -70,7 +70,7 @@ def demog_vd_over(ref_name, node_list, cb_rate,
     vdoddiamdf['ResultScaleFactor'] = 1
     vdoddiamdf['ResultValues'] = mort_mat.tolist()
 
-    nfname = DEMOG_FILE.rsplit('.', 1)[0] + '_vd{:03d}.json'.format(idx)
+    nfname = DEMOG_FILE.rsplit('.', 1)[0] + '_vd{:04d}.json'.format(idx)
     nfname = os.path.join(PATH_OVERLAY, nfname)
 
     with open(nfname, 'w') as fid01:
@@ -128,7 +128,7 @@ def demog_is_over(ref_name, node_list, R0, age_x, age_y=None, idx=0):
     dover_obj = DemographicsOverlay(idref=ref_name, nodes=node_list,
                                     individual_attributes=ind_att)
 
-    nfname = DEMOG_FILE.rsplit('.', 1)[0] + '_is{:03d}.json'.format(idx)
+    nfname = DEMOG_FILE.rsplit('.', 1)[0] + '_is{:04d}.json'.format(idx)
     nfname = os.path.join(PATH_OVERLAY, nfname)
     dover_obj.to_file(file_name=nfname)
 
@@ -154,7 +154,7 @@ def demog_is_over_precalc(ref_name, node_list, isus_x, isus_y, idx=0):
     dover_obj = DemographicsOverlay(idref=ref_name, nodes=node_list,
                                     individual_attributes=ind_att)
 
-    nfname = DEMOG_FILE.rsplit('.', 1)[0] + '_is{:03d}.json'.format(idx)
+    nfname = DEMOG_FILE.rsplit('.', 1)[0] + '_is{:04d}.json'.format(idx)
     nfname = os.path.join(PATH_OVERLAY, nfname)
     dover_obj.to_file(file_name=nfname)
 
@@ -163,7 +163,7 @@ def demog_is_over_precalc(ref_name, node_list, isus_x, isus_y, idx=0):
 # *****************************************************************************
 
 
-def demog_ah_over(ref_name, node_list, R0_mult, ind_risk_var, idx=0):
+def demog_r0mult_over(ref_name, node_list, R0_mult, idx=0):
 
     if (not os.path.exists(PATH_OVERLAY)):
         os.mkdir(PATH_OVERLAY)
@@ -174,11 +174,7 @@ def demog_ah_over(ref_name, node_list, R0_mult, ind_risk_var, idx=0):
     nadict['InfectivityMultiplier'] = R0_mult
     dover_obj.raw['Defaults']['NodeAttributes'].update(nadict)
 
-    iadict = dict()
-    iadict['AcquisitionHeterogeneityVariance'] = ind_risk_var
-    dover_obj.raw['Defaults']['IndividualAttributes'].update(iadict)
-
-    nfname = DEMOG_FILE.rsplit('.', 1)[0] + '_ah{:03d}.json'.format(idx)
+    nfname = DEMOG_FILE.rsplit('.', 1)[0] + '_r0mult{:04d}.json'.format(idx)
     nfname = os.path.join(PATH_OVERLAY, nfname)
     dover_obj.to_file(file_name=nfname)
 

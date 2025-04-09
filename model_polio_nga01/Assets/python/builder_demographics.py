@@ -14,7 +14,7 @@ import numpy as np
 from emod_api.demographics.Demographics import Demographics, Node
 from emod_api.demographics import DemographicsTemplates as DT
 
-from emod_demog_func import demog_vd_calc, demog_vd_over, demog_ah_over, \
+from emod_demog_func import demog_vd_calc, demog_vd_over, demog_r0mult_over, \
                             demog_is_over_precalc
 from emod_constants import DEMOG_FILE, MORT_XVAL
 
@@ -24,7 +24,6 @@ from emod_constants import DEMOG_FILE, MORT_XVAL
 def demographicsBuilder():
 
     # Variables for this simulation
-    ADM_TARG = gdata.var_params['targ_adm00']
     SUB_ADM02 = gdata.var_params['use_10k_res']
 
     START_YEAR = gdata.var_params['start_year']
@@ -59,13 +58,13 @@ def demographicsBuilder():
 
     # Load demographic data
     vd_data = dict()
-    for cname in ADM_TARG:
+    for cname in gdata.targ_adm00:
         dat_file = 'pop_dat_{:s}.csv'.format(iso3_dict[cname])
         fname = os.path.join('Assets', 'data', dat_file)
         pop_input = np.loadtxt(fname, dtype=int, delimiter=',')
 
-        year_vec = pop_input[0, :] - BASE_YEAR
-        year_init = START_YEAR - BASE_YEAR
+        year_vec = pop_input[0, :] - gdata.base_year
+        year_init = START_YEAR - gdata.base_year
         pop_mat = pop_input[1:, :] + 0.1
         pop_init = [np.interp(year_init, year_vec, pop_mat[idx, :])
                     for idx in range(pop_mat.shape[0])]
@@ -75,16 +74,16 @@ def demographicsBuilder():
         ref_pop = np.sum(pop_init)
         p_mul[n_idx] = ref_pop/pol_pop
 
-        vd_data[adm00] = demog_vd_calc(year_vec, year_init, pop_mat, pop_init)
+        vd_data[cname] = demog_vd_calc(year_vec, year_init, pop_mat, pop_init)
 
     # Construct node list
     p_mod = n_pop*p_mul
-    list_nam = n_nam[p_mod>gdata.demog_min_pop]
-    list_lat = n_lat[p_mod>gdata.demog_min_pop]
-    list_lng = n_lng[p_mod>gdata.demog_min_pop]
-    list_pop = p_mod[p_mod>gdata.demog_min_pop]
+    list_nam = n_nam[p_mod > gdata.demog_min_pop]
+    list_lat = n_lat[p_mod > gdata.demog_min_pop]
+    list_lng = n_lng[p_mod > gdata.demog_min_pop]
+    list_pop = p_mod[p_mod > gdata.demog_min_pop]
     node_list = [Node(lat=list_lat[k1],
-                      lon=list_lat[k1],
+                      lon=list_lng[k1],
                       pop=list_pop[k1],
                       name=list_nam[k1],
                       forced_id=(k1+1)) for k1 in range(list_nam.shape[0])]
@@ -112,33 +111,35 @@ def demographicsBuilder():
 
     # Update defaults in primary file
     demog_obj.raw['Defaults']['IndividualAttributes'].clear()
-    demog_obj.raw['Defaults']['NodeAttributes'].clear()
+    iadict = {'AcquisitionHeterogeneityVariance': AH_VAR_SCALE}
+    demog_obj.raw['Defaults']['IndividualAttributes'].update(iadict)
 
-    nadict = dict()
-    nadict['InfectivityOverdispersion'] = PROC_DISPER
+    demog_obj.raw['Defaults']['NodeAttributes'].clear()
+    nadict = {'InfectivityOverdispersion': PROC_DISPER}
     demog_obj.raw['Defaults']['NodeAttributes'].update(nadict)
 
     # Spatial R0 variability
     fname = os.path.join('Assets', 'data', 'cgf_index_underweight.json')
     with open(fname) as fid01:
-        dict_ahv = json.load(fid01)
+        dict_r0_effect = json.load(fid01)
 
     k1 = 0
-    for reg_name in dict_ahv:
-        p_val = dict_ahv[reg_name]
+    for reg_name in dict_r0_effect:
+        p_val = dict_r0_effect[reg_name]
         r0_val = 1.0/(1.0+np.exp(R0_SCALE*(gdata.r0_mid_val-p_val))) + R0_MIN_M
 
         n_list = [n_obj for n_obj in node_list
                   if (n_obj.name == reg_name or
                       n_obj.name.startswith(reg_name+':'))]
-        nfname = demog_ah_over(ref_name, n_list, r0_val, AH_VAR_SCALE, k1)
-        gdata.demog_files.append(nfname)
-        k1 = k1 + 1
+        if (n_list):
+            nfname = demog_r0mult_over(ref_name, n_list, r0_val, k1)
+            gdata.demog_files.append(nfname)
+            k1 = k1 + 1
 
     # Write vital dynamics overlay
     k1 = 0
-    for adm00 in vd_data:
-        vd_tup = vd_data[adm00]
+    for cname in vd_data:
+        vd_tup = vd_data[cname]
         mort_year = vd_tup[0]
         mort_mat = vd_tup[1]
         age_x = vd_tup[2]
@@ -146,8 +147,8 @@ def demographicsBuilder():
         birth_rate = vd_tup[3]
 
         n_list = [n_obj for n_obj in node_list
-                  if (n_obj.name == adm00 or
-                      n_obj.name.startswith(adm00+':'))]
+                  if (n_obj.name == cname or
+                      n_obj.name.startswith(cname+':'))]
 
         nfname = demog_vd_over(ref_name, n_list, birth_rate,
                                mort_year, mort_mat, age_x, age_y, k1)
@@ -156,7 +157,7 @@ def demographicsBuilder():
 
         node_ids = [node_obj.forced_id for node_obj in n_list]
         br_tup = ((vd_tup[4]).tolist(), (vd_tup[5]).tolist(), node_ids)
-        gdata.brate_mult_tup.append(br_tup)
+        gdata.brate_mult_tup_list.append(br_tup)
 
     ## Birth rate indexing
     #fname = 'cbr_NGA.json'
@@ -188,9 +189,9 @@ def demographicsBuilder():
     isus_ages = np.array(isus_dat['ages'])
     isus_data = np.array(isus_dat['data'])
 
-    use_reg = np.array([any([(n_val == adm_val) for adm_val in ADM_TARG])
+    use_reg = np.array([any([n_val.startswith(adm00+':')
+                             for adm00 in gdata.targ_adm00])
                         for n_val in isus_name], dtype=bool)
-
     isus_name = isus_name[use_reg]
     isus_data = isus_data[use_reg, :, :]
 

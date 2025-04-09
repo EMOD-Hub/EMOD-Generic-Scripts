@@ -45,24 +45,22 @@ def campaignBuilder():
     # Note: campaign module itself is the file object; no Campaign class
     ALL_NODES = gdata.demog_object.node_ids
 
-    # SIA random effects multiplier
+    # SIA random effects value
     fname = os.path.join('Assets', 'data', 'sia_rnd_effect.json')
     with open(fname) as fid01:
         dict_sia_rnd = json.load(fid01)
 
-    for reg_name in dict_sia_rnd:
-        p_val = dict_sia_rnd[reg_name]
-        nval01 = SIA_RND_SCALE*p_val + np.log(SIA_COVER/(1-SIA_COVER))
-        nval02 = 1.0/(1.0+np.exp(-nval01))
-        dict_sia_rnd[reg_name] = nval02
-
     # SIA coverage-by-node {node_id: sia_coverage}
     sia_cover_dict = {NODE_DICT[nname]: SIA_COVER for nname in NODE_DICT}
-    for nname in NODE_DICT:
-        for reg_name in dict_sia_rnd:
-            if (nname.startswith(reg_name+':') or nname == reg_name):
-                sia_cover_dict[NODE_DICT[nname]] = dict_sia_rnd[reg_name]
-                break
+
+    # Update SIA coverage-by-node with random effects value
+    for reg_name in dict_sia_rnd:
+        eff_val = dict_sia_rnd[reg_name]
+        int_val = SIA_RND_SCALE*eff_val + np.log(SIA_COVER/(1-SIA_COVER))
+        cvr_val = 1.0/(1.0+np.exp(-int_val))
+
+        n_list = build_node_list([reg_name], NODE_DICT)
+        sia_cover_dict.update({n_id: cvr_val for n_id in n_list})
 
     # Apply historic SIA calendar
     fname = os.path.join('Assets', 'data', 'sia_dat.json')
@@ -77,12 +75,9 @@ def campaignBuilder():
 
     # Build SIA events
     for sia_name in dict_sia:
-
         start_day = dict_sia[sia_name]['date']
         if (start_day < TIME_MIN or start_day > TIME_MAX):
             continue
-
-        age_yr_max = dict_sia[sia_name]['age_yr_max']
 
         if (dict_sia[sia_name]['type'] == 'sabin2'):
             clade = 0
@@ -93,36 +88,38 @@ def campaignBuilder():
             genome = 0
             sia_take = SIA_BASE_TAKE*gdata.nopv2_sia_take_fac
 
-        n_list = build_node_list(dict_sia[sia_name]['nodes'], nname_dict)
-        n_dict = {nid: sia_cover_dict[nid] for nid in n_list}
+        age_yr_max = dict_sia[sia_name]['age_yr_max']
 
-        camp_event = ce_OPV_SIA(n_dict, start_day=start_day, take=sia_take,
-                                yrs_min=0.2, yrs_max=age_yr_max,
-                                clade=clade, genome=genome)
-        camp_module.add(camp_event)
+        n_list = build_node_list(dict_sia[sia_name]['nodes'], NODE_DICT)
+        if (n_list):
+            n_dict = {nid: sia_cover_dict[nid] for nid in n_list}
+            camp_event = ce_OPV_SIA(n_dict, start_day=start_day, take=sia_take,
+                                    yrs_min=0.2, yrs_max=age_yr_max,
+                                    clade=clade, genome=genome)
+            camp_module.add(camp_event)
 
     # Seed infections
     for seed_set in gdata.seed_sets:
+        cvdpv_gen = gdata.boxes_nopv2+gdata.boxes_sabin2
         reg_name = seed_set[0]
         seed_time = seed_set[1]
-        n_list = build_node_list([reg_name], NODE_DICT)
 
-        # Preserve size of outbreak; select single node for initial location
-        n_list = [n_list[-1]]
-        cvdpv_gen = gdata.boxes_nopv2+gdata.boxes_sabin2
-        start_day = 365.0*(seed_time-gdata.base_year)
-        camp_event = ce_import_pressure(n_list, start_day=start_day,
-                                        genome=cvdpv_gen,
-                                        duration=gdata.seed_inf_dt,
-                                        magnitude=gdata.seed_inf_num)
-        camp_module.add(camp_event)
+        n_list = build_node_list([reg_name], NODE_DICT)
+        if (n_list):
+            n_list = [n_list[-1]]  # Select single node for initial location
+            start_day = 365.0*(seed_time-gdata.base_year)
+            camp_event = ce_import_pressure(n_list, start_day=start_day,
+                                            genome=cvdpv_gen,
+                                            duration=gdata.seed_inf_dt,
+                                            magnitude=gdata.seed_inf_num)
+            camp_module.add(camp_event)
 
     # Time varying birth rate
     start_day = 365.0*(START_YEAR-gdata.base_year)
-    for br_tup in gdata.brate_mult_tup:
-        BR_MULT_X = br_tup[0]
-        BR_MULT_Y = br_tup[1]
-        NODE_VALS = br_tup[2]
+    for brate_mult_tup in gdata.brate_mult_tup_list:
+        BR_MULT_X = brate_mult_tup[0]
+        BR_MULT_Y = brate_mult_tup[1]
+        NODE_VALS = brate_mult_tup[2]
         camp_event = ce_br_force(NODE_VALS, BR_MULT_X, BR_MULT_Y, start_day)
         camp_module.add(camp_event)
 
@@ -135,12 +132,14 @@ def campaignBuilder():
 
     for reg_name in dict_r0_season:
         n_list = build_node_list([reg_name], NODE_DICT)
-        camp_event = ce_inf_force(n_list,
-                                  dict_r0_season[reg_name]['day_start'],
-                                  dict_r0_season[reg_name]['day_length'],
-                                  dict_r0_season[reg_name]['mult_val'],
-                                  start_day=start_day, dt=gdata.t_step_days)
-        camp_module.add(camp_event)
+        if (n_list):
+            camp_event = ce_inf_force(n_list,
+                                      dict_r0_season[reg_name]['day_start'],
+                                      dict_r0_season[reg_name]['day_length'],
+                                      dict_r0_season[reg_name]['mult_val'],
+                                      start_day=start_day,
+                                      dt=gdata.t_step_days)
+            camp_module.add(camp_event)
 
     # Add RI
     ri_age_day = 90.0
@@ -154,10 +153,12 @@ def campaignBuilder():
     for reg_name in dict_ri:
         imm_value = dict_ri[reg_name]
         n_list = build_node_list([reg_name], NODE_DICT)
-        camp_event = ce_OPV_RI(n_list, coverage=imm_value, start_day=start_day,
-                               base_take=1.0, age_one=ri_age_day, age_std=15.0,
-                               clade=1, genome=0)
-        camp_module.add(camp_event)
+        if (n_list):
+            camp_event = ce_OPV_RI(n_list, coverage=imm_value,
+                                   start_day=start_day, base_take=1.0,
+                                   age_one=ri_age_day, age_std=15.0,
+                                   clade=1, genome=0)
+            camp_module.add(camp_event)
 
     # Random number stream offset
     for (yr_off, nval) in zip(RNG_LIST, RNG_VAL):

@@ -18,11 +18,11 @@ inproc_abort_time = 43615
 inproc_abort_bool = False
 
 demog_node = dict()
-demog_min_pop = 50
+demog_min_pop = 75
 demog_node_map = dict() # LGA: [NodeIDs]
 demog_rep_index = dict() # LGA: Output row number
 
-brate_mult_tup = list()
+brate_mult_tup_list = list()
 
 init_ob_thresh = 10000
 

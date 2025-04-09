@@ -347,7 +347,7 @@ def ce_vax_AMT(node_list,
 # *****************************************************************************
 
 
-def ce_OPV_SIA(node_dict,
+def ce_OPV_SIA(n_dict,
                start_day=0.0, yrs_min=0.75, yrs_max=5.0,
                take=1.0, clade=0, genome=0):
 
@@ -361,12 +361,12 @@ def ce_OPV_SIA(node_dict,
     camp_event.Start_Day = start_day
     camp_event.Nodeset_Config = camp_nodes
 
-    camp_nodes.Node_List = list(node_dict.keys())
+    camp_nodes.Node_List = list(n_dict.keys())
 
     camp_coord.Intervention_Config = camp_iv
-    camp_coord.Coverage_By_Node = {{'Node_Id': nid,
-                                    'Coverage': node_dict[nid]*take}
-                                   for nid in node_dict}
+    camp_coord.Coverage_By_Node = [{'Node_Id': n_id,
+                                    'Coverage': n_dict[n_id]*take}
+                                   for n_id in n_dict]
     camp_coord.Target_Demographic = 'ExplicitAgeRanges'
     camp_coord.Target_Age_Min = yrs_min
     camp_coord.Target_Age_Max = yrs_max
