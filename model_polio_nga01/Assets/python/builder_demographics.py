@@ -129,12 +129,17 @@ def demographicsBuilder():
         r0_val = 1.0/(1.0+np.exp(R0_SCALE*(gdata.r0_mid_val-p_val))) + R0_MIN_M
 
         n_list = [n_obj for n_obj in node_list
-                  if (n_obj.name == reg_name or
-                      n_obj.name.startswith(reg_name+':'))]
+                  if (n_obj.name.startswith(reg_name+':'))]
+
         if (n_list):
             nfname = demog_r0mult_over(ref_name, n_list, r0_val, k1)
             gdata.demog_files.append(nfname)
             k1 = k1 + 1
+
+    # Birth rate indexing
+    fname = 'demog_data_cbr_mult.json'
+    with open(os.path.join('Assets', 'data', fname)) as fid01:
+        cbr_mult_dict = json.load(fid01)
 
     # Write vital dynamics overlay
     k1 = 0
@@ -146,38 +151,31 @@ def demographicsBuilder():
         age_y = None
         birth_rate = vd_tup[3]
 
-        n_list = [n_obj for n_obj in node_list
-                  if (n_obj.name == cname or
-                      n_obj.name.startswith(cname+':'))]
-
-        nfname = demog_vd_over(ref_name, n_list, birth_rate,
-                               mort_year, mort_mat, age_x, age_y, k1)
-        gdata.demog_files.append(nfname)
-        k1 = k1 + 1
-
-        node_ids = [node_obj.forced_id for node_obj in n_list]
+        node_ids = [n_obj.forced_id for n_obj in node_list
+                    if (n_obj.name.startswith(cname+':'))]
         br_tup = ((vd_tup[4]).tolist(), (vd_tup[5]).tolist(), node_ids)
         gdata.brate_mult_tup_list.append(br_tup)
 
-    ## Birth rate indexing
-    #fname = 'cbr_NGA.json'
-    #with open(os.path.join('Assets', 'data', fname)) as fid01:
-    #    cbr_mult_dict = json.load(fid01)
+        for reg_name in cbr_mult_dict:
+            if (not reg_name.startswith(cname+':')):
+                continue
+            
+            n_list = [n_obj for n_obj in node_list
+                      if (n_obj.name.startswith(reg_name+':'))]
+            if (n_list):
+                n_cbr = cbr_mult_dict[reg_name]*birth_rate
+                year_init = START_YEAR - gdata.base_year
+                f_vec = 12*[1.0]  # No seasonal forcing
+                mort_vec = [np.interp(year_init, mort_year, mort_mat[idx, :])
+                            for idx in range(mort_mat.shape[0])]
 
-    # Write vital dynamics overlay
+                (_, age_x, age_y) = DT._computeAgeDist(n_cbr, MORT_XVAL,
+                                                       mort_vec, f_vec)
 
-    #for reg_name in cbr_mult_dict:
-    #    n_cbr = cbr_mult_dict[reg_name]*birth_rate
-    #    mort_vec = np.array([np.interp(year_init, mort_year, mort_mat[idx, :])
-    #                         for idx in range(mort_mat.shape[0])])
-    #    mort_vec = mort_vec.tolist()
-    #    f_vec = 12*[1.0]  # No seasonal forcing
-    #    (_, age_x, age_y) = DT._computeAgeDist(n_cbr, MORT_XVAL,
-    #                                           mort_vec, f_vec)
-
-    #    n_list = [n_obj for n_obj in node_list
-    #              if (n_obj.name == reg_name or
-    #                  n_obj.name.startswith(reg_name+':'))]
+                nfname = demog_vd_over(ref_name, n_list, n_cbr,
+                                       mort_year, mort_mat, age_x, age_y, k1)
+                gdata.demog_files.append(nfname)
+                k1 = k1 + 1
 
     # Load immunity mapper data
     fname = 'sus_init_{:02d}.json'.format(gdata.init_coverage)

@@ -31,7 +31,7 @@ def write_param_dict():
     param_dict = dict()
 
     param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base'
-    param_dict[NUM_SIMS] = 4
+    param_dict[NUM_SIMS] = 3200
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -84,9 +84,9 @@ def write_param_dict():
     P_CON['ri_start_yr'] = 2100.0
 
     # Apply SIA calendars
-    P_CON['sia_base_coverage'] = 0.4
+    P_CON['sia_base_coverage'] = 0.5
     P_CON['sia_coverage_scale'] = 0.8
-    P_CON['sia_base_vax_take'] = 0.7
+    P_CON['sia_base_vax_take'] = 0.8
     P_CON['sia_plan_file'] = ''
 
     # Write parameter dictionary
