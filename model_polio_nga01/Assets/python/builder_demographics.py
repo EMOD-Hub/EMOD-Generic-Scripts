@@ -50,12 +50,6 @@ def demographicsBuilder():
     n_pop = np.array([lval[3] for lval in flines], dtype=int)
     p_mul = np.zeros(n_pop.shape[0], dtype=float)
 
-    # Nameset for admin02
-    adm02_subset = n_nam.tolist()
-    if (SUB_ADM02):
-        adm02_subset = [n_val.rsplit(':', 1)[0] for n_val in n_nam]
-    list_adm02 = sorted(list(set(adm02_subset)))
-
     # Load demographic data
     vd_data = dict()
     for cname in gdata.targ_adm00:
@@ -87,6 +81,12 @@ def demographicsBuilder():
                       pop=list_pop[k1],
                       name=list_nam[k1],
                       forced_id=(k1+1)) for k1 in range(list_nam.shape[0])]
+
+    # Nameset for admin02
+    adm02_subset = list_nam.tolist()
+    if (SUB_ADM02):
+        adm02_subset = [n_val.rsplit(':', 1)[0] for n_val in list_nam]
+    list_adm02 = sorted(list(set(adm02_subset)))
 
     # Node name bookkeeping
     node_name_dict = {node_obj.name: node_obj.forced_id
