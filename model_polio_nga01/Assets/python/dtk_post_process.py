@@ -23,8 +23,8 @@ def application(output_path):
     RUN_YEARS = gdata.var_params['run_years']
     cVDPV_genome = gdata.boxes_sabin2 + gdata.boxes_nopv2
 
-    REP_MAP_DICT = gdata.demog_node_map    # LGA Dotname: [NodeIDs]
-    REP_DEX_DICT = gdata.demog_rep_index   # LGA Dotname: Output row number
+    REP_MAP_DICT = gdata.demog_node_map    # "adm02_dotname": [NodeIDs]
+    REP_DEX_DICT = gdata.demog_rep_index   # "adm02_dotname": Output row
 
     # Prep output dictionary
     SIM_IDX = gdata.sim_index
