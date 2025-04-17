@@ -52,8 +52,8 @@ def pool_manager(exp_id=None):
 
     exp_obj = Experiment.get(exp_id)
     sims_all = exp_obj.get_simulations()
-    sims_valid = [s for s in sims_all if s.state.value >=
-                  SimulationState.Commissioned.value]
+    sims_valid = [s for s in sims_all if s.state.value ==
+                  SimulationState.Succeeded.value]
 
     with Pool() as pool_obj:
         resp_list = pool_obj.map(getter_worker, sims_valid)
