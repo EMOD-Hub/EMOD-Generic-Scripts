@@ -22,6 +22,6 @@ PATH_DATA = os.path.abspath(os.path.join('..', 'Assets', 'data'))
 
 if (__name__ == "__main__"):
 
-    start_exp(PATH_PYTHON, PATH_DATA, PATH_EXP_DEF, priority=1)
+    start_exp(PATH_PYTHON, PATH_DATA, PATH_EXP_DEF)
 
 # ******************************************************************************
