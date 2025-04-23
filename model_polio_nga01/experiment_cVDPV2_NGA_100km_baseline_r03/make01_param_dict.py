@@ -30,8 +30,8 @@ def write_param_dict():
     # Setup
     param_dict = dict()
 
-    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base_rg02-y4'
-    param_dict[NUM_SIMS] = 1500
+    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base_rg03-y8'
+    param_dict[NUM_SIMS] = 700
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -48,16 +48,16 @@ def write_param_dict():
     #P_CON['rng_list_offset_yr'] = []
     #P_CON['rng_list_val'] = []
 
-    P_CON['run_number'] = 410
-    P_CON['rng_list_offset_yr'] = [1.2]
-    P_CON['rng_list_val'] = [-1]
+    P_CON['run_number'] = 500
+    P_CON['rng_list_offset_yr'] = [1.05, 1.50, 2.72, 4.1, 5.5, 6.9]
+    P_CON['rng_list_val'] = [379, 216, 1378, 1028, 388, -1]
 
     # Simulation start / duration
     P_CON['start_year'] = 2017
-    P_CON['run_years'] = 4.0
+    P_CON['run_years'] = 8.0
 
     # Parameters for gravity model for network connections
-    P_CON['net_inf_power'] = [1.6]
+    P_CON['net_inf_power'] = [1.5]
     P_CON['net_inf_ln_mult'] = [-2.0]
 
     # Node level overdispersion; 0.0 = Poisson
@@ -67,10 +67,10 @@ def write_param_dict():
     P_CON['agent_rate'] = 25.0
 
     # R0 values for cVDPV, Sabin, nOPV; linear interpolation;
-    P_CON['R0'] = 16.0
+    P_CON['R0'] = 18.0
     P_CON['R0_OPV_mult'] = 0.250
     P_CON['R0_nOPV_mult'] = 0.125
-    P_CON['R0_sig_scale'] = 28.0
+    P_CON['R0_sig_scale'] = 32.0
     P_CON['R0_min_mult'] = 0.2
 
     # Individual level risk variance (risk of acquisition multiplier;

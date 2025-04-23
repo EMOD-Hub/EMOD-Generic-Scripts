@@ -19,7 +19,7 @@ from global_data import base_year, init_ob_thresh, targ_adm00
 # *****************************************************************************
 
 DIRNAMES = [
-             ('experiment_cVDPV2_NGA_100km_baseline_r02', 0),
+             ('experiment_cVDPV2_NGA_100km_baseline_r03', 0),
             #('experiment_cVDPV2_NGA_100km_baseline_RI', 4),
             #('experiment_cVDPV2_NGA_100km_baseline_SIA01', 1),
             #('experiment_cVDPV2_NGA_100km_baseline_SIA01N', 7),
@@ -36,8 +36,9 @@ DIRNAMES = [
 
 def make_fig():
 
-    dy_init = 0
+    dy_init = 1
     dy_end = 0
+    c_thresh = 160
 
     tpath = os.path.join('..', 'Assets', 'data','routine_dat.json')
     with open(tpath) as fid01:
@@ -63,7 +64,7 @@ def make_fig():
         # Sim outputs
         tpath = os.path.join('..', dirname)
 
-        with open(os.path.join(tpath, 'data_brick.json')) as fid01:
+        with open(os.path.join(tpath, 'data_brick_2.json')) as fid01:
             data_brick = json.load(fid01)
 
         with open(os.path.join(tpath, P_FILE)) as fid01:
@@ -91,10 +92,12 @@ def make_fig():
         totinf = np.sum(inf_data, axis=1)
         cuminf = np.cumsum(totinf, axis=1)
         gidx = (cuminf[:, -1] >= init_ob_thresh)
-        #gidx = gidx & (cuminf[:, -1] > 140e3) & (cuminf[:, -1] < 150e3)
+        gidx = gidx & (cuminf[:, -1] > 900e3) #& (cuminf[:, -1] < 180e3)
+        #gidx = gidx & (cuminf[:, -73] < 180e3)
+        #gidx = gidx & (np.max(totinf, axis=1) < 6e3)
         #gidx = gidx & (totinf[:, -30] > 0) #& (cuminf[:, -1] < 160e3) #& (cuminf[:, -1] < 130e3)
-        #gidx = gidx & (np.array(list(range(n_sims))) == 677) #104
-        #gidx = gidx & (np.array(list(range(n_sims))) > 120) & (np.array(list(range(n_sims))) <= 500)
+        gidx = gidx & (np.array(list(range(n_sims))) == 388) #& (np.array(list(range(n_sims))) < 900) #104
+        #gidx = gidx & (np.array(list(range(n_sims))) > 100) & (np.array(list(range(n_sims))) <= 300)
 
         print(np.sum(gidx))
         print(np.argwhere(gidx))
@@ -144,8 +147,10 @@ def make_fig():
         axs01.set_yticks(ticks=ticloc02)
         axs01.set_yticklabels(ticlab02)
 
-        ref_dat_mo = np.array(epi_dat_mo['AFRO:NIGERIA']['cases'])
-        tvec_ref = np.array(epi_dat_mo['AFRO:NIGERIA']['times'])
+        tvec_ref = np.array(epi_dat_mo[targ_adm00[0]]['times'])
+        ref_dat_mo = np.array(epi_dat_mo[targ_adm00[0]]['cases'])
+        for cname in targ_adm00[1:]:
+            ref_dat_mo += np.array(epi_dat_mo[cname]['cases'])
         tbool_ref = (tvec_ref >= year_init) & (tvec_ref < (year_init+run_years))
         axs02 = axs01.twinx()
         axs02.bar(tvec_ref[tbool_ref], ref_dat_mo[tbool_ref], width=1/12,
@@ -184,7 +189,8 @@ def make_fig():
             ymax = np.ceil(max(ymax, np.max(pts[:,1])))
         xydelt = max(xmax-xmin, ymax-ymin)
 
-        adm02_mat = (inf_data[gidx,:,:]>0)
+        adm02_mat01 = (inf_data[gidx,:,:]>c_thresh)
+        adm02_mat02 = (inf_data[gidx,:,:]>1)
         for k1 in range(run_years):
             axs01 = axlist[k1+1]
             axs01.axis('off')
@@ -196,18 +202,25 @@ def make_fig():
                 shape_patch(axs01, adm00_pts, adm00_prt, clr=3*[0.9])
                 shape_line(axs01, adm00_pts, adm00_prt, wid=0.2)
             yidx = (t_vec>=ticloc01[k1]) & (t_vec<ticloc01[k1+1])
-            yrdat = np.max(adm02_mat[:, :, yidx], axis=2)
-            yrdat = np.mean(yrdat, axis=0)
+            yrdat01 = np.max(adm02_mat01[:, :, yidx], axis=2)
+            yrdat01 = np.mean(yrdat01, axis=0)
+            yrdat02 = np.max(adm02_mat02[:, :, yidx], axis=2)
+            yrdat02 = np.mean(yrdat02, axis=0)
             for adm02_name in n_dict:
                 k2 = n_dict[adm02_name]
-                if(yrdat[k2] > 0):
+                if (yrdat01[k2] > 0):
                     adm02_prt = adm02_shp[adm02_name]['parts']
                     adm02_pts = adm02_shp[adm02_name]['points']
-                    shape_patch(axs01, adm02_pts, adm02_prt,
-                                clr=[1.0, 1.0-yrdat[k2], 1.0-yrdat[k2]])
+                    clr_val = [1.0, 1.0-yrdat01[k2], 1.0-yrdat01[k2]]
+                    shape_patch(axs01, adm02_pts, adm02_prt, clr=clr_val)
+                elif (yrdat02[k2] > 0):
+                    adm02_prt = adm02_shp[adm02_name]['parts']
+                    adm02_pts = adm02_shp[adm02_name]['points']
+                    clr_val = [1.0, 1.0, 1.0]
+                    shape_patch(axs01, adm02_pts, adm02_prt, clr=clr_val)
 
         plt.tight_layout()
-        plt.savefig('fig_extent_{:s}_01_v3.png'.format(dirname))
+        plt.savefig('fig_extent_{:s}_01_v5.png'.format(dirname))
         plt.close()
 
     return None
