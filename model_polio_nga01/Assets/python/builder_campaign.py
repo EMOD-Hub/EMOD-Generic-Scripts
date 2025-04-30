@@ -31,6 +31,7 @@ def campaignBuilder():
     SIA_RND_SCALE = gdata.var_params['sia_coverage_scale']
     SIA_BASE_TAKE = gdata.var_params['sia_base_vax_take']
     SIA_SCENARIO = gdata.var_params['sia_plan_file']
+    SIA_END_YR = gdata.var_params['sia_end_yr']
 
     RNG_LIST = gdata.var_params['rng_list_offset_yr']
     RNG_VAL = gdata.var_params['rng_list_val']
@@ -39,8 +40,9 @@ def campaignBuilder():
 
     NODE_DICT = gdata.demog_node
 
-    TIME_MIN = 365.0*(START_YEAR-gdata.base_year)
-    TIME_MAX = TIME_MIN + 365.0*RUN_YEARS + gdata.t_step_days
+    DAY_MIN = 365.0*(START_YEAR-gdata.base_year)
+    DAY_MAX = DAY_MIN + 365.0*RUN_YEARS + gdata.t_step_days
+    DAY_MAX_SIA = 365.0*(SIA_END_YR-gdata.base_year)
 
     # Note: campaign module itself is the file object; no Campaign class
     ALL_NODES = gdata.demog_object.node_ids
@@ -75,8 +77,8 @@ def campaignBuilder():
 
     # Build SIA events
     for sia_name in dict_sia:
-        start_day = dict_sia[sia_name]['date']
-        if (start_day < TIME_MIN or start_day > TIME_MAX):
+        sia_day = dict_sia[sia_name]['date']
+        if (sia_day < DAY_MIN or sia_day > DAY_MAX or sia_day > DAY_MAX_SIA):
             continue
 
         if (dict_sia[sia_name]['type'] == 'sabin2'):
@@ -93,7 +95,7 @@ def campaignBuilder():
         n_list = build_node_list(dict_sia[sia_name]['nodes'], NODE_DICT)
         if (n_list):
             n_dict = {nid: sia_cover_dict[nid] for nid in n_list}
-            camp_event = ce_OPV_SIA(n_dict, start_day=start_day, take=sia_take,
+            camp_event = ce_OPV_SIA(n_dict, start_day=sia_day, take=sia_take,
                                     yrs_min=0.2, yrs_max=age_yr_max,
                                     clade=clade, genome=genome)
             camp_module.add(camp_event)
@@ -147,7 +149,7 @@ def campaignBuilder():
 
     with open(os.path.join('Assets', 'data', 'routine_dat.json')) as fid01:
         dict_ri = json.load(fid01)
-    if (start_day > TIME_MAX):
+    if (start_day > DAY_MAX):
         dict_ri = dict()
 
     for reg_name in dict_ri:

@@ -34,7 +34,7 @@ targ_adm00 = ['AFRO:CAMEROON',
 seed_sets = [('AFRO:NIGERIA:JIGAWA:BIRINIWA', 2017.9),
              ('AFRO:NIGERIA:ZAMFARA:SHINKAFI', 2020.9)]
 
-r0_mid_val = 0.21172
+r0_mid_val = 0.20  #0.21172
 
 nopv2_sia_take_fac = 0.7
 
@@ -49,6 +49,7 @@ boxes_nopv2 = 2
 boxes_sabin2 = 7
 rev_nopv2 = 0.0
 rev_sabin2 = 0.0
+
 init_coverage = 50
 
 base_year = 1900.0
