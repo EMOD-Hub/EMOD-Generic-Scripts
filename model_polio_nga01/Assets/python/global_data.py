@@ -14,13 +14,13 @@ demog_files = list()
 demog_object = None
 
 # Other stuff
-inproc_abort_time = 43615
-inproc_abort_bool = False
+inproc_dt = 90
 
-demog_node = dict()
 demog_min_pop = 75
-demog_node_map = dict() # LGA: [NodeIDs]
-demog_rep_index = dict() # LGA: Output row number
+
+node_idval = dict()
+adm02_idlist  = dict()
+adm01_idlist  = dict()
 
 brate_mult_tup_list = list()
 

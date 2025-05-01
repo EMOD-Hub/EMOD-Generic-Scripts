@@ -38,7 +38,7 @@ def campaignBuilder():
 
     RI_START_YR = gdata.var_params['ri_start_yr']
 
-    NODE_DICT = gdata.demog_node
+    NODE_DICT = gdata.node_idval
 
     DAY_MIN = 365.0*(START_YEAR-gdata.base_year)
     DAY_MAX = DAY_MIN + 365.0*RUN_YEARS + gdata.t_step_days

@@ -87,16 +87,22 @@ def demographicsBuilder():
     if (SUB_ADM02):
         adm02_subset = [n_val.rsplit(':', 1)[0] for n_val in list_nam]
     list_adm02 = sorted(list(set(adm02_subset)))
+    adm01_subset = [n_val.rsplit(':', 1)[0] for n_val in list_adm02]
+    list_adm01 = sorted(list(set(adm01_subset)))
 
     # Node name bookkeeping
-    node_name_dict = {node_obj.name: node_obj.forced_id
-                      for node_obj in node_list}
-    gdata.demog_node = node_name_dict
+    node_dict = {nobj.name: nobj.forced_id for nobj in node_list}
+    gdata.node_idval = node_dict
 
-    rep_groups = {nrep: [node_name_dict[val] for val in node_name_dict.keys()
-                         if val.startswith(nrep+':') or val == nrep]
-                  for nrep in list_adm02}
-    gdata.demog_node_map = rep_groups
+    adm02_dict = {adm02: [node_dict[nname] for nname in node_dict.keys()
+                         if nname.startswith(adm02+':') or nname == adm02]
+                  for adm02 in list_adm02}
+    gdata.adm02_idlist = adm02_dict
+
+    adm01_dict = {adm01: [node_dict[nname] for nname in node_dict.keys()
+                         if nname.startswith(adm01+':') or nname == adm01]
+                  for adm01 in list_adm01}
+    gdata.adm01_idlist = adm01_dict
 
     node_rep_dict = {val[0]: val[1] for val in
                      zip(list_adm02, range(len(list_adm02)))}

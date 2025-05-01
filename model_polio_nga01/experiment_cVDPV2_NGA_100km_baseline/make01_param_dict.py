@@ -90,6 +90,9 @@ def write_param_dict():
     P_CON['sia_base_vax_take'] = 0.8
     P_CON['sia_plan_file'] = ''
 
+    # Outbreak response SIAs
+    P_CON['use_obr'] = False
+
     # Write parameter dictionary
     with open(P_FILE, 'w') as fid01:
         json.dump(param_dict, fid01)
