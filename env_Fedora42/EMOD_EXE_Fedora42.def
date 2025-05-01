@@ -1,5 +1,5 @@
 Bootstrap: localimage
-From: Assets/EMOD_OS_Fedora41.sif
+From: Assets/EMOD_OS_Fedora42.sif
 
 %post
     dnf upgrade -y
