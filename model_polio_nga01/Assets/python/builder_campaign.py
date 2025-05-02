@@ -63,6 +63,7 @@ def campaignBuilder():
 
         n_list = build_node_list([reg_name], NODE_DICT)
         sia_cover_dict.update({n_id: cvr_val for n_id in n_list})
+    gdata.sia_cover_dict = sia_cover_dict
 
     # Apply historic SIA calendar
     fname = os.path.join('Assets', 'data', 'sia_dat.json')

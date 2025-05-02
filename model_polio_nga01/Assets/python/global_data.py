@@ -14,7 +14,9 @@ demog_files = list()
 demog_object = None
 
 # Other stuff
-inproc_dt = 90
+inproc_dt = 30
+inproc_dict_delay = None
+inproc_dict_sia_time = None
 
 demog_min_pop = 75
 
@@ -24,7 +26,10 @@ adm01_idlist  = dict()
 
 brate_mult_tup_list = list()
 
+sia_cover_dict = None
+
 init_ob_thresh = 10000
+init_coverage = 50
 
 targ_adm00 = ['AFRO:CAMEROON',
               'AFRO:CHAD',
@@ -49,8 +54,6 @@ boxes_nopv2 = 2
 boxes_sabin2 = 7
 rev_nopv2 = 0.0
 rev_sabin2 = 0.0
-
-init_coverage = 50
 
 base_year = 1900.0
 t_step_days = 5.0

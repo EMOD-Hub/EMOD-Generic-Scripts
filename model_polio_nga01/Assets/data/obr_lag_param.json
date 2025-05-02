@@ -1,0 +1,202 @@
+{
+    "AFRO:ALGERIA": [
+        5.0394,
+        7.6259
+    ],
+    "AFRO:ANGOLA": [
+        5.1462,
+        11.7926
+    ],
+    "AFRO:BENIN": [
+        4.3248,
+        13.3497
+    ],
+    "AFRO:BOTSWANA": [
+        3.1771,
+        19.2924
+    ],
+    "AFRO:BURKINA_FASO": [
+        4.2481,
+        26.0272
+    ],
+    "AFRO:BURUNDI": [
+        4.0868,
+        15.3122
+    ],
+    "AFRO:CAMEROON": [
+        5.3073,
+        10.2804
+    ],
+    "AFRO:CENTRAL_AFRICAN_REPUBLIC": [
+        8.3975,
+        4.5431
+    ],
+    "AFRO:CHAD": [
+        5.7537,
+        12.2936
+    ],
+    "AFRO:CONGO": [
+        4.2683,
+        22.2231
+    ],
+    "AFRO:COTE_DIVOIRE": [
+        2.1144,
+        47.5562
+    ],
+    "AFRO:DEMOCRATIC_REPUBLIC_OF_THE_CONGO": [
+        4.79,
+        17.883
+    ],
+    "AFRO:EQUATORIAL_GUINEA": [
+        4.7556,
+        13.2938
+    ],
+    "AFRO:ERITREA": [
+        4.4218,
+        29.751
+    ],
+    "AFRO:ESWATINI": [
+        4.5711,
+        14.6492
+    ],
+    "AFRO:ETHIOPIA": [
+        2.8897,
+        31.4109
+    ],
+    "AFRO:GABON": [
+        4.5711,
+        14.6492
+    ],
+    "AFRO:GAMBIA": [
+        5.8678,
+        10.3745
+    ],
+    "AFRO:GHANA": [
+        4.2381,
+        9.386
+    ],
+    "AFRO:GUINEA": [
+        5.6675,
+        16.5742
+    ],
+    "AFRO:GUINEA_BISSAU": [
+        5.0101,
+        19.8972
+    ],
+    "AFRO:KENYA": [
+        3.7572,
+        18.8243
+    ],
+    "AFRO:LESOTHO": [
+        4.5711,
+        14.6492
+    ],
+    "AFRO:LIBERIA": [
+        4.8553,
+        14.0089
+    ],
+    "AFRO:MADAGASCAR": [
+        3.1221,
+        34.0403
+    ],
+    "AFRO:MALAWI": [
+        5.3064,
+        9.6692
+    ],
+    "AFRO:MALI": [
+        4.0665,
+        24.0125
+    ],
+    "AFRO:MAURITANIA": [
+        5.8614,
+        11.2204
+    ],
+    "AFRO:MOZAMBIQUE": [
+        4.0846,
+        18.1596
+    ],
+    "AFRO:NAMIBIA": [
+        4.5711,
+        14.6492
+    ],
+    "AFRO:NIGER": [
+        2.5554,
+        29.5696
+    ],
+    "AFRO:NIGERIA": [
+        5.7476,
+        10.8485
+    ],
+    "AFRO:RWANDA": [
+        4.8188,
+        9.7915
+    ],
+    "AFRO:SENEGAL": [
+        4.0416,
+        15.8578
+    ],
+    "AFRO:SIERRA_LEONE": [
+        4.8208,
+        14.8273
+    ],
+    "AFRO:SOUTH_AFRICA": [
+        4.6789,
+        18.2025
+    ],
+    "AFRO:SOUTH_SUDAN": [
+        6.0544,
+        9.9624
+    ],
+    "AFRO:TOGO": [
+        5.76,
+        10.3288
+    ],
+    "AFRO:UGANDA": [
+        4.3133,
+        12.8182
+    ],
+    "AFRO:UNITED_REPUBLIC_OF_TANZANIA": [
+        5.512,
+        7.7937
+    ],
+    "AFRO:WESTERN_SAHARA": [
+        4.5711,
+        14.6492
+    ],
+    "AFRO:ZAMBIA": [
+        4.3782,
+        15.4483
+    ],
+    "AFRO:ZIMBABWE": [
+        10.2104,
+        4.3048
+    ],
+    "EMRO:DJIBOUTI": [
+        7.2476,
+        10.1665
+    ],
+    "EMRO:EGYPT": [
+        4.9003,
+        6.6464
+    ],
+    "EMRO:LIBYA": [
+        4.7267,
+        16.4899
+    ],
+    "EMRO:MOROCCO": [
+        4.5711,
+        14.6492
+    ],
+    "EMRO:SOMALIA": [
+        4.934,
+        10.4985
+    ],
+    "EMRO:SUDAN": [
+        4.9378,
+        13.3579
+    ],
+    "EMRO:TUNISIA": [
+        4.2201,
+        23.9307
+    ]
+}
