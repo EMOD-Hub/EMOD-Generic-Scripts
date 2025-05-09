@@ -31,6 +31,7 @@ def demographicsBuilder():
     AH_VAR_SCALE = gdata.var_params['ind_variance_risk']
     R0_SCALE = gdata.var_params['R0_sig_scale']
     R0_MIN_M = gdata.var_params['R0_min_mult']
+    R0_MOD = gdata.var_params['R0_mods']
 
     # Load ISO3 codes dict
     fname = os.path.join('Assets', 'data', 'dict_iso3.json')
@@ -133,6 +134,9 @@ def demographicsBuilder():
     for reg_name in dict_r0_effect:
         p_val = dict_r0_effect[reg_name]
         r0_val = 1.0/(1.0+np.exp(R0_SCALE*(gdata.r0_mid_val-p_val))) + R0_MIN_M
+
+        if (reg_name in R0_MOD):
+            r0_val *= R0_MOD[reg_name]
 
         n_list = [n_obj for n_obj in node_list
                   if (n_obj.name.startswith(reg_name+':'))]

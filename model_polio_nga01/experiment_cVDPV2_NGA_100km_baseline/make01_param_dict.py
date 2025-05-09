@@ -57,8 +57,8 @@ def write_param_dict():
     P_CON['run_years'] = 2.0
 
     # Parameters for gravity model for network connections
-    P_CON['net_inf_power'] = [1.6]
-    P_CON['net_inf_ln_mult'] = [-1.9]
+    P_CON['net_inf_power'] = [1.5]
+    P_CON['net_inf_ln_mult'] = [-2.5]
 
     # Node level overdispersion; 0.0 = Poisson
     P_CON['proc_overdispersion'] = 0.4
@@ -72,10 +72,12 @@ def write_param_dict():
     P_CON['R0_nOPV_mult'] = 0.125
     P_CON['R0_sig_scale'] = 32.0
     P_CON['R0_min_mult'] = 0.2
+    P_CON['R0_mods'] = {'AFRO:NIGERIA:BORNO': 1.4,
+                        'AFRO:NIGERIA:KANO': 0.7}
 
     # Individual level risk variance (risk of acquisition multiplier;
     # mean = 1.0; log-normal distribution)
-    P_CON['ind_variance_risk'] = 4.0
+    P_CON['ind_variance_risk'] = 3.0
 
     # Subdivide LGAs into 100km^2 regions
     P_CON['use_10k_res'] = True
@@ -85,7 +87,7 @@ def write_param_dict():
 
     # Apply SIA calendars
     P_CON['sia_end_yr'] = 2100
-    P_CON['sia_base_coverage'] = 0.50
+    P_CON['sia_base_coverage'] = 0.45
     P_CON['sia_coverage_scale'] = 1.0
     P_CON['sia_base_vax_take'] = 0.8
     P_CON['sia_plan_file'] = ''

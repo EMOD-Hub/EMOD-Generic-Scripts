@@ -9,7 +9,7 @@ import global_data as gdata
 
 import numpy as np
 
-from emod_postproc_func import post_proc_poppyr
+from emod_postproc_func import post_proc_poppyr, post_proc_cost
 from emod_constants import RST_FILE, RST_TIME, RST_NODE, RST_CLADE, \
                            RST_GENOME, RST_NEW_INF
 
@@ -35,6 +35,9 @@ def application(output_path):
 
     # Sample population pyramid every year
     post_proc_poppyr(output_path, parsed_dat[key_str])
+
+    # Retain campaign cost output channel
+    post_proc_cost(output_path, parsed_dat[key_str])
 
     # Timesteps
     t_ini = 365.0*(START_YEAR-gdata.base_year)
