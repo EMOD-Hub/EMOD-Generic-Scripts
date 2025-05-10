@@ -19,8 +19,8 @@ from global_data import base_year, init_ob_thresh, targ_adm00
 # *****************************************************************************
 
 DIRNAMES = [
-            ('experiment_cVDPV2_NGA_100km_baseline', 0),
-            #('experiment_cVDPV2_NGA_100km_baseline_ob01', 0),
+            #('experiment_cVDPV2_NGA_100km_baseline', 0),
+            ('experiment_cVDPV2_NGA_100km_baseline_ob02', 0),
             #('experiment_cVDPV2_NGA_100km_baseline_RI', 4),
             #('experiment_cVDPV2_NGA_100km_baseline_SIA01', 1),
             #('experiment_cVDPV2_NGA_100km_baseline_SIA01N', 7),
@@ -94,11 +94,11 @@ def make_fig():
         cuminf = np.cumsum(totinf, axis=1)
         gidx = (cuminf[:, -1] >= init_ob_thresh)
         #gidx = gidx & (cuminf[:, -1] > 900e3) #& (cuminf[:, -1] < 180e3)
-        #gidx = gidx & (cuminf[:, -1] > 120e3)
+        #gidx = gidx & (cuminf[:, -1] > 150e3)
         #gidx = gidx & (np.max(totinf, axis=1) < 6e3)
-        #gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] < 180e3) #& (cuminf[:, -1] > 120e3)
-        #gidx = gidx & (np.array(list(range(n_sims))) == 2328) #& (np.array(list(range(n_sims))) < 900) #104
-        #gidx = gidx & (np.array(list(range(n_sims))) > 100) & (np.array(list(range(n_sims))) <= 300)
+        gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] < 180e3) #& (cuminf[:, -1] > 120e3)
+        #gidx = gidx & (np.array(list(range(n_sims))) == 55) #& (np.array(list(range(n_sims))) < 900) #104
+        #gidx = gidx & (np.array(list(range(n_sims))) > 225) #& (np.array(list(range(n_sims))) <= 225)
 
         print(np.sum(gidx))
         #print(np.argwhere(gidx))
@@ -107,7 +107,6 @@ def make_fig():
         #print(np.argwhere(inf_data[gidx,:,:95]))
         #n_dict_inv = {n_dict[val]: val for val in n_dict}
         #print(n_dict_inv[793])
-
 
         if (False):
             for n7 in range(gidx.shape[0]):

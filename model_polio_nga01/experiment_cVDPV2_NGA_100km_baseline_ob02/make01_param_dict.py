@@ -30,7 +30,7 @@ def write_param_dict():
     # Setup
     param_dict = dict()
 
-    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-y03'
+    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-ob01-y03'
     param_dict[NUM_SIMS] = 360
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
@@ -49,12 +49,12 @@ def write_param_dict():
     #P_CON['rng_list_val'] = []
 
     P_CON['run_number'] = 456
-    P_CON['rng_list_offset_yr'] = [1.2, 2.1]
-    P_CON['rng_list_val'] = [55, -1]
+    P_CON['rng_list_offset_yr'] = [1.2]
+    P_CON['rng_list_val'] = [-1]
 
     # Simulation start / duration
     P_CON['start_year'] = 2017
-    P_CON['run_years'] = 4.0
+    P_CON['run_years'] = 3.0
 
     # Parameters for gravity model for network connections
     P_CON['net_inf_power'] = [1.5]
@@ -86,14 +86,14 @@ def write_param_dict():
     P_CON['ri_start_yr'] = 2100
 
     # Apply SIA calendars
-    P_CON['sia_end_yr'] = 2100
+    P_CON['sia_end_yr'] = 2018
     P_CON['sia_base_coverage'] = 0.45
     P_CON['sia_coverage_scale'] = 1.0
     P_CON['sia_base_vax_take'] = 0.8
     P_CON['sia_plan_file'] = ''
 
     # Outbreak response SIAs
-    P_CON['use_obr'] = False
+    P_CON['use_obr'] = True
 
     # Write parameter dictionary
     with open(P_FILE, 'w') as fid01:

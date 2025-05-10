@@ -33,6 +33,7 @@ def application(timestep):
     SIA_COVER = gdata.sia_cover_dict
     SIA_TAKE = SIA_BASE_TAKE*SIA_NOPV2_MOD
     USE_OBR = gdata.var_params['use_obr']
+    SIM_IDX = gdata.sim_index
 
     # Evaluate outbreak status every dt days
     if (not USE_OBR or (TIME_VAL%365)%T_DELTA):
@@ -49,6 +50,9 @@ def application(timestep):
     if (SIATIME_DICT is None):
         SIATIME_DICT = {adm01: 0.0 for adm01 in ADM01_DICT}
         gdata.inproc_dict_sia_time = SIATIME_DICT
+
+    # Cycle random numbers
+    np.random.rand(SIM_IDX)
 
     # Load strain data
     infdat = np.loadtxt(os.path.join('output', RST_FILE),
