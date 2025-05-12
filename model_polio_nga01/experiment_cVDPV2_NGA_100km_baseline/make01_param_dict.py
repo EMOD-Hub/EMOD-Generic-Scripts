@@ -48,17 +48,17 @@ def write_param_dict():
     #P_CON['rng_list_offset_yr'] = []
     #P_CON['rng_list_val'] = []
 
-    P_CON['run_number'] = 456
-    P_CON['rng_list_offset_yr'] = [1.2, 2.1]
-    P_CON['rng_list_val'] = [55, -1]
+    P_CON['run_number'] = 122
+    P_CON['rng_list_offset_yr'] = [1.2]
+    P_CON['rng_list_val'] = [-1]
 
     # Simulation start / duration
     P_CON['start_year'] = 2017
-    P_CON['run_years'] = 4.0
+    P_CON['run_years'] = 3.0
 
     # Parameters for gravity model for network connections
     P_CON['net_inf_power'] = [1.5]
-    P_CON['net_inf_ln_mult'] = [-2.5]
+    P_CON['net_inf_ln_mult'] = [-2.0]
 
     # Node level overdispersion; 0.0 = Poisson
     P_CON['proc_overdispersion'] = 0.4

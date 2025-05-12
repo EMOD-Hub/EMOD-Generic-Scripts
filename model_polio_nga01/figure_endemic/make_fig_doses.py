@@ -148,7 +148,7 @@ def make_fig():
         #            shape_patch(axs01, adm02_pts, adm02_prt, clr=clr_val)
 
         plt.tight_layout()
-        plt.savefig('fig_doses_{:s}_01.png'.format(dirname))
+        plt.savefig('fig_doses_{:s}_02.png'.format(dirname))
         plt.close()
 
     return None

@@ -48,7 +48,7 @@ def write_param_dict():
     #P_CON['rng_list_offset_yr'] = []
     #P_CON['rng_list_val'] = []
 
-    P_CON['run_number'] = 456
+    P_CON['run_number'] = 122
     P_CON['rng_list_offset_yr'] = [1.2]
     P_CON['rng_list_val'] = [-1]
 
@@ -58,7 +58,7 @@ def write_param_dict():
 
     # Parameters for gravity model for network connections
     P_CON['net_inf_power'] = [1.5]
-    P_CON['net_inf_ln_mult'] = [-2.5]
+    P_CON['net_inf_ln_mult'] = [-2.0]
 
     # Node level overdispersion; 0.0 = Poisson
     P_CON['proc_overdispersion'] = 0.4
