@@ -21,7 +21,7 @@ From: Assets/EMOD_OS_Debian12.sif
     cd EMOD-Generic
 
     git fetch
-    git checkout kfrey_camp_cost
+    git checkout Generic-Ongoing
 
     export USER=CalculonUser-EMOD
 
