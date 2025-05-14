@@ -94,13 +94,21 @@ def make_fig():
         cuminf = np.cumsum(totinf, axis=1)
         gidx = (cuminf[:, -1] >= init_ob_thresh)
         #gidx = gidx & (cuminf[:, -1] > 900e3) #& (cuminf[:, -1] < 180e3)
-        gidx = gidx & (cuminf[:, -1] > 130e3)
+        gidx = gidx & (cuminf[:, -1] > 120e3) & (cuminf[:, -1] < 150e3)
+        #gidx = gidx & (cuminf[:, -73] < 70e3)
         #gidx = gidx & (np.max(totinf, axis=1) < 6e3)
         #gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] < 180e3) #& (cuminf[:, -1] > 120e3)
-        gidx = gidx & (np.array(list(range(n_sims))) == 267) #& (np.array(list(range(n_sims))) < 900) #104
-        gidx = gidx & (np.array(list(range(n_sims))) > 200) #& (np.array(list(range(n_sims))) <= 225)
+        #gidx = gidx & (np.array(list(range(n_sims))) == 267) #& (np.array(list(range(n_sims))) < 900) #104
+        #gidx = gidx & (np.array(list(range(n_sims))) > 200) #& (np.array(list(range(n_sims))) <= 225)
 
         print(np.sum(gidx))
+        #gidx = gidx & (np.array(list(range(n_sims))) == 303) #46, 221
+        if (np.sum(gidx)>1):
+            print(np.sum(gidx))
+            bv = 140
+            nzv = np.argwhere(gidx)
+            gidx[:nzv[bv,0]] = 0
+            gidx[nzv[bv+10,0]:] = 0
         print(np.argwhere(gidx), cuminf[gidx, -1])
 
 

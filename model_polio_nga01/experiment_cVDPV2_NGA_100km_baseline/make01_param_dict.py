@@ -31,7 +31,7 @@ def write_param_dict():
     param_dict = dict()
 
     param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-y03'
-    param_dict[NUM_SIMS] = 360
+    param_dict[NUM_SIMS] = 720
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -48,7 +48,7 @@ def write_param_dict():
     #P_CON['rng_list_offset_yr'] = []
     #P_CON['rng_list_val'] = []
 
-    P_CON['run_number'] = 122
+    P_CON['run_number'] = 1253
     P_CON['rng_list_offset_yr'] = [1.2]
     P_CON['rng_list_val'] = [-1]
 
@@ -58,7 +58,7 @@ def write_param_dict():
 
     # Parameters for gravity model for network connections
     P_CON['net_inf_power'] = [1.5]
-    P_CON['net_inf_ln_mult'] = [-2.0]
+    P_CON['net_inf_ln_mult'] = [-2.3]
 
     # Node level overdispersion; 0.0 = Poisson
     P_CON['proc_overdispersion'] = 0.4
@@ -87,9 +87,9 @@ def write_param_dict():
 
     # Apply SIA calendars
     P_CON['sia_end_yr'] = 2100
-    P_CON['sia_base_coverage'] = 0.45
-    P_CON['sia_coverage_scale'] = 1.0
-    P_CON['sia_base_vax_take'] = 0.8
+    P_CON['sia_base_coverage'] = 0.42
+    P_CON['sia_coverage_scale'] = 1.2
+    P_CON['sia_base_vax_take'] = 0.75
     P_CON['sia_plan_file'] = ''
 
     # Outbreak response SIAs

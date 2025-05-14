@@ -364,6 +364,7 @@ def ce_OPV_SIA(n_dict,
     camp_nodes.Node_List = list(n_dict.keys())
 
     camp_coord.Intervention_Config = camp_iv
+    camp_coord.Cost_Assumes_Total_Coverage = 1
     camp_coord.Coverage_By_Node = [{'Node_Id': n_id,
                                     'Coverage': n_dict[n_id]*take}
                                    for n_id in n_dict]
