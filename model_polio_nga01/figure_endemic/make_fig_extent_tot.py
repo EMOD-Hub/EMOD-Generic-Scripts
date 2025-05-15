@@ -20,7 +20,7 @@ from global_data import base_year, init_ob_thresh, targ_adm00
 
 DIRNAMES = [
             ('experiment_cVDPV2_NGA_100km_baseline', 0),
-            #('experiment_cVDPV2_NGA_100km_baseline_ob02', 1),
+            #('experiment_cVDPV2_NGA_100km_baseline_ob02', 0),
             #('experiment_cVDPV2_NGA_100km_baseline_RI', 4),
             #('experiment_cVDPV2_NGA_100km_baseline_SIA01', 1),
             #('experiment_cVDPV2_NGA_100km_baseline_SIA01N', 7),
@@ -94,23 +94,26 @@ def make_fig():
         cuminf = np.cumsum(totinf, axis=1)
         gidx = (cuminf[:, -1] >= init_ob_thresh)
         #gidx = gidx & (cuminf[:, -1] > 900e3) #& (cuminf[:, -1] < 180e3)
-        gidx = gidx & (cuminf[:, -1] > 120e3) & (cuminf[:, -1] < 150e3)
+        #gidx = gidx & (cuminf[:, -1] > 120e3) & (cuminf[:, -1] < 150e3)
         #gidx = gidx & (cuminf[:, -73] < 70e3)
         #gidx = gidx & (np.max(totinf, axis=1) < 6e3)
         #gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] < 180e3) #& (cuminf[:, -1] > 120e3)
         #gidx = gidx & (np.array(list(range(n_sims))) == 267) #& (np.array(list(range(n_sims))) < 900) #104
         #gidx = gidx & (np.array(list(range(n_sims))) > 200) #& (np.array(list(range(n_sims))) <= 225)
 
+        #gidx = gidx & (np.sum(totinf[:, -6:],axis=1) == 0)
         print(np.sum(gidx))
-        #gidx = gidx & (np.array(list(range(n_sims))) == 303) #46, 221
-        if (np.sum(gidx)>1):
-            print(np.sum(gidx))
-            bv = 140
-            nzv = np.argwhere(gidx)
-            gidx[:nzv[bv,0]] = 0
-            gidx[nzv[bv+10,0]:] = 0
-        print(np.argwhere(gidx), cuminf[gidx, -1])
+        #print(np.mean(cuminf[gidx,-1]))
+        #gidx = gidx & (np.array(list(range(n_sims))) == 429) #46, 221
+        #if (np.sum(gidx)>1):
+        #    print(np.sum(gidx))
+        #    bv = 180
+        #    nzv = np.argwhere(gidx)
+        #    gidx[:nzv[bv,0]] = 0
+        #    gidx[nzv[bv+10,0]:] = 0
+        #print(np.argwhere(gidx), cuminf[gidx, -1])
 
+        #inf_data[429, :, -85:-30] = 0
 
         #print(np.argwhere(inf_data[gidx,:,:95]))
         #n_dict_inv = {n_dict[val]: val for val in n_dict}

@@ -21,7 +21,8 @@ from global_data import base_year, init_ob_thresh, targ_adm00
 
 DIRNAMES = [
             ('experiment_cVDPV2_NGA_100km_baseline', 0),
-            ('experiment_cVDPV2_NGA_100km_baseline_ob02', 0),
+            #('experiment_cVDPV2_NGA_100km_baseline_ob01', 0),
+            #('experiment_cVDPV2_NGA_100km_baseline_ob02', 0),
             ]
 
 # *****************************************************************************
@@ -109,7 +110,7 @@ def make_fig():
 
         axs01.set_ylabel('Cumulative SIA Vaccine Doses (millions)', fontsize=16)
         axs01.set_xlim(t_vec[tbool][0], t_vec[tbool][-1]+0.02)
-        axs01.set_ylim(0, 50)
+        axs01.set_ylim(0, 120)
         #ticloc02 = list(range(0,31,5))+list(range(40,101,10))
         #ticlab02 = [str(val) for val in ticloc02]
         #ticlab02 = ticlab02[:9]+4*['']+[ticlab02[-1]]
