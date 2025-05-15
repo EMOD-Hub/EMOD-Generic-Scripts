@@ -11,7 +11,7 @@ import numpy as np
 from emod_constants import AGE_KEY_LIST, YR_DAYS, POP_PYR, CBR_VEC, \
                            NODE_IDS_STR, NODE_POP_STR, INF_FRAC, RST_FILE, \
                            RST_TIME, RST_CONT_INF, RST_CONT_TOT, R0_VEC, \
-                           R0_TIME
+                           R0_TIME, CAMP_COST
 
 # *****************************************************************************
 
@@ -114,6 +114,20 @@ def post_proc_prev(output_path, parsed_out):
 
 # *****************************************************************************
 
+
+def post_proc_cost(output_path, parsed_out):
+
+    # Retain timeseries of campaign cost
+    with open(os.path.join(output_path, 'InsetChart.json')) as fid01:
+        inset_chart = json.load(fid01)
+
+    inf_frac_vec = np.array(inset_chart['Channels']['Campaign Cost']['Data'])
+
+    parsed_out[CAMP_COST] = inf_frac_vec.tolist()
+
+    return None
+
+# *****************************************************************************
 
 def post_proc_R0(output_path, parsed_out):
 

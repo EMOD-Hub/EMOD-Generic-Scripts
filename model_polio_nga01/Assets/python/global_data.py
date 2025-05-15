@@ -14,21 +14,32 @@ demog_files = list()
 demog_object = None
 
 # Other stuff
-inproc_abort_time = 43615
-inproc_abort_bool = False
+inproc_dt = 30
+inproc_dict_delay = None
+inproc_dict_sia_time = None
 
-demog_node = dict()
-demog_min_pop = 50
-demog_node_map = dict() # LGA: [NodeIDs]
-demog_rep_index = dict() # LGA: Output row number
+demog_min_pop = 75
 
-brate_mult_x = None
-brate_mult_y = None
+node_idval = dict()
+adm02_idlist  = dict()
+adm01_idlist  = dict()
+
+brate_mult_tup_list = list()
+
+sia_cover_dict = None
 
 init_ob_thresh = 10000
+init_coverage = 50
 
-seed_sets = [('AFRO:NIGERIA:JIGAWA:BIRINIWA', 2018.1),
+targ_adm00 = ['AFRO:CAMEROON',
+              'AFRO:CHAD',
+              'AFRO:NIGER',
+              'AFRO:NIGERIA']
+
+seed_sets = [('AFRO:NIGERIA:JIGAWA:BIRINIWA', 2017.9),
              ('AFRO:NIGERIA:ZAMFARA:SHINKAFI', 2020.9)]
+
+r0_mid_val = 0.20  #0.21172
 
 nopv2_sia_take_fac = 0.7
 
@@ -43,7 +54,6 @@ boxes_nopv2 = 2
 boxes_sabin2 = 7
 rev_nopv2 = 0.0
 rev_sabin2 = 0.0
-init_coverage = 50
 
 base_year = 1900.0
 t_step_days = 5.0

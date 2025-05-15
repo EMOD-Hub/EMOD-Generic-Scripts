@@ -30,8 +30,8 @@ def write_param_dict():
     # Setup
     param_dict = dict()
 
-    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base'
-    param_dict[NUM_SIMS] = 400
+    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-y04'
+    param_dict[NUM_SIMS] = 360
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -48,54 +48,52 @@ def write_param_dict():
     #P_CON['rng_list_offset_yr'] = []
     #P_CON['rng_list_val'] = []
 
-    P_CON['run_number'] = 526
-    P_CON['rng_list_offset_yr'] = [1.3, 2.0, 2.9, 4.5, 7.0, 7.8]
-    P_CON['rng_list_val'] = [451, 519, 418, 419, 39, -1]
+    P_CON['run_number'] = 1253
+    P_CON['rng_list_offset_yr'] = [1.2, 2.5]
+    P_CON['rng_list_val'] = [429, -1]
 
     # Simulation start / duration
     P_CON['start_year'] = 2017
-    P_CON['run_years'] = 18.0
+    P_CON['run_years'] = 4.0
 
     # Parameters for gravity model for network connections
-    P_CON['net_inf_power'] = [2.0]
-    P_CON['net_inf_ln_mult'] = [-2.424]
+    P_CON['net_inf_power'] = [1.5]
+    P_CON['net_inf_ln_mult'] = [-2.3]
 
     # Node level overdispersion; 0.0 = Poisson
     P_CON['proc_overdispersion'] = 0.4
 
-    # Correlation between acqusition and transmission heterogeneity
-    P_CON['corr_acq_trans'] = 0.8
-
     # Base agent weight; less than 10 may have memory issues
-    P_CON['agent_rate'] = 25.0
+    P_CON['agent_rate'] = 20.0
 
     # R0 values for cVDPV, Sabin, nOPV; linear interpolation;
-    P_CON['R0'] = 14.0
+    P_CON['R0'] = 18.0
     P_CON['R0_OPV_mult'] = 0.250
     P_CON['R0_nOPV_mult'] = 0.125
-    P_CON['R0_sig_scale'] = 24.0
+    P_CON['R0_sig_scale'] = 32.0
     P_CON['R0_min_mult'] = 0.2
+    P_CON['R0_mods'] = {'AFRO:NIGERIA:BORNO': 1.4,
+                        'AFRO:NIGERIA:KANO': 0.7}
 
     # Individual level risk variance (risk of acquisition multiplier;
     # mean = 1.0; log-normal distribution)
-    P_CON['ind_variance_risk'] = 4.0
+    P_CON['ind_variance_risk'] = 3.0
 
     # Subdivide LGAs into 100km^2 regions
     P_CON['use_10k_res'] = True
 
     # RI params
-    P_CON['ri_start_yr'] = 2100.0
+    P_CON['ri_start_yr'] = 2100
 
-    # Apply the historic SIA calendar; events prior to sim start ignored
-    P_CON['sia_calendar'] = True
-    P_CON['sia_cutoff'] = 2100.0
-    P_CON['sia_base_coverage'] = 0.4
-    P_CON['sia_coverage_scale'] = 0.8
-    P_CON['sia_base_vax_take'] = 0.7
+    # Apply SIA calendars
+    P_CON['sia_end_yr'] = 2100
+    P_CON['sia_base_coverage'] = 0.42
+    P_CON['sia_coverage_scale'] = 1.2
+    P_CON['sia_base_vax_take'] = 0.75
+    P_CON['sia_plan_file'] = ''
 
-    # Additional nOPV2 SIAs
-    P_CON['nopv2_sia_north_only'] = False
-    P_CON['nopv2_sia_national'] = []
+    # Outbreak response SIAs
+    P_CON['use_obr'] = False
 
     # Write parameter dictionary
     with open(P_FILE, 'w') as fid01:

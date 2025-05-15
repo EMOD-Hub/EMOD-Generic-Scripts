@@ -63,9 +63,6 @@ def write_param_dict():
     # Node level overdispersion; 0.0 = Poisson
     P_CON['proc_overdispersion'] = 0.4
 
-    # Correlation between acqusition and transmission heterogeneity
-    P_CON['corr_acq_trans'] = 0.8
-
     # Base agent weight; less than 10 may have memory issues
     P_CON['agent_rate'] = 25.0
 
@@ -86,17 +83,11 @@ def write_param_dict():
     # RI params
     P_CON['ri_start_yr'] = 2100.0
 
-    # Apply the historic SIA calendar; events prior to sim start ignored
-    P_CON['sia_calendar'] = True
-    P_CON['sia_cutoff'] = 2100.0
+    # Apply SIA calendars
     P_CON['sia_base_coverage'] = 0.4
     P_CON['sia_coverage_scale'] = 0.8
     P_CON['sia_base_vax_take'] = 0.7
-
-    # Additional nOPV2 SIAs
-    P_CON['nopv2_sia_north_only'] = True
-    P_CON['nopv2_sia_national'] = [2025.8, 2026.8, 2027.8, 2028.8, 2029.8,
-                                   2030.8, 2031.8, 2032.8, 2033.8, 2034.8]
+    P_CON['sia_plan_file'] = 'sia_plan_NORTH_1Y'
 
     # Write parameter dictionary
     with open(P_FILE, 'w') as fid01:
