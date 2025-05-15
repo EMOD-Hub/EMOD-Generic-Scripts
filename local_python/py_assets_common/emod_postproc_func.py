@@ -129,6 +129,7 @@ def post_proc_cost(output_path, parsed_out):
 
 # *****************************************************************************
 
+
 def post_proc_R0(output_path, parsed_out):
 
     # Retain timeseries of infected fraction
