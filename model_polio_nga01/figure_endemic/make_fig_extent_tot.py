@@ -22,6 +22,7 @@ from global_data import base_year, init_ob_thresh, targ_adm00, t_step_days
 
 DIRNAMES = [
             ('experiment_cVDPV2_NGA_100km_baseline', 0),
+            ('experiment_cVDPV2_NGA_100km_baseline__02', 0),
             #('experiment_cVDPV2_NGA_100km_baseline_ob02', 0),
             #('experiment_cVDPV2_NGA_100km_baseline_RI', 4),
             #('experiment_cVDPV2_NGA_100km_baseline_SIA01', 1),
@@ -135,7 +136,7 @@ def make_fig():
         cuminf = np.cumsum(totinf, axis=1)
         gidx = (cuminf[:, -1] >= init_ob_thresh)
         #gidx = gidx & (cuminf[:, -1] > 900e3) #& (cuminf[:, -1] < 180e3)
-        gidx = gidx & (cuminf[:, -1] > 0e3) & (cuminf[:, -1] < 130e3)
+        #gidx = gidx & (cuminf[:, -1] > 0e3) & (cuminf[:, -1] < 130e3)
         #gidx = gidx & (cuminf[:, -73] < 70e3)
         #gidx = gidx & (np.max(totinf, axis=1) < 6e3)
         #gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] < 180e3) #& (cuminf[:, -1] > 120e3)
@@ -143,7 +144,7 @@ def make_fig():
         #gidx = gidx & (np.array(list(range(N_SIMS))) > 200) #& (np.array(list(range(N_SIMS))) <= 225)
 
         print(np.sum(gidx))
-        #print(np.argwhere(gidx), cuminf[gidx, -1])
+        print(np.argwhere(gidx), cuminf[gidx, -1])
 
         cal_list = np.argsort(cal_data[:,0])
         #cidx = 0*gidx
