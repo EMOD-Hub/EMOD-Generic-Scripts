@@ -165,6 +165,30 @@ def ce_inf_force(node_list, step_init, step_width, step_size=1.0,
 # *****************************************************************************
 
 
+def ce_inf_mod(node_list,
+               start_day=0.0, dt_days=365.0, mult_val=1.0):
+
+    # Infectivity multiplier
+    camp_event = s2c.get_class_with_defaults(CE, SPATH)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
+    camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
+    camp_iv = s2c.get_class_with_defaults('NodeInfectivityMult', SPATH)
+
+    camp_event.Event_Coordinator_Config = camp_coord
+    camp_event.Start_Day = start_day
+    camp_event.Nodeset_Config = camp_nodes
+
+    camp_nodes.Node_List = node_list
+
+    camp_coord.Intervention_Config = camp_iv
+
+    camp_iv.Multiplier_By_Duration.Times = [0.0, dt_days]
+    camp_iv.Multiplier_By_Duration.Values = [mult_val, 1.0]
+
+    return camp_event
+
+# *****************************************************************************
+
 def ce_RI(node_list,
           coverage=1.0, start_day=0.0, base_take=1.0,
           age_one=300.0, frac_two=None, age_two=475.0, age_std=90.0,

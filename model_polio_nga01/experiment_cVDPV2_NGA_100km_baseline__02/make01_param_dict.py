@@ -49,8 +49,8 @@ def write_param_dict():
     P_CON['rng_list_val'] = []
 
     #P_CON['run_number'] = 1688
-    #P_CON['rng_list_offset_yr'] = [1.2]
-    #P_CON['rng_list_val'] = [-1]
+    #P_CON['rng_list_offset_yr'] = [1.3, 2.2]
+    #P_CON['rng_list_val'] = [6, -1]
 
     # Simulation start / duration
     P_CON['start_year'] = 2017
@@ -77,7 +77,7 @@ def write_param_dict():
 
     # Individual level risk variance (risk of acquisition multiplier;
     # mean = 1.0; log-normal distribution)
-    P_CON['ind_variance_risk'] = 3.0
+    P_CON['ind_variance_risk'] = 4.0
 
     # Subdivide LGAs into 100km^2 regions
     P_CON['use_10k_res'] = True

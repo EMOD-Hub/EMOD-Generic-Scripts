@@ -73,7 +73,7 @@ def application(output_path):
     if (cum_inf[-1] < gdata.init_ob_thresh):
         parsed_dat = dict()
 
-    if (RUN_YEARS >= 3 and cum_inf[-1] < 80e3):
+    if (RUN_YEARS > 3 and cum_inf[-1] < 100e3):
         parsed_dat = dict()
 
     if (RUN_YEARS > 5 and cum_inf[-1] < 500e3):

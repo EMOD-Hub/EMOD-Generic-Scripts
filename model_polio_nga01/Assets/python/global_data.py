@@ -37,6 +37,8 @@ targ_adm00 = ['AFRO:CAMEROON',
               'AFRO:NIGERIA']
 
 seed_sets = [('AFRO:NIGERIA:JIGAWA:BIRINIWA', 2017.9),
+             ('AFRO:CHAD:NDJAMENA:NDJAMENA_NORD', 2019.9),
+             ('AFRO:CHAD:NDJAMENA:NDJAMENA_NORD', 2019.9),
              ('AFRO:NIGERIA:ZAMFARA:SHINKAFI', 2020.9)]
 
 r0_mid_val = 0.20  #0.21172

@@ -31,7 +31,7 @@ def norpois_vec(yobs, ysim, yscal=1.0):
                    - 0.5*np.log(2.0*np.pi*yobsval)
             G = yobsval - ysimval*yscal
             H = - ysimval*yscal
-        elif (yobs == 0):
+        elif (yobsval == 0):
             llik = -ysimval*yscal - mlam
             G = -ysimval*yscal
             H = -ysimval*yscal
@@ -52,28 +52,20 @@ def norpois_vec(yobs, ysim, yscal=1.0):
 
 def norpois_opt(yobs, ysim):
 
-    LL_ret = 0
-    SF_vec = list()
+    lyscal = 0.0
 
-    for k1 in range(len(yobs)):
-        lyscal = 0.0
-        yobs = yobs[k1]
+    while (True):
+        (lliktot, sstptot) = norpois_vec(yobs, ysim, np.exp(lyscal))
 
-        while (True):
-            (lliktot, sstptot) = norpois_vec(yobs, ysim, np.exp(lyscal))
+        # Step size control
+        if (abs(sstptot) > 5.0):
+            sstptot = np.sign(sstptot)*5.0
 
-            # Step size control
-            if (abs(sstptot) > 5.0):
-                sstptot = np.sign(sstptot)*5.0
+        lyscal = lyscal - sstptot
+        if (abs(sstptot) < 1.0e-4):
+            break
 
-            lyscal = lyscal - sstptot
-            if (abs(sstptot) < 1.0e-4):
-                break
-
-        LL_ret = LL_ret + lliktot
-        SF_vec.append(np.exp(lyscal))
-
-    return (LL_ret, SF_vec)
+    return (lliktot, np.exp(lyscal))
 
 # *****************************************************************************
 

@@ -15,7 +15,7 @@ import emod_api.campaign as camp_module
 
 from emod_camp_events import build_node_list, ce_OPV_SIA, ce_OPV_RI, \
                              ce_import_pressure, ce_br_force, \
-                             ce_random_numbers, ce_inf_force
+                             ce_random_numbers, ce_inf_force, ce_inf_mod
 from emod_constants import CAMP_FILE
 
 # *****************************************************************************
@@ -37,6 +37,8 @@ def campaignBuilder():
     RNG_VAL = gdata.var_params['rng_list_val']
 
     RI_START_YR = gdata.var_params['ri_start_yr']
+
+    R0_MOD = gdata.var_params['R0_mods']
 
     NODE_DICT = gdata.node_idval
 
@@ -143,6 +145,16 @@ def campaignBuilder():
                                       start_day=start_day,
                                       dt=gdata.t_step_days)
             camp_module.add(camp_event)
+
+    # Ad hoc R0 modifiers
+    for mod_tuple in R0_MOD:
+        n_list = build_node_list(mod_tuple[0], NODE_DICT)
+        start_day = 365.0*(mod_tuple[1]-gdata.base_year)
+        dt_days = 365.0*mod_tuple[2]
+        mult_val = mod_tuple[3]
+        camp_event = ce_inf_mod(n_list, start_day=start_day,
+                                dt_days=dt_days, mult_val=mult_val)
+        camp_module.add(camp_event)
 
     # Add RI
     ri_age_day = 90.0
