@@ -12,9 +12,9 @@ import numpy as np
 import emod_api.campaign as camp_module
 
 from emod_constants import RST_FILE, RST_TIME, RST_NODE, RST_CLADE, \
-                           RST_GENOME, RST_TOT_INF, RST_NEW_INF
+                           RST_GENOME, RST_NEW_INF
 
-from emod_camp_events import build_node_list, ce_OPV_SIA
+from emod_camp_events import ce_OPV_SIA
 
 # *****************************************************************************
 
@@ -36,7 +36,7 @@ def application(timestep):
     SIM_IDX = gdata.sim_index
 
     # Evaluate outbreak status every dt days
-    if (not USE_OBR or (TIME_VAL%365)%T_DELTA):
+    if (not USE_OBR or (TIME_VAL % 365) % T_DELTA):
         return None
 
     # Load delay paramters
@@ -56,7 +56,7 @@ def application(timestep):
 
     # Load strain data
     infdat = np.loadtxt(os.path.join('output', RST_FILE),
-                         delimiter=',', skiprows=1, ndmin=2)
+                        delimiter=',', skiprows=1, ndmin=2)
 
     if (infdat.shape[0] == 0):
         return None
@@ -76,7 +76,7 @@ def application(timestep):
         subdat = infdat[gidx, :]
         tvec = (subdat[:, RST_TIME]-T_START)/T_STEP
         for k2 in range(ntstep):
-            dbrick_inf[k1, k2] = np.sum(subdat[(tvec==k2), RST_NEW_INF])
+            dbrick_inf[k1, k2] = np.sum(subdat[(tvec == k2), RST_NEW_INF])
 
     dbrick_cases = np.random.binomial(dbrick_inf, 0.005)
 
@@ -85,11 +85,11 @@ def application(timestep):
     CAMP_FILE = 'campaign_{:05d}.json'.format(int(TIME_VAL))
 
     for k1 in range(len(ADM01_LIST)):
-        if (np.sum(dbrick_cases[k1,:]) == 0):
+        if (np.sum(dbrick_cases[k1, :]) == 0):
             continue
 
         adm01 = ADM01_LIST[k1]
-        adm00 = adm01.rsplit(':',1)[0]
+        adm00 = adm01.rsplit(':', 1)[0]
         shape = DELAY_DICT[adm00][0]
         scale = DELAY_DICT[adm00][1]
         min_day = SIATIME_DICT[adm01] + 180.0
@@ -102,7 +102,7 @@ def application(timestep):
             ctimes = np.random.gamma(shape, scale=scale, size=cases)
             ctimes = ctimes - T_STEP*(ntstep-k2) + TIME_VAL
             sia_targ = ctimes + 30.0
-            sia_targ = sia_targ[sia_targ>min_day]
+            sia_targ = sia_targ[sia_targ > min_day]
             if (sia_targ.shape[0]):
                 new_day = np.min(sia_targ)
                 if (sia_day):

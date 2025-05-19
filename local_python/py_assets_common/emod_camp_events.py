@@ -189,6 +189,7 @@ def ce_inf_mod(node_list,
 
 # *****************************************************************************
 
+
 def ce_RI(node_list,
           coverage=1.0, start_day=0.0, base_take=1.0,
           age_one=300.0, frac_two=None, age_two=475.0, age_std=90.0,

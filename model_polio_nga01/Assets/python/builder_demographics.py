@@ -95,12 +95,12 @@ def demographicsBuilder():
     gdata.node_idval = node_dict
 
     adm02_dict = {adm02: [node_dict[nname] for nname in node_dict.keys()
-                         if nname.startswith(adm02+':') or nname == adm02]
+                          if nname.startswith(adm02+':') or nname == adm02]
                   for adm02 in list_adm02}
     gdata.adm02_idlist = adm02_dict
 
     adm01_dict = {adm01: [node_dict[nname] for nname in node_dict.keys()
-                         if nname.startswith(adm01+':') or nname == adm01]
+                          if nname.startswith(adm01+':') or nname == adm01]
                   for adm01 in list_adm01}
     gdata.adm01_idlist = adm01_dict
 
@@ -165,7 +165,7 @@ def demographicsBuilder():
         for reg_name in cbr_mult_dict:
             if (not reg_name.startswith(cname+':')):
                 continue
-            
+
             n_list = [n_obj for n_obj in node_list
                       if (n_obj.name.startswith(reg_name+':'))]
             if (n_list):
