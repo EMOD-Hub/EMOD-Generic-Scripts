@@ -148,7 +148,7 @@ def campaignBuilder():
 
     # Ad hoc R0 modifiers
     for mod_tuple in R0_MOD:
-        n_list = build_node_list(mod_tuple[0], NODE_DICT)
+        n_list = build_node_list([mod_tuple[0]], NODE_DICT)
         start_day = 365.0*(mod_tuple[1]-gdata.base_year)
         dt_days = 365.0*mod_tuple[2]
         mult_val = mod_tuple[3]
