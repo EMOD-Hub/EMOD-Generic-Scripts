@@ -22,7 +22,7 @@ from global_data import base_year, init_ob_thresh, targ_adm00, t_step_days
 
 DIRNAMES = [
             ('experiment_cVDPV2_NGA_100km_baseline', 0),
-            ('experiment_cVDPV2_NGA_100km_baseline__02', 0),
+            #('experiment_cVDPV2_NGA_100km_baseline__02', 0),
             #('experiment_cVDPV2_NGA_100km_baseline_ob02', 0),
             #('experiment_cVDPV2_NGA_100km_baseline_RI', 4),
             #('experiment_cVDPV2_NGA_100km_baseline_SIA01', 1),
@@ -40,7 +40,7 @@ DIRNAMES = [
 
 def make_fig():
 
-    dy_init = 0
+    dy_init = 1
     dy_end = 0
     c_thresh = 1
 
@@ -136,26 +136,29 @@ def make_fig():
         cuminf = np.cumsum(totinf, axis=1)
         gidx = (cuminf[:, -1] >= init_ob_thresh)
         #gidx = gidx & (cuminf[:, -1] > 900e3) #& (cuminf[:, -1] < 180e3)
-        #gidx = gidx & (cuminf[:, -1] > 0e3) & (cuminf[:, -1] < 130e3)
+        #gidx = gidx & (cuminf[:, -1] > 150e3) & (cuminf[:, -1] < 280e3)
         #gidx = gidx & (cuminf[:, -73] < 70e3)
         #gidx = gidx & (np.max(totinf, axis=1) < 6e3)
         #gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] < 180e3) #& (cuminf[:, -1] > 120e3)
-        #gidx = gidx & (np.array(list(range(N_SIMS))) == 292) #& (np.array(list(range(N_SIMS))) < 900) #104
+        #gidx = gidx & (np.array(list(range(N_SIMS))) == 14) #& (np.array(list(range(N_SIMS))) < 900) #104
         #gidx = gidx & (np.array(list(range(N_SIMS))) > 200) #& (np.array(list(range(N_SIMS))) <= 225)
 
         print(np.sum(gidx))
-        print(np.argwhere(gidx), cuminf[gidx, -1])
+        #print(np.argwhere(gidx), cuminf[gidx, -1])
 
-        cal_list = np.argsort(cal_data[:,0])
-        #cidx = 0*gidx
-        #cidx[cal_list[-10:]] = 1
-        #gidx = gidx & cidx
-        print(cal_data[cal_list[-10:],:], cal_list[-10:], cuminf[cal_list[-10:], -1])
+        if (False):
+            cal_list = np.argsort(cal_data[:,0])[::-1]
+            idx_ge = 0
+            for k1 in range(cal_list.shape[0]):
+                if (gidx[cal_list[k1]]):
+                    print(cal_data[cal_list[k1],:], cal_list[k1], cuminf[cal_list[k1], -1])
+                    idx_ge += 1
+                if (idx_ge > 10):
+                    break
 
         #print(np.sum(gidx))
         #print(np.argwhere(gidx))
-
-        #gidx = (np.array(list(range(N_SIMS))) == 6)
+        #gidx = (np.array(list(range(N_SIMS))) == 652)
 
         if (False):
             for n7 in range(gidx.shape[0]):
@@ -199,13 +202,14 @@ def make_fig():
         axs01.set_xticklabels(ticlab01)
 
         axs01.set_ylabel('Simulated Incidence (thousands)', fontsize=18)
-        axs01.set_yscale('symlog', linthresh=200)
-        axs01.set_ylim(0, 800)
+        axs01.set_yscale('symlog', linthresh=100)
+        axs01.set_ylim(0, 400)
         ticloc02 = list(range(0,241,40))+list(range(320,801,80))
         ticlab02 = [str(val) for val in ticloc02]
         ticlab02 = ticlab02[:9]+4*['']+[ticlab02[-1]]
         axs01.set_yticks(ticks=ticloc02)
-        axs01.set_yticklabels(ticlab02)
+        #axs01.set_yticklabels(ticlab02)
+        axs01.set_yticklabels(len(ticloc02)*[''])
 
         axs02 = axs01.twinx()
         axs02.bar(tvec_ref, ref_dat_mo_tot, width=1/12,

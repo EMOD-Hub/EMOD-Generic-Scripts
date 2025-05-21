@@ -30,8 +30,8 @@ def write_param_dict():
     # Setup
     param_dict = dict()
 
-    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-y02'
-    param_dict[NUM_SIMS] = 980
+    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-y08'
+    param_dict[NUM_SIMS] = 360
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -44,17 +44,17 @@ def write_param_dict():
     P_CON = param_dict[EXP_C]
 
     # Run number (EMOD random seed)
-    P_VAR['run_number'] = list(range(NSIMS))
-    P_CON['rng_list_offset_yr'] = []
-    P_CON['rng_list_val'] = []
+    #P_VAR['run_number'] = list(range(NSIMS))
+    #P_CON['rng_list_offset_yr'] = []
+    #P_CON['rng_list_val'] = []
 
-    #P_CON['run_number'] = 1688
-    #P_CON['rng_list_offset_yr'] = [1.2]
-    #P_CON['rng_list_val'] = [-1]
+    P_CON['run_number'] = 2611
+    P_CON['rng_list_offset_yr'] = [1.2, 1.3, 1.7, 2.5, 3.6, 4.1, 6.0]
+    P_CON['rng_list_val'] = [223, 14, 337, 170, 158, 652, -1]
 
     # Simulation start / duration
     P_CON['start_year'] = 2017
-    P_CON['run_years'] = 2.0
+    P_CON['run_years'] = 8.0
 
     # Parameters for gravity model for network connections
     P_CON['net_inf_power'] = [1.5]
@@ -72,12 +72,20 @@ def write_param_dict():
     P_CON['R0_nOPV_mult'] = 0.125
     P_CON['R0_sig_scale'] = 32.0
     P_CON['R0_min_mult'] = 0.2
-    P_CON['R0_mods'] = [ ('AFRO:NIGERIA:BORNO', 2017.5, 20.0, 1.5),
-                         ('AFRO:NIGERIA:KANO', 2017.5, 3.0, 0.4) ]
+    P_CON['R0_mods'] = [
+                       ('AFRO:NIGERIA:BORNO', 2017.5, 20.0, 1.5),
+                       ('AFRO:CHAD', 2020.0, 1.0, 1.5),
+                       ('AFRO:NIGERIA:KANO', 2017.5, 3.0, 0.4),
+                       ('AFRO:NIGERIA:KANO', 2020.5, 0.5, 0.4),
+                       ('AFRO:NIGERIA:KANO', 2021.0, 0.4, 0.4),
+                       ('AFRO:NIGER', 2021.3, 0.5, 1.5),
+                       ('AFRO:NIGERIA:KEBBI', 2021.3, 0.5, 1.5),
+                       ('AFRO:NIGERIA:SOKOTO', 2021.3, 0.5, 1.5),
+                       ]
 
     # Individual level risk variance (risk of acquisition multiplier;
     # mean = 1.0; log-normal distribution)
-    P_CON['ind_variance_risk'] = 3.0
+    P_CON['ind_variance_risk'] = 4.02
 
     # Subdivide LGAs into 100km^2 regions
     P_CON['use_10k_res'] = True

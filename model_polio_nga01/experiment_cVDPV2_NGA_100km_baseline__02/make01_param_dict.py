@@ -31,7 +31,7 @@ def write_param_dict():
     param_dict = dict()
 
     param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-y02'
-    param_dict[NUM_SIMS] = 980
+    param_dict[NUM_SIMS] = 1440
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -48,9 +48,9 @@ def write_param_dict():
     P_CON['rng_list_offset_yr'] = []
     P_CON['rng_list_val'] = []
 
-    #P_CON['run_number'] = 1688
-    #P_CON['rng_list_offset_yr'] = [1.3, 2.2]
-    #P_CON['rng_list_val'] = [6, -1]
+    #P_CON['run_number'] = 2611
+    #P_CON['rng_list_offset_yr'] = [1.2, 1.3, 1.7]
+    #P_CON['rng_list_val'] = [223, 14, -1]
 
     # Simulation start / duration
     P_CON['start_year'] = 2017
@@ -72,12 +72,15 @@ def write_param_dict():
     P_CON['R0_nOPV_mult'] = 0.125
     P_CON['R0_sig_scale'] = 32.0
     P_CON['R0_min_mult'] = 0.2
-    P_CON['R0_mods'] = [ ('AFRO:NIGERIA:BORNO', 2017.5, 20.0, 1.5),
-                         ('AFRO:NIGERIA:KANO', 2017.5, 3.0, 0.4) ]
+    P_CON['R0_mods'] = [
+                       ('AFRO:NIGERIA:BORNO', 2017.5, 20.0, 1.5),
+                       ('AFRO:NIGERIA:KANO', 2017.5, 4.2, 0.4),
+                       ('AFRO:CHAD', 2020.0, 1.0, 1.5),
+                       ]
 
     # Individual level risk variance (risk of acquisition multiplier;
     # mean = 1.0; log-normal distribution)
-    P_CON['ind_variance_risk'] = 4.0
+    P_CON['ind_variance_risk'] = 2.8
 
     # Subdivide LGAs into 100km^2 regions
     P_CON['use_10k_res'] = True
