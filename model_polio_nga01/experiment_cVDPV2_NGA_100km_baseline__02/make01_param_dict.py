@@ -30,8 +30,8 @@ def write_param_dict():
     # Setup
     param_dict = dict()
 
-    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-y02'
-    param_dict[NUM_SIMS] = 1440
+    param_dict[EXP_NAME] = 'cVDPV2-NGA-100km-base-y03'
+    param_dict[NUM_SIMS] = 720
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -44,17 +44,17 @@ def write_param_dict():
     P_CON = param_dict[EXP_C]
 
     # Run number (EMOD random seed)
-    P_VAR['run_number'] = list(range(NSIMS))
-    P_CON['rng_list_offset_yr'] = []
-    P_CON['rng_list_val'] = []
+    #P_VAR['run_number'] = list(range(NSIMS))
+    #P_CON['rng_list_offset_yr'] = []
+    #P_CON['rng_list_val'] = []
 
-    #P_CON['run_number'] = 2611
-    #P_CON['rng_list_offset_yr'] = [1.2, 1.3, 1.7]
-    #P_CON['rng_list_val'] = [223, 14, -1]
+    P_CON['run_number'] = 1325
+    P_CON['rng_list_offset_yr'] = [1.2]
+    P_CON['rng_list_val'] = [-1]
 
     # Simulation start / duration
     P_CON['start_year'] = 2017
-    P_CON['run_years'] = 2.0
+    P_CON['run_years'] = 3.0
 
     # Parameters for gravity model for network connections
     P_CON['net_inf_power'] = [1.5]
@@ -80,7 +80,7 @@ def write_param_dict():
 
     # Individual level risk variance (risk of acquisition multiplier;
     # mean = 1.0; log-normal distribution)
-    P_CON['ind_variance_risk'] = 2.8
+    P_CON['ind_variance_risk'] = 3.0
 
     # Subdivide LGAs into 100km^2 regions
     P_CON['use_10k_res'] = True
