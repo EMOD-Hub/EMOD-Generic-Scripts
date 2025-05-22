@@ -33,10 +33,11 @@ def application(timestep):
     SIA_COVER = gdata.sia_cover_dict
     SIA_TAKE = SIA_BASE_TAKE*SIA_NOPV2_MOD
     USE_OBR = gdata.var_params['use_obr']
+    OBR_TIME = gdata.var_params['obr_start']
     SIM_IDX = gdata.sim_index
 
     # Evaluate outbreak status every dt days
-    if (not USE_OBR or (TIME_VAL % 365) % T_DELTA):
+    if (not USE_OBR or TIME_VAL < OBR_TIME or (TIME_VAL % 365) % T_DELTA):
         return None
 
     # Load delay paramters

@@ -21,9 +21,9 @@ from global_data import base_year, init_ob_thresh, targ_adm00, t_step_days
 # *****************************************************************************
 
 DIRNAMES = [
-            ('experiment_cVDPV2_NGA_100km_baseline', 0),
+            #('experiment_cVDPV2_NGA_100km_baseline', 0),
             #('experiment_cVDPV2_NGA_100km_baseline__02', 0),
-            #('experiment_cVDPV2_NGA_100km_baseline_ob02', 0),
+            ('experiment_cVDPV2_NGA_100km_baseline_obr2026', 0),
             #('experiment_cVDPV2_NGA_100km_baseline_RI', 4),
             #('experiment_cVDPV2_NGA_100km_baseline_SIA01', 1),
             #('experiment_cVDPV2_NGA_100km_baseline_SIA01N', 7),
@@ -41,7 +41,7 @@ DIRNAMES = [
 def make_fig():
 
     dy_init = 1
-    dy_end = 0
+    dy_end = 3
     c_thresh = 1
 
     tpath = os.path.join('..', 'Assets', 'data','routine_dat.json')
@@ -137,11 +137,11 @@ def make_fig():
         gidx = (cum_inf[:, -1] >= init_ob_thresh)
         #gidx = gidx & (cum_inf[:, -1] > 900e3) #& (cum_inf[:, -1] < 180e3)
         #gidx = gidx & (cum_inf[:, -1] > 150e3) & (cum_inf[:, -1] < 280e3)
-        #gidx = gidx & (cum_inf[:, -73] < 70e3)
+        gidx = gidx & (np.sum(tot_inf[:, -12:], axis=1) > 0)
         #gidx = gidx & (np.array(list(range(N_SIMS))) == 14) #& (np.array(list(range(N_SIMS))) < 900)
 
         print(np.sum(gidx))
-        print(np.argwhere(gidx), cum_inf[gidx, -1])
+        #print(np.argwhere(gidx), cum_inf[gidx, -1])
 
         if (False):
             cal_list = np.argsort(cal_data[:,0])[::-1]
@@ -155,7 +155,7 @@ def make_fig():
 
         #print(np.sum(gidx))
         #print(np.argwhere(gidx))
-        gidx = (np.array(list(range(N_SIMS))) == 297)
+        #gidx = (np.array(list(range(N_SIMS))) == 297)
 
         if (False):
             for n7 in range(gidx.shape[0]):
@@ -182,9 +182,9 @@ def make_fig():
         yval1 = tot_inf[gidx]/cal_data[gidx,1][..., np.newaxis]
         yval2 = np.mean(yval1, axis=0)
         for k3 in range(yval1.shape[0]):
-            #axs01.plot(t_vec[tbool], yval1[k3, tbool], '.', c=fig_clr, alpha=0.1)
-            axs01.plot(t_vec[tbool], yval1[k3, tbool])
-        #axs01.plot(t_vec[tbool], yval2[tbool], c='k', lw=3)
+            axs01.plot(t_vec[tbool], yval1[k3, tbool], '.', c=fig_clr, alpha=0.1)
+            #axs01.plot(t_vec[tbool], yval1[k3, tbool])
+        axs01.plot(t_vec[tbool], yval2[tbool], c='k', lw=3)
 
         axs01.set_xlim(year_init, year_init+run_years+0.002)
         ticloc_x = list(range(year_init, year_init+run_years+1))
@@ -194,10 +194,12 @@ def make_fig():
 
         axs01.set_ylabel('Observed AFP Cases', fontsize=18)
         axs01.set_yscale('symlog', linthresh=100)
-        axs01.set_ylim(0, 400)
-        ticloc_y = list(range(0,121,20))+list(range(160,401,40))
+        axs01.set_ylim(0, 800)
+        ticloc_y = list(range(0,101,20))+list(range(200,801,100))
         ticlab_y = [str(val) for val in ticloc_y]
-        ticlab_y = ticlab_y[:9]+4*['']+[ticlab_y[-1]]
+        ticlab_y[-2] = ''
+        ticlab_y[-4] = ''
+        ticlab_y[-6] = ''
         axs01.set_yticks(ticks=ticloc_y)
         axs01.set_yticklabels(ticlab_y)
         axs01.tick_params(axis='y', which='major', labelsize=14)
