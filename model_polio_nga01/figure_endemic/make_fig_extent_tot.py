@@ -22,7 +22,6 @@ from global_data import base_year, init_ob_thresh, targ_adm00, t_step_days
 
 DIRNAMES = [
             #('experiment_cVDPV2_NGA_100km_baseline', 0),
-            #('experiment_cVDPV2_NGA_100km_baseline__02', 0),
             ('experiment_cVDPV2_NGA_100km_baseline_obr2026', 0),
             #('experiment_cVDPV2_NGA_100km_baseline_RI', 4),
             #('experiment_cVDPV2_NGA_100km_baseline_SIA01', 1),
@@ -40,8 +39,8 @@ DIRNAMES = [
 
 def make_fig():
 
-    dy_init = 1
-    dy_end = 3
+    dy_init = 3
+    dy_end = 6
     c_thresh = 1
 
     tpath = os.path.join('..', 'Assets', 'data','routine_dat.json')
@@ -128,8 +127,10 @@ def make_fig():
             tot_inf = np.sum(inf_data[sim_idx, :, :], axis=0).tolist()
             cal_tuple = norpois_opt(ref_dat_mo_tot, tot_inf)
             cal_data[sim_idx, 0] = cal_tuple[0]
-            cal_data[sim_idx, 1] = 1/cal_tuple[1]
-            #if(np.sum(tot_inf[-12:-6]) > 20e3):
+            cal_data[sim_idx, 1] = 984.664 #1/cal_tuple[1]
+            #if(np.sum(tot_inf[-24:-12]) < 200e3):
+            #   cal_data[sim_idx, 0] += 1000 
+            #if(np.sum(tot_inf[-12:]) > 100e3):
             #   cal_data[sim_idx, 0] += 1000 
 
         tot_inf = np.sum(inf_data, axis=1)
@@ -137,13 +138,13 @@ def make_fig():
         gidx = (cum_inf[:, -1] >= init_ob_thresh)
         #gidx = gidx & (cum_inf[:, -1] > 900e3) #& (cum_inf[:, -1] < 180e3)
         #gidx = gidx & (cum_inf[:, -1] > 150e3) & (cum_inf[:, -1] < 280e3)
-        gidx = gidx & (np.sum(tot_inf[:, -12:], axis=1) > 0)
+        gidx = gidx & (np.sum(tot_inf[:, -96:-90], axis=1) > 0)
         #gidx = gidx & (np.array(list(range(N_SIMS))) == 14) #& (np.array(list(range(N_SIMS))) < 900)
 
         print(np.sum(gidx))
         #print(np.argwhere(gidx), cum_inf[gidx, -1])
 
-        if (False):
+        if (True):
             cal_list = np.argsort(cal_data[:,0])[::-1]
             idx_ge = 0
             for k1 in range(cal_list.shape[0]):
@@ -155,7 +156,7 @@ def make_fig():
 
         #print(np.sum(gidx))
         #print(np.argwhere(gidx))
-        #gidx = (np.array(list(range(N_SIMS))) == 297)
+        #gidx = (np.array(list(range(N_SIMS))) == 249)
 
         if (False):
             for n7 in range(gidx.shape[0]):
@@ -182,7 +183,7 @@ def make_fig():
         yval1 = tot_inf[gidx]/cal_data[gidx,1][..., np.newaxis]
         yval2 = np.mean(yval1, axis=0)
         for k3 in range(yval1.shape[0]):
-            axs01.plot(t_vec[tbool], yval1[k3, tbool], '.', c=fig_clr, alpha=0.1)
+            axs01.plot(t_vec[tbool], yval1[k3, tbool], '-', c=fig_clr, alpha=0.2)
             #axs01.plot(t_vec[tbool], yval1[k3, tbool])
         axs01.plot(t_vec[tbool], yval2[tbool], c='k', lw=3)
 
@@ -194,12 +195,12 @@ def make_fig():
 
         axs01.set_ylabel('Observed AFP Cases', fontsize=18)
         axs01.set_yscale('symlog', linthresh=100)
-        axs01.set_ylim(0, 800)
-        ticloc_y = list(range(0,101,20))+list(range(200,801,100))
+        axs01.set_ylim(0, 300)
+        ticloc_y = list(range(0,101,20))+list(range(200,301,100))
         ticlab_y = [str(val) for val in ticloc_y]
-        ticlab_y[-2] = ''
-        ticlab_y[-4] = ''
-        ticlab_y[-6] = ''
+        #ticlab_y[-2] = ''
+        #ticlab_y[-4] = ''
+        #ticlab_y[-6] = ''
         axs01.set_yticks(ticks=ticloc_y)
         axs01.set_yticklabels(ticlab_y)
         axs01.tick_params(axis='y', which='major', labelsize=14)

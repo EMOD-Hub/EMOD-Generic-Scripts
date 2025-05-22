@@ -11,18 +11,17 @@ import matplotlib.pyplot as plt
 sys.path.append(os.path.abspath(os.path.join('..', '..', 'local_python')))
 sys.path.append(os.path.abspath(os.path.join('..', 'Assets', 'python')))
 from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, EXP_C, \
-                                            CAMP_COST
+                                            CAMP_COST, MO_DAYS
 
-from py_assets_common.emod_local_proc import shape_patch, shape_line
+from py_assets_common.emod_analysis import norpois_opt
 
-from global_data import base_year, init_ob_thresh, targ_adm00
+from global_data import base_year, init_ob_thresh, targ_adm00, t_step_days
 
 # *****************************************************************************
 
 DIRNAMES = [
-            ('experiment_cVDPV2_NGA_100km_baseline', 0),
-            #('experiment_cVDPV2_NGA_100km_baseline_ob01', 0),
-            #('experiment_cVDPV2_NGA_100km_baseline_ob02', 0),
+            #('experiment_cVDPV2_NGA_100km_baseline', 0),
+            ('experiment_cVDPV2_NGA_100km_baseline_obr2026', 0),
             ]
 
 # *****************************************************************************
@@ -30,16 +29,12 @@ DIRNAMES = [
 
 def make_fig():
 
-    dy_init = 0
-    dy_end = 0
+    dy_init = 3
+    dy_end = 6
 
-    tpath = os.path.join('..', 'Assets', 'data','shapes_adm00.json')
+    tpath = os.path.join('..', 'Assets', 'data','epi_dat_mo.json')
     with open(tpath) as fid01:
-        adm00_shp = json.load(fid01)
-
-    tpath = os.path.join('..', 'Assets', 'data','shapes_adm02.json')
-    with open(tpath) as fid01:
-        adm02_shp = json.load(fid01)
+        epi_dat_mo = json.load(fid01)
 
     for dir_tup in DIRNAMES:
  
@@ -55,37 +50,71 @@ def make_fig():
         with open(os.path.join(tpath, P_FILE)) as fid01:
             param_dict = json.load(fid01)
 
-        t_vec = np.array(data_brick['t_vec'])/365 + base_year
-        n_dict = data_brick['node_names']
-        n_sims = param_dict[NUM_SIMS]
-        year_init = int(param_dict[EXP_C]['start_year']) + dy_init
-        run_years = int(param_dict[EXP_C]['run_years']) - dy_init - dy_end
-        tbool = (t_vec >= year_init) & (t_vec < (year_init+run_years))
+        NODE_DICT = data_brick['node_names']
+        START_YEAR = int(param_dict[EXP_C]['start_year'])
+        NUM_YEARS = int(param_dict[EXP_C]['run_years'])
+        N_SIMS = param_dict[NUM_SIMS]
+        DT = int(t_step_days)
+        MBIN = np.cumsum([0] + NUM_YEARS*MO_DAYS)
 
-        inf_data = np.zeros((n_sims, len(n_dict), t_vec.shape[0]))
-        sia_data = np.zeros((n_sims, t_vec.shape[0]))
+        year_init = START_YEAR + dy_init
+        run_years = NUM_YEARS - dy_init - dy_end
+
+        t_vec = np.array(data_brick['t_vec'])/365 + base_year
+        tbool = (t_vec >= year_init) & (t_vec < (year_init+run_years))
+        inf_data = np.zeros((N_SIMS, len(NODE_DICT), 12*NUM_YEARS))
+        cal_data = np.zeros((N_SIMS, 2))
+        cal_data[:, 1] = 1
+        sia_data = np.zeros((N_SIMS, t_vec.shape[0]))
+
+        tvec_ref = np.array(epi_dat_mo[targ_adm00[0]]['times'])
+        tbool_ref = (tvec_ref >= year_init) & (tvec_ref < (year_init+run_years))
+        tvec_ref = tvec_ref[tbool_ref]
+        ref_dat_mo_tot = None
+        for cname in targ_adm00:
+            ref_dat_mo = np.array(epi_dat_mo[cname]['cases'])[tbool_ref]
+            if ref_dat_mo_tot is not None:
+                ref_dat_mo_tot += ref_dat_mo
+            else:
+                ref_dat_mo_tot = ref_dat_mo
+
+        ref_adm_idx = dict()
+        for cname in targ_adm00:
+            c_idx = np.array([NODE_DICT[adm02] for adm02 in NODE_DICT if adm02.startswith(cname+':')])
+            n_idx = np.zeros(len(NODE_DICT), dtype=bool)
+            n_idx[c_idx] = 1
+            ref_adm_idx[cname] = n_idx
+
         for sim_idx_str in data_brick:
             if (not sim_idx_str.isdecimal()):
                 continue
             sim_idx = int(sim_idx_str)
-            infmat = np.array(data_brick[sim_idx_str]['infmat'])
-            inf_data[sim_idx, :, :] = infmat
+            inf_mat = np.array(data_brick[sim_idx_str]['infmat'])[:, :-1]
+            inf_days = np.zeros((len(NODE_DICT), 365*NUM_YEARS))
             siavec = np.array(data_brick[sim_idx_str][CAMP_COST])
             sia_data[sim_idx, :] = siavec
+            for k1 in range(DT):
+                inf_days[:, k1::DT] = inf_mat/t_step_days
 
-        totinf = np.sum(inf_data, axis=1)
-        cuminf = np.cumsum(totinf, axis=1)
-        gidx = (cuminf[:, -1] >= init_ob_thresh)
-        #gidx = gidx & (cuminf[:, -1] > 900e3) #& (cuminf[:, -1] < 180e3)
-        #gidx = gidx & (cuminf[:, -1] > 150e3)
-        #gidx = gidx & (np.max(totinf, axis=1) < 6e3)
-        #gidx = gidx & (totinf[:, -1] > 0) #& (cuminf[:, -1] < 180e3) #& (cuminf[:, -1] > 120e3)
+            for k2 in range(len(MBIN)-1):
+                inf_data[sim_idx, :, k2] = np.sum(inf_days[:, MBIN[k2]:MBIN[k2+1]], axis=1)
+
+            tot_inf = np.sum(inf_data[sim_idx, :, :], axis=0).tolist()
+            cal_tuple = norpois_opt(ref_dat_mo_tot, tot_inf)
+            cal_data[sim_idx, 0] = cal_tuple[0]
+            cal_data[sim_idx, 1] = 984.664 #1/cal_tuple[1]
+
+        tot_inf = np.sum(inf_data, axis=1)
+        cum_inf = np.cumsum(tot_inf, axis=1)
+        gidx = (cum_inf[:, -1] >= init_ob_thresh)
+        #gidx = gidx & (cum_inf[:, -1] > 900e3) #& (cum_inf[:, -1] < 180e3)
+        #gidx = gidx & (cum_inf[:, -1] > 150e3)
+        gidx = gidx & (np.sum(tot_inf[:, -96:-90], axis=1) > 0)
         #gidx = gidx & (np.array(list(range(n_sims))) == 55) #& (np.array(list(range(n_sims))) < 900) #104
-        #gidx = gidx & (np.array(list(range(n_sims))) > 225) #& (np.array(list(range(n_sims))) <= 225)
 
         print(np.sum(gidx))
         #print(np.argwhere(gidx))
-        #print(cuminf[gidx, -1])
+        #print(cum_inf[gidx, -1])
 
         # Figure setup
         ax_pat = [run_years*[0], run_years*[0], run_years*[0],
@@ -110,43 +139,7 @@ def make_fig():
 
         axs01.set_ylabel('Cumulative SIA Vaccine Doses (millions)', fontsize=16)
         axs01.set_xlim(t_vec[tbool][0], t_vec[tbool][-1]+0.02)
-        axs01.set_ylim(0, 120)
-        #ticloc02 = list(range(0,31,5))+list(range(40,101,10))
-        #ticlab02 = [str(val) for val in ticloc02]
-        #ticlab02 = ticlab02[:9]+4*['']+[ticlab02[-1]]
-        #axs01.set_yticks(ticks=ticloc02)
-        #axs01.set_yticklabels(ticlab02)
-
-        (xmin, xmax, ymin, ymax) = (180, -180, 90, -90)
-        for cname in targ_adm00:
-            pts = np.array(adm00_shp[cname]['points'])
-            xmin = np.floor(min(xmin, np.min(pts[:,0])))
-            xmax = np.ceil(max(xmax, np.max(pts[:,0])))
-            ymin = np.floor(min(ymin, np.min(pts[:,1])))
-            ymax = np.ceil(max(ymax, np.max(pts[:,1])))
-        xydelt = max(xmax-xmin, ymax-ymin)
-
-        #adm02_mat02 = (inf_data[gidx,:,:]>1)
-        for k1 in range(run_years):
-            axs01 = axlist[k1+1]
-            axs01.axis('off')
-            axs01.set_xlim(xmin, xmin+xydelt)
-            axs01.set_ylim(ymin, xmin+xydelt)
-        #    for cname in targ_adm00:
-        #        adm00_prt = adm00_shp[cname]['parts']
-        #        adm00_pts = adm00_shp[cname]['points']
-        #        shape_patch(axs01, adm00_pts, adm00_prt, clr=3*[0.9])
-        #        shape_line(axs01, adm00_pts, adm00_prt, wid=0.2)
-        #    yidx = (t_vec>=ticloc01[k1]) & (t_vec<ticloc01[k1+1])
-        #    yrdat02 = np.max(adm02_mat02[:, :, yidx], axis=2)
-        #    yrdat02 = np.mean(yrdat02, axis=0)
-        #    for adm02_name in n_dict:
-        #        k2 = n_dict[adm02_name]
-        #        if (yrdat02[k2] > 0):
-        #            adm02_prt = adm02_shp[adm02_name]['parts']
-        #            adm02_pts = adm02_shp[adm02_name]['points']
-        #            clr_val = [1.0, 1.0, 1.0]
-        #            shape_patch(axs01, adm02_pts, adm02_prt, clr=clr_val)
+        #axs01.set_ylim(0, 120)
 
         plt.tight_layout()
         plt.savefig('fig_doses_{:s}_02.png'.format(dirname))
