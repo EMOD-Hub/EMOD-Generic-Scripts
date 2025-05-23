@@ -97,6 +97,7 @@ def write_param_dict():
 
     # Outbreak response SIAs
     P_CON['use_obr'] = False
+    P_CON['obr_start'] = 2100
 
     # Write parameter dictionary
     with open(P_FILE, 'w') as fid01:
