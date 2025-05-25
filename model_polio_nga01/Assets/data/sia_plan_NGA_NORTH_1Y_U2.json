@@ -1,6 +1,6 @@
 {
     "SIA_2025_000": {
-        "age_yr_max": 5,
+        "age_yr_max": 2,
         "date": 45899,
         "nodes": [
             "AFRO:NIGERIA:ADAMAWA:DEMSA",
@@ -426,7 +426,7 @@
         "type": "nopv2"
     },
     "SIA_2026_000": {
-        "age_yr_max": 5,
+        "age_yr_max": 2,
         "date": 46264,
         "nodes": [
             "AFRO:NIGERIA:ADAMAWA:DEMSA",
@@ -852,7 +852,7 @@
         "type": "nopv2"
     },
     "SIA_2027_000": {
-        "age_yr_max": 5,
+        "age_yr_max": 2,
         "date": 46629,
         "nodes": [
             "AFRO:NIGERIA:ADAMAWA:DEMSA",
@@ -1278,7 +1278,7 @@
         "type": "nopv2"
     },
     "SIA_2028_000": {
-        "age_yr_max": 5,
+        "age_yr_max": 2,
         "date": 46994,
         "nodes": [
             "AFRO:NIGERIA:ADAMAWA:DEMSA",
@@ -1704,7 +1704,7 @@
         "type": "nopv2"
     },
     "SIA_2029_000": {
-        "age_yr_max": 5,
+        "age_yr_max": 2,
         "date": 47359,
         "nodes": [
             "AFRO:NIGERIA:ADAMAWA:DEMSA",
@@ -2130,7 +2130,7 @@
         "type": "nopv2"
     },
     "SIA_2030_000": {
-        "age_yr_max": 5,
+        "age_yr_max": 2,
         "date": 47724,
         "nodes": [
             "AFRO:NIGERIA:ADAMAWA:DEMSA",
@@ -2556,7 +2556,7 @@
         "type": "nopv2"
     },
     "SIA_2031_000": {
-        "age_yr_max": 5,
+        "age_yr_max": 2,
         "date": 48089,
         "nodes": [
             "AFRO:NIGERIA:ADAMAWA:DEMSA",
@@ -2982,7 +2982,7 @@
         "type": "nopv2"
     },
     "SIA_2032_000": {
-        "age_yr_max": 5,
+        "age_yr_max": 2,
         "date": 48454,
         "nodes": [
             "AFRO:NIGERIA:ADAMAWA:DEMSA",
@@ -3408,7 +3408,7 @@
         "type": "nopv2"
     },
     "SIA_2033_000": {
-        "age_yr_max": 5,
+        "age_yr_max": 2,
         "date": 48819,
         "nodes": [
             "AFRO:NIGERIA:ADAMAWA:DEMSA",
@@ -3834,7 +3834,7 @@
         "type": "nopv2"
     },
     "SIA_2034_000": {
-        "age_yr_max": 5,
+        "age_yr_max": 2,
         "date": 49184,
         "nodes": [
             "AFRO:NIGERIA:ADAMAWA:DEMSA",
@@ -4260,7 +4260,7 @@
         "type": "nopv2"
     },
     "SIA_2035_000": {
-        "age_yr_max": 5,
+        "age_yr_max": 2,
         "date": 49549,
         "nodes": [
             "AFRO:NIGERIA:ADAMAWA:DEMSA",
@@ -4686,7 +4686,7 @@
         "type": "nopv2"
     },
     "SIA_2036_000": {
-        "age_yr_max": 5,
+        "age_yr_max": 2,
         "date": 49914,
         "nodes": [
             "AFRO:NIGERIA:ADAMAWA:DEMSA",
@@ -5112,7 +5112,7 @@
         "type": "nopv2"
     },
     "SIA_2037_000": {
-        "age_yr_max": 5,
+        "age_yr_max": 2,
         "date": 50279,
         "nodes": [
             "AFRO:NIGERIA:ADAMAWA:DEMSA",
@@ -5538,7 +5538,7 @@
         "type": "nopv2"
     },
     "SIA_2038_000": {
-        "age_yr_max": 5,
+        "age_yr_max": 2,
         "date": 50644,
         "nodes": [
             "AFRO:NIGERIA:ADAMAWA:DEMSA",
@@ -5964,7 +5964,7 @@
         "type": "nopv2"
     },
     "SIA_2039_000": {
-        "age_yr_max": 5,
+        "age_yr_max": 2,
         "date": 51009,
         "nodes": [
             "AFRO:NIGERIA:ADAMAWA:DEMSA",
@@ -6390,7 +6390,7 @@
         "type": "nopv2"
     },
     "SIA_2040_000": {
-        "age_yr_max": 5,
+        "age_yr_max": 2,
         "date": 51374,
         "nodes": [
             "AFRO:NIGERIA:ADAMAWA:DEMSA",
