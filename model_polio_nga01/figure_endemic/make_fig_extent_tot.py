@@ -21,17 +21,35 @@ from global_data import base_year, init_ob_thresh, targ_adm00, t_step_days
 # *****************************************************************************
 
 DIRNAMES = [
-            #('experiment_cVDPV2_NGA_100km_baseline', 0),
-            ('experiment_cVDPV2_NGA_100km_baseline_obr2026', 0),
-            #('experiment_cVDPV2_NGA_100km_baseline_RI', 4),
-            #('experiment_cVDPV2_NGA_100km_baseline_SIA01', 1),
-            #('experiment_cVDPV2_NGA_100km_baseline_SIA01N', 7),
-            #('experiment_cVDPV2_NGA_100km_baseline_SIA02', 7),
-            #('experiment_cVDPV2_NGA_100km_baseline_SIA02N', 7),
-            #('experiment_cVDPV2_NGA_100km_baseline_RI_SIA01', 2),
-            #('experiment_cVDPV2_NGA_100km_baseline_RI_SIA01N', 5),
-            #('experiment_cVDPV2_NGA_100km_baseline_RI_SIA02', 8),
-            #('experiment_cVDPV2_NGA_100km_baseline_RI_SIA02N', 9),
+            ('experiment_cVDPV2_100km_base', 0),
+
+            ('experiment_cVDPV2_100km_base_sia01-NGA', 0),
+            ('experiment_cVDPV2_100km_base_sia01-NGA_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-NGA', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-NGA_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02-NGA', 0),
+            ('experiment_cVDPV2_100km_base_sia02-NGA_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-NGA', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-NGA_ri2027', 0),
+
+            ('experiment_cVDPV2_100km_base_sia01-NGAN', 0),
+            ('experiment_cVDPV2_100km_base_sia01-NGAN_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-NGAN', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-NGAN_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02-NGAN', 0),
+            ('experiment_cVDPV2_100km_base_sia02-NGAN_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-NGAN', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-NGAN_ri2027', 0),
+
+
+            ('experiment_cVDPV2_100km_base_sia01-LKCHAD', 0),
+            ('experiment_cVDPV2_100km_base_sia01-LKCHAD_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-LKCHAD', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-LKCHAD_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02-LKCHAD', 0),
+            ('experiment_cVDPV2_100km_base_sia02-LKCHAD_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-LKCHAD', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-LKCHAD_ri2027', 0),
             ]
 
 # *****************************************************************************
@@ -40,7 +58,7 @@ DIRNAMES = [
 def make_fig():
 
     dy_init = 3
-    dy_end = 6
+    dy_end = 0
     c_thresh = 1
 
     tpath = os.path.join('..', 'Assets', 'data','routine_dat.json')
@@ -138,13 +156,13 @@ def make_fig():
         gidx = (cum_inf[:, -1] >= init_ob_thresh)
         #gidx = gidx & (cum_inf[:, -1] > 900e3) #& (cum_inf[:, -1] < 180e3)
         #gidx = gidx & (cum_inf[:, -1] > 150e3) & (cum_inf[:, -1] < 280e3)
-        gidx = gidx & (np.sum(tot_inf[:, -96:-90], axis=1) > 0)
+        gidx = gidx & (np.sum(tot_inf[:, -12:], axis=1) > 0)
         #gidx = gidx & (np.array(list(range(N_SIMS))) == 14) #& (np.array(list(range(N_SIMS))) < 900)
 
         print(np.sum(gidx))
         #print(np.argwhere(gidx), cum_inf[gidx, -1])
 
-        if (True):
+        if (False):
             cal_list = np.argsort(cal_data[:,0])[::-1]
             idx_ge = 0
             for k1 in range(cal_list.shape[0]):
@@ -157,6 +175,12 @@ def make_fig():
         #print(np.sum(gidx))
         #print(np.argwhere(gidx))
         #gidx = (np.array(list(range(N_SIMS))) == 249)
+
+        print(dirname)
+        dcases = (cum_inf[:, -1] - cum_inf[:, -60])/1200
+        print(np.mean(dcases))
+        print(np.quantile(dcases, [0.05, 0.95]))
+        print()
 
         if (False):
             for n7 in range(gidx.shape[0]):
