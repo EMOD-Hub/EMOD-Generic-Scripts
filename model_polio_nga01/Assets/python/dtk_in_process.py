@@ -23,8 +23,11 @@ def application(timestep):
 
     TIME_VAL = float(timestep)
     T_DELTA = gdata.inproc_dt
+    T_LAST = TIME_VAL-T_DELTA
     T_STEP = gdata.t_step_days
-    T_START = TIME_VAL-T_DELTA
+
+    SIM_IDX = gdata.sim_index
+
     DELAY_DICT = gdata.inproc_dict_delay
     ADM01_DICT = gdata.adm01_idlist
     SIATIME_DICT = gdata.inproc_dict_sia_time
@@ -32,13 +35,17 @@ def application(timestep):
     SIA_NOPV2_MOD = gdata.nopv2_sia_take_fac
     SIA_COVER = gdata.sia_cover_dict
     SIA_TAKE = SIA_BASE_TAKE*SIA_NOPV2_MOD
-    USE_OBR = gdata.var_params['use_obr']
-    OBR_TIME = gdata.var_params['obr_start']
-    DAY_OBR = 365.0*(OBR_TIME-gdata.base_year)
-    SIM_IDX = gdata.sim_index
+
+    OBR_START = gdata.var_params['obr_start']
+    OBR_END = gdata.var_params['obr_end']
+    DAY_OBR_START = 365.0*(OBR_START-gdata.base_year)
+    DAY_OBR_END = 365.0*(OBR_START-gdata.base_year)
 
     # Evaluate outbreak status every dt days
-    if (not USE_OBR or TIME_VAL < DAY_OBR or (TIME_VAL % 365) % T_DELTA):
+    if (TIME_VAL < DAY_OBR_START or TIME_VAL > DAY_OBR_END):
+        return None
+
+    if ((TIME_VAL % 365) % T_DELTA):
         return None
 
     # Load delay paramters
@@ -71,12 +78,12 @@ def application(timestep):
 
     for k1 in range(len(ADM01_LIST)):
         adm01 = ADM01_LIST[k1]
-        gidx = (infdat[:, RST_TIME] >= T_START)
+        gidx = (infdat[:, RST_TIME] >= T_LAST)
         gidx = (infdat[:, RST_CLADE] == 0) & gidx
         gidx = (infdat[:, RST_GENOME] == cVDPV_genome) & gidx
         gidx = np.isin(infdat[:, RST_NODE], ADM01_DICT[adm01]) & gidx
         subdat = infdat[gidx, :]
-        tvec = (subdat[:, RST_TIME]-T_START)/T_STEP
+        tvec = (subdat[:, RST_TIME]-T_LAST)/T_STEP
         for k2 in range(ntstep):
             dbrick_inf[k1, k2] = np.sum(subdat[(tvec == k2), RST_NEW_INF])
 

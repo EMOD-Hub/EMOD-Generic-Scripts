@@ -21,35 +21,42 @@ from global_data import base_year, init_ob_thresh, targ_adm00, t_step_days
 # *****************************************************************************
 
 DIRNAMES = [
-            ('experiment_cVDPV2_100km_base', 0),
+            #('experiment_cVDPV2_100km_base', 0),
+            #('experiment_cVDPV2_100km_base_ri2027', 0),
+            #('experiment_cVDPV2_100km_base_obr2026', 0),
+            #('experiment_cVDPV2_100km_base_obr2026_ri2027', 0),
 
-            ('experiment_cVDPV2_100km_base_sia01-NGA', 0),
-            ('experiment_cVDPV2_100km_base_sia01-NGA_ri2027', 0),
-            ('experiment_cVDPV2_100km_base_sia01u2-NGA', 0),
-            ('experiment_cVDPV2_100km_base_sia01u2-NGA_ri2027', 0),
-            ('experiment_cVDPV2_100km_base_sia02-NGA', 0),
-            ('experiment_cVDPV2_100km_base_sia02-NGA_ri2027', 0),
-            ('experiment_cVDPV2_100km_base_sia02u2-NGA', 0),
-            ('experiment_cVDPV2_100km_base_sia02u2-NGA_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_obr2026y1_ri2027d2', 4),
+            ('experiment_cVDPV2_100km_base_sia01p1-NGAN_ri2027d2', 5),
 
-            ('experiment_cVDPV2_100km_base_sia01-NGAN', 0),
-            ('experiment_cVDPV2_100km_base_sia01-NGAN_ri2027', 0),
-            ('experiment_cVDPV2_100km_base_sia01u2-NGAN', 0),
-            ('experiment_cVDPV2_100km_base_sia01u2-NGAN_ri2027', 0),
-            ('experiment_cVDPV2_100km_base_sia02-NGAN', 0),
-            ('experiment_cVDPV2_100km_base_sia02-NGAN_ri2027', 0),
-            ('experiment_cVDPV2_100km_base_sia02u2-NGAN', 0),
-            ('experiment_cVDPV2_100km_base_sia02u2-NGAN_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia01-NGA', 1),
 
 
-            ('experiment_cVDPV2_100km_base_sia01-LKCHAD', 0),
-            ('experiment_cVDPV2_100km_base_sia01-LKCHAD_ri2027', 0),
-            ('experiment_cVDPV2_100km_base_sia01u2-LKCHAD', 0),
-            ('experiment_cVDPV2_100km_base_sia01u2-LKCHAD_ri2027', 0),
-            ('experiment_cVDPV2_100km_base_sia02-LKCHAD', 0),
-            ('experiment_cVDPV2_100km_base_sia02-LKCHAD_ri2027', 0),
-            ('experiment_cVDPV2_100km_base_sia02u2-LKCHAD', 0),
-            ('experiment_cVDPV2_100km_base_sia02u2-LKCHAD_ri2027', 0),
+            #('experiment_cVDPV2_100km_base_sia01-NGA_ri2027', 0),
+            #('experiment_cVDPV2_100km_base_sia01u2-NGA', 0),
+            #('experiment_cVDPV2_100km_base_sia01u2-NGA_ri2027', 0),
+            #('experiment_cVDPV2_100km_base_sia02-NGA', 0),
+            #('experiment_cVDPV2_100km_base_sia02-NGA_ri2027', 0),
+            #('experiment_cVDPV2_100km_base_sia02u2-NGA', 0),
+            #('experiment_cVDPV2_100km_base_sia02u2-NGA_ri2027', 0),
+
+            #('experiment_cVDPV2_100km_base_sia01-NGAN', 0),
+            #('experiment_cVDPV2_100km_base_sia01-NGAN_ri2027', 0),
+            #('experiment_cVDPV2_100km_base_sia01u2-NGAN', 0),
+            #('experiment_cVDPV2_100km_base_sia01u2-NGAN_ri2027', 0),
+            #('experiment_cVDPV2_100km_base_sia02-NGAN', 0),
+            #('experiment_cVDPV2_100km_base_sia02-NGAN_ri2027', 0),
+            #('experiment_cVDPV2_100km_base_sia02u2-NGAN', 0),
+            #('experiment_cVDPV2_100km_base_sia02u2-NGAN_ri2027', 0),
+
+            #('experiment_cVDPV2_100km_base_sia01-LKCHAD', 0),
+            #('experiment_cVDPV2_100km_base_sia01-LKCHAD_ri2027', 0),
+            #('experiment_cVDPV2_100km_base_sia01u2-LKCHAD', 0),
+            #('experiment_cVDPV2_100km_base_sia01u2-LKCHAD_ri2027', 0),
+            #('experiment_cVDPV2_100km_base_sia02-LKCHAD', 0),
+            #('experiment_cVDPV2_100km_base_sia02-LKCHAD_ri2027', 0),
+            #('experiment_cVDPV2_100km_base_sia02u2-LKCHAD', 0),
+            #('experiment_cVDPV2_100km_base_sia02u2-LKCHAD_ri2027', 0),
             ]
 
 # *****************************************************************************
@@ -61,9 +68,9 @@ def make_fig():
     dy_end = 0
     c_thresh = 1
 
-    tpath = os.path.join('..', 'Assets', 'data','routine_dat.json')
-    with open(tpath) as fid01:
-        ri_rate = json.load(fid01)
+    #tpath = os.path.join('..', 'Assets', 'data','routine_dat.json')
+    #with open(tpath) as fid01:
+    #    ri_rate = json.load(fid01)
 
     tpath = os.path.join('..', 'Assets', 'data','shapes_adm00.json')
     with open(tpath) as fid01:
@@ -77,6 +84,7 @@ def make_fig():
     with open(tpath) as fid01:
         epi_dat_mo = json.load(fid01)
 
+    loopone = True
     for dir_tup in DIRNAMES:
  
         dirname = dir_tup[0]
@@ -107,9 +115,9 @@ def make_fig():
         cal_data = np.zeros((N_SIMS, 2))
         cal_data[:, 1] = 1
 
-        afp_rate = np.zeros(len(NODE_DICT), dtype=float)
-        for n_name in NODE_DICT:
-            afp_rate[NODE_DICT[n_name]] = (1.0-ri_rate[n_name]*0.50)/850.0
+        #afp_rate = np.zeros(len(NODE_DICT), dtype=float)
+        #for n_name in NODE_DICT:
+        #    afp_rate[NODE_DICT[n_name]] = (1.0-ri_rate[n_name]*0.50)/850.0
 
         tvec_ref = np.array(epi_dat_mo[targ_adm00[0]]['times'])
         tbool_ref = (tvec_ref >= year_init) & (tvec_ref < (year_init+run_years))
@@ -156,10 +164,10 @@ def make_fig():
         gidx = (cum_inf[:, -1] >= init_ob_thresh)
         #gidx = gidx & (cum_inf[:, -1] > 900e3) #& (cum_inf[:, -1] < 180e3)
         #gidx = gidx & (cum_inf[:, -1] > 150e3) & (cum_inf[:, -1] < 280e3)
-        gidx = gidx & (np.sum(tot_inf[:, -12:], axis=1) > 0)
+        #gidx = gidx & (np.sum(tot_inf[:, -12:], axis=1) > 0)
         #gidx = gidx & (np.array(list(range(N_SIMS))) == 14) #& (np.array(list(range(N_SIMS))) < 900)
 
-        print(np.sum(gidx))
+        #print(np.sum(gidx))
         #print(np.argwhere(gidx), cum_inf[gidx, -1])
 
         if (False):
@@ -176,11 +184,19 @@ def make_fig():
         #print(np.argwhere(gidx))
         #gidx = (np.array(list(range(N_SIMS))) == 249)
 
-        print(dirname)
         dcases = (cum_inf[:, -1] - cum_inf[:, -60])/1200
-        print(np.mean(dcases))
-        print(np.quantile(dcases, [0.05, 0.95]))
-        print()
+        dcases = np.sort(dcases)[-200:]
+        mean_val = np.mean(dcases)
+        quant_val = np.quantile(dcases, [0.05, 0.95])
+
+        str_out = ''
+        str_out = str_out + str(np.sum(gidx)) + ','
+        str_out = str_out + dirname + ','
+        str_out = str_out + str(int(quant_val[0])) + ','
+        str_out = str_out + str(int(mean_val)) + ','
+        str_out = str_out + str(int(quant_val[1]))
+
+        print(str_out)
 
         if (False):
             for n7 in range(gidx.shape[0]):
@@ -207,7 +223,7 @@ def make_fig():
         yval1 = tot_inf[gidx]/cal_data[gidx,1][..., np.newaxis]
         yval2 = np.mean(yval1, axis=0)
         for k3 in range(yval1.shape[0]):
-            axs01.plot(t_vec[tbool], yval1[k3, tbool], '-', c=fig_clr, alpha=0.2)
+            axs01.plot(t_vec[tbool], yval1[k3, tbool], '.', c=fig_clr, alpha=0.2)
             #axs01.plot(t_vec[tbool], yval1[k3, tbool])
         axs01.plot(t_vec[tbool], yval2[tbool], c='k', lw=3)
 

@@ -20,8 +20,37 @@ from global_data import base_year, init_ob_thresh, targ_adm00, t_step_days
 # *****************************************************************************
 
 DIRNAMES = [
-            #('experiment_cVDPV2_NGA_100km_baseline', 0),
-            ('experiment_cVDPV2_NGA_100km_baseline_obr2026', 0),
+            ('experiment_cVDPV2_100km_base', 0),
+            ('experiment_cVDPV2_100km_base_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_obr2026_ri2027', 0),
+
+            ('experiment_cVDPV2_100km_base_sia01-NGA', 0),
+            ('experiment_cVDPV2_100km_base_sia01-NGA_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-NGA', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-NGA_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02-NGA', 0),
+            ('experiment_cVDPV2_100km_base_sia02-NGA_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-NGA', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-NGA_ri2027', 0),
+
+            ('experiment_cVDPV2_100km_base_sia01-NGAN', 0),
+            ('experiment_cVDPV2_100km_base_sia01-NGAN_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-NGAN', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-NGAN_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02-NGAN', 0),
+            ('experiment_cVDPV2_100km_base_sia02-NGAN_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-NGAN', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-NGAN_ri2027', 0),
+
+            ('experiment_cVDPV2_100km_base_sia01-LKCHAD', 0),
+            ('experiment_cVDPV2_100km_base_sia01-LKCHAD_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-LKCHAD', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-LKCHAD_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02-LKCHAD', 0),
+            ('experiment_cVDPV2_100km_base_sia02-LKCHAD_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-LKCHAD', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-LKCHAD_ri2027', 0),
             ]
 
 # *****************************************************************************
@@ -30,7 +59,7 @@ DIRNAMES = [
 def make_fig():
 
     dy_init = 3
-    dy_end = 6
+    dy_end = 0
 
     tpath = os.path.join('..', 'Assets', 'data','epi_dat_mo.json')
     with open(tpath) as fid01:
@@ -107,14 +136,33 @@ def make_fig():
         tot_inf = np.sum(inf_data, axis=1)
         cum_inf = np.cumsum(tot_inf, axis=1)
         gidx = (cum_inf[:, -1] >= init_ob_thresh)
+
         #gidx = gidx & (cum_inf[:, -1] > 900e3) #& (cum_inf[:, -1] < 180e3)
         #gidx = gidx & (cum_inf[:, -1] > 150e3)
-        gidx = gidx & (np.sum(tot_inf[:, -96:-90], axis=1) > 0)
+        #gidx = gidx & (np.sum(tot_inf[:, -96:-90], axis=1) > 0)
         #gidx = gidx & (np.array(list(range(n_sims))) == 55) #& (np.array(list(range(n_sims))) < 900) #104
 
-        print(np.sum(gidx))
+        #print(np.sum(gidx))
         #print(np.argwhere(gidx))
         #print(cum_inf[gidx, -1])
+
+        dcases = (cum_inf[:, -1] - cum_inf[:, -60])/1200
+        dcidx = np.argsort(dcases)[-200:]
+        ddoses = (sia_data[:, -1] - sia_data[:, -(73*5)])/1e6
+        mdoses = ddoses[dcidx]
+        mean_val = np.mean(mdoses)
+        quant_val = np.quantile(mdoses, [0.05, 0.95])
+
+        str_out = ''
+        str_out = str_out + str(np.sum(gidx)) + ','
+        str_out = str_out + dirname + ','
+        str_out = str_out + str(int(quant_val[0])) + ','
+        str_out = str_out + str(int(mean_val)) + ','
+        str_out = str_out + str(int(quant_val[1]))
+
+        print(str_out)
+
+        continue
 
         # Figure setup
         ax_pat = [run_years*[0], run_years*[0], run_years*[0],

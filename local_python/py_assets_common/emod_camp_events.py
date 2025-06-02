@@ -258,9 +258,8 @@ def ce_RI(node_list,
 
 
 def ce_OPV_RI(node_list,
-              coverage=1.0, start_day=0.0, base_take=0.7,
-              age_one=180.0, age_std=15.0,
-              clade=0, genome=0):
+              coverage=1.0, base_take=1.0, start_day=0.0, dt_days=-1.0,
+              age_one=180.0, age_std=15.0, clade=0, genome=0):
 
     # Outbreak Individual
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
@@ -282,6 +281,7 @@ def ce_OPV_RI(node_list,
     camp_iv01.Actual_IndividualIntervention_Config = camp_iv02
     camp_iv01.Demographic_Coverage = coverage*base_take
     camp_iv01.Trigger_Condition_List = ['Births']
+    camp_iv01.Duration = dt_days
 
     camp_iv02.Intervention_List = [camp_iv03]
 

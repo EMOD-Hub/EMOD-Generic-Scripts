@@ -37,6 +37,8 @@ def campaignBuilder():
     RNG_VAL = gdata.var_params['rng_list_val']
 
     RI_START_YR = gdata.var_params['ri_start_yr']
+    RI_END_YR = gdata.var_params['ri_end_yr']
+    RI_DOSES = gdata.var_params['ri_doses']
 
     R0_MOD = gdata.var_params['R0_mods']
 
@@ -158,9 +160,11 @@ def campaignBuilder():
 
     # Add RI
     ri_age_day = 90.0
-    start_day = 365.0*(RI_START_YR-gdata.base_year) - ri_age_day
+    start_day = 365.0*(RI_START_YR - gdata.base_year) - ri_age_day
+    dt_days = 365.0*(RI_END_YR - RI_START_YR)
 
-    with open(os.path.join('Assets', 'data', 'routine_dat.json')) as fid01:
+    ri_file = 'routine_dat_{:02}.json'.format(RI_DOSES)
+    with open(os.path.join('Assets', 'data', ri_file)) as fid01:
         dict_ri = json.load(fid01)
     if (start_day > DAY_MAX):
         dict_ri = dict()
@@ -169,8 +173,8 @@ def campaignBuilder():
         imm_value = dict_ri[reg_name]
         n_list = build_node_list([reg_name], NODE_DICT)
         if (n_list):
-            camp_event = ce_OPV_RI(n_list, coverage=imm_value,
-                                   start_day=start_day, base_take=1.0,
+            camp_event = ce_OPV_RI(n_list, coverage=imm_value, base_take=1.0,
+                                   start_day=start_day, dt_days=dt_days,
                                    age_one=ri_age_day, age_std=15.0,
                                    clade=1, genome=0)
             camp_module.add(camp_event)
