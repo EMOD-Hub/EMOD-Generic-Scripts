@@ -146,12 +146,14 @@ def make_fig():
         #print(np.argwhere(gidx))
         #print(cum_inf[gidx, -1])
 
-        dcases = (cum_inf[:, -1] - cum_inf[:, -60])/1200
-        dcidx = np.argsort(dcases)[-200:]
-        ddoses = (sia_data[:, -1] - sia_data[:, -(73*5)])/1e6
-        mdoses = ddoses[dcidx]
-        mean_val = np.mean(mdoses)
-        quant_val = np.quantile(mdoses, [0.05, 0.95])
+        gidx = gidx & (np.sum(tot_inf[:, -12:], axis=1) > 0)
+
+        #dcases = (cum_inf[:, -1] - cum_inf[:, -60])/1200
+        #dcidx = np.argsort(dcases)[-200:]
+        ddoses = (sia_data[gidx, -1] - sia_data[gidx, -(73*5)])/1e6
+        #mdoses = ddoses[dcidx]
+        mean_val = np.mean(ddoses)
+        quant_val = np.quantile(ddoses, [0.05, 0.95])
 
         str_out = ''
         str_out = str_out + str(np.sum(gidx)) + ','

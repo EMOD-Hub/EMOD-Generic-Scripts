@@ -21,42 +21,40 @@ from global_data import base_year, init_ob_thresh, targ_adm00, t_step_days
 # *****************************************************************************
 
 DIRNAMES = [
-            #('experiment_cVDPV2_100km_base', 0),
-            #('experiment_cVDPV2_100km_base_ri2027', 0),
-            #('experiment_cVDPV2_100km_base_obr2026', 0),
-            #('experiment_cVDPV2_100km_base_obr2026_ri2027', 0),
+            ('experiment_cVDPV2_100km_base', 0),
+            ('experiment_cVDPV2_100km_base_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_obr2026_ri2027', 0),
 
-            ('experiment_cVDPV2_100km_base_obr2026y1_ri2027d2', 4),
-            ('experiment_cVDPV2_100km_base_sia01p1-NGAN_ri2027d2', 5),
+            #('experiment_cVDPV2_100km_base_obr2026y1_ri2027d2', 4),
+            #('experiment_cVDPV2_100km_base_sia01p1-NGAN_ri2027d2', 5),
 
             ('experiment_cVDPV2_100km_base_sia01-NGA', 1),
+            ('experiment_cVDPV2_100km_base_sia01-NGA_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-NGA', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-NGA_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02-NGA', 0),
+            ('experiment_cVDPV2_100km_base_sia02-NGA_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-NGA', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-NGA_ri2027', 0),
 
+            ('experiment_cVDPV2_100km_base_sia01-NGAN', 0),
+            ('experiment_cVDPV2_100km_base_sia01-NGAN_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-NGAN', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-NGAN_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02-NGAN', 0),
+            ('experiment_cVDPV2_100km_base_sia02-NGAN_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-NGAN', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-NGAN_ri2027', 0),
 
-            #('experiment_cVDPV2_100km_base_sia01-NGA_ri2027', 0),
-            #('experiment_cVDPV2_100km_base_sia01u2-NGA', 0),
-            #('experiment_cVDPV2_100km_base_sia01u2-NGA_ri2027', 0),
-            #('experiment_cVDPV2_100km_base_sia02-NGA', 0),
-            #('experiment_cVDPV2_100km_base_sia02-NGA_ri2027', 0),
-            #('experiment_cVDPV2_100km_base_sia02u2-NGA', 0),
-            #('experiment_cVDPV2_100km_base_sia02u2-NGA_ri2027', 0),
-
-            #('experiment_cVDPV2_100km_base_sia01-NGAN', 0),
-            #('experiment_cVDPV2_100km_base_sia01-NGAN_ri2027', 0),
-            #('experiment_cVDPV2_100km_base_sia01u2-NGAN', 0),
-            #('experiment_cVDPV2_100km_base_sia01u2-NGAN_ri2027', 0),
-            #('experiment_cVDPV2_100km_base_sia02-NGAN', 0),
-            #('experiment_cVDPV2_100km_base_sia02-NGAN_ri2027', 0),
-            #('experiment_cVDPV2_100km_base_sia02u2-NGAN', 0),
-            #('experiment_cVDPV2_100km_base_sia02u2-NGAN_ri2027', 0),
-
-            #('experiment_cVDPV2_100km_base_sia01-LKCHAD', 0),
-            #('experiment_cVDPV2_100km_base_sia01-LKCHAD_ri2027', 0),
-            #('experiment_cVDPV2_100km_base_sia01u2-LKCHAD', 0),
-            #('experiment_cVDPV2_100km_base_sia01u2-LKCHAD_ri2027', 0),
-            #('experiment_cVDPV2_100km_base_sia02-LKCHAD', 0),
-            #('experiment_cVDPV2_100km_base_sia02-LKCHAD_ri2027', 0),
-            #('experiment_cVDPV2_100km_base_sia02u2-LKCHAD', 0),
-            #('experiment_cVDPV2_100km_base_sia02u2-LKCHAD_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia01-LKCHAD', 0),
+            ('experiment_cVDPV2_100km_base_sia01-LKCHAD_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-LKCHAD', 0),
+            ('experiment_cVDPV2_100km_base_sia01u2-LKCHAD_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02-LKCHAD', 0),
+            ('experiment_cVDPV2_100km_base_sia02-LKCHAD_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-LKCHAD', 0),
+            ('experiment_cVDPV2_100km_base_sia02u2-LKCHAD_ri2027', 0),
             ]
 
 # *****************************************************************************
@@ -164,7 +162,7 @@ def make_fig():
         gidx = (cum_inf[:, -1] >= init_ob_thresh)
         #gidx = gidx & (cum_inf[:, -1] > 900e3) #& (cum_inf[:, -1] < 180e3)
         #gidx = gidx & (cum_inf[:, -1] > 150e3) & (cum_inf[:, -1] < 280e3)
-        #gidx = gidx & (np.sum(tot_inf[:, -12:], axis=1) > 0)
+        gidx = gidx & (np.sum(tot_inf[:, -12:], axis=1) > 0)
         #gidx = gidx & (np.array(list(range(N_SIMS))) == 14) #& (np.array(list(range(N_SIMS))) < 900)
 
         #print(np.sum(gidx))
@@ -184,8 +182,8 @@ def make_fig():
         #print(np.argwhere(gidx))
         #gidx = (np.array(list(range(N_SIMS))) == 249)
 
-        dcases = (cum_inf[:, -1] - cum_inf[:, -60])/1200
-        dcases = np.sort(dcases)[-200:]
+        dcases = (cum_inf[gidx, -1] - cum_inf[gidx, -60])/1200
+        #dcases = np.sort(dcases)[-200:]
         mean_val = np.mean(dcases)
         quant_val = np.quantile(dcases, [0.05, 0.95])
 
@@ -281,7 +279,7 @@ def make_fig():
                     shape_patch(axs01, adm02_pts, adm02_prt, clr=clr_val)
 
         plt.tight_layout()
-        plt.savefig('fig_extent_{:s}_01_v6.png'.format(dirname))
+        plt.savefig('fig_extent_{:s}_01_v7.png'.format(dirname))
         plt.close()
 
     return None
