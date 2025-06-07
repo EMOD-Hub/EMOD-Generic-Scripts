@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: almalinux:9.5
+From: almalinux:9.6
 
 %post
     dnf clean all

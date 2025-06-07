@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: rockylinux/rockylinux:9.5
+From: rockylinux/rockylinux:9.6
 
 %post
     dnf clean all
