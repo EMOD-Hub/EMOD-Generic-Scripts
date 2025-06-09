@@ -4,11 +4,12 @@
 #
 # *****************************************************************************
 
-import numpy as np
-
 import global_data as gdata
 
-from emod_constants import CAMP_FILE, REPORTS_FILE
+import numpy as np
+
+from emod_constants import CAMP_FILE, REPORTS_FILE, \
+                           DIST_CMPLX, DIST_GAMMA, DIST_GAUSS
 
 # *****************************************************************************
 
@@ -60,15 +61,15 @@ def update_config_obj(config):
     ID_MEAN = gdata.inf_dur_mean
     ID_STD = gdata.inf_dur_std
 
-    cp.Base_Infectivity_Distribution = 'GAMMA_DISTRIBUTION'
+    cp.Base_Infectivity_Distribution = DIST_GAMMA
     cp.Base_Infectivity_Shape = gdata.inf_tot_shape
     cp.Base_Infectivity_Scale = R0/ID_MEAN/gdata.inf_tot_shape
 
-    cp.Incubation_Period_Distribution = 'GAUSSIAN_DISTRIBUTION'
+    cp.Incubation_Period_Distribution = DIST_GAUSS
     cp.Incubation_Period_Gaussian_Mean = 3.0
     cp.Incubation_Period_Gaussian_Std_Dev = 1.0
 
-    cp.Infectious_Period_Distribution = 'GAMMA_DISTRIBUTION'
+    cp.Infectious_Period_Distribution = DIST_GAMMA
     cp.Infectious_Period_Shape = ID_MEAN*ID_MEAN/ID_STD/ID_STD
     cp.Infectious_Period_Scale = ID_STD*ID_STD/ID_MEAN
 
@@ -100,7 +101,7 @@ def update_config_obj(config):
     cp.Post_Infection_Mortality_Multiplier = 0.0
 
     cp.Enable_Initial_Susceptibility_Distribution = 1
-    cp.Susceptibility_Initialization_Distribution_Type = 'DISTRIBUTION_COMPLEX'
+    cp.Susceptibility_Initialization_Distribution_Type = DIST_CMPLX
 
     mac_x = [0, 50, 100, 150, 200, 250]
     mac_y = [0.70, 0.57, 0.36, 0.17, 0.06, 0.00]
@@ -150,7 +151,7 @@ def update_config_obj(config):
     cp.Enable_Birth = 1
     cp.Birth_Rate_Dependence = 'POPULATION_DEP_RATE'
     cp.Enable_Aging = 1
-    cp.Age_Initialization_Distribution_Type = 'DISTRIBUTION_COMPLEX'
+    cp.Age_Initialization_Distribution_Type = DIST_CMPLX
     cp.Enable_Natural_Mortality = 1
     enum_str = 'NONDISEASE_MORTALITY_BY_YEAR_AND_AGE_FOR_EACH_GENDER'
     cp.Death_Rate_Dependence = enum_str
