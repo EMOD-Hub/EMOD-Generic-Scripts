@@ -1,56 +1,17 @@
 {
-  "GHA_2001_1": {
-    "age_max": 5475,
-    "age_min": 273,
-    "date": 37218,
-    "nodes": [
-      "AFRO:GHANA"
-    ],
-    "targ_frac": 0.1
-  },
-  "GHA_2002_2": {
-    "age_max": 5475,
-    "age_min": 273,
-    "date": 37575,
-    "nodes": [
-      "AFRO:GHANA"
-    ],
-    "targ_frac": 0.9
-  },
-  "GHA_2006_3": {
-    "age_max": 1825,
-    "age_min": 273,
-    "date": 38999,
-    "nodes": [
-      "AFRO:GHANA"
-    ],
-    "targ_frac": 1.0
-  },
-  "GHA_2010_4": {
-    "age_max": 1825,
-    "age_min": 273,
-    "date": 40460,
-    "nodes": [
-      "AFRO:GHANA"
-    ],
-    "targ_frac": 1.0
-  },
-  "GHA_2013_5": {
-    "age_max": 5475,
-    "age_min": 273,
-    "date": 41508,
-    "nodes": [
-      "AFRO:GHANA"
-    ],
-    "targ_frac": 1.0
-  },
-  "GHA_2018_6": {
-    "age_max": 1825,
-    "age_min": 273,
-    "date": 43365,
-    "nodes": [
-      "AFRO:GHANA"
-    ],
-    "targ_frac": 1.0
-  }
+    "GHA_2010": {
+        "age_max": 1825,
+        "age_min": 273,
+        "date": 40460,
+    },
+    "GHA_2013": {
+        "age_max": 5475,
+        "age_min": 273,
+        "date": 41508,
+    },
+    "GHA_2018": {
+        "age_max": 1825,
+        "age_min": 273,
+        "date": 43365,
+    }
 }
