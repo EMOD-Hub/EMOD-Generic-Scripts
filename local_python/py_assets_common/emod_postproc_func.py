@@ -4,6 +4,7 @@
 
 import json
 import os
+import sqlite3
 import struct
 
 import numpy as np
@@ -11,7 +12,8 @@ import numpy as np
 from emod_constants import AGE_KEY_LIST, YR_DAYS, POP_PYR, CBR_VEC, \
                            NODE_IDS_STR, NODE_POP_STR, INF_FRAC, RST_FILE, \
                            RST_TIME, RST_CONT_INF, RST_CONT_TOT, R0_VEC, \
-                           R0_TIME, CAMP_COST
+                           R0_TIME, CAMP_COST, SQL_TIME, SQL_MCW, SQL_NODE, \
+                           SQL_FILE, SQL_AGE
 
 # *****************************************************************************
 
@@ -150,5 +152,26 @@ def post_proc_R0(output_path, parsed_out):
     parsed_out[R0_VEC] = est_r0_vec.tolist()
 
     return None
+
+# *****************************************************************************
+
+
+def post_proc_sql(prev_time=0.0):
+
+    # Connect to SQL database; retreive new entries
+    connection_obj = sqlite3.connect(SQL_FILE)
+    cursor_obj = connection_obj.cursor()
+
+    sql_cmd_fmt = "SELECT * FROM SIM_EVENTS WHERE SIM_TIME > {:.1f}"
+    sql_cmd = sql_cmd_fmt.format(prev_time)
+    cursor_obj.execute(sql_cmd)
+    rlist = cursor_obj.fetchall()
+
+    dvec_time = np.array([val[SQL_TIME] for val in rlist], dtype=float)
+    dvec_node = np.array([val[SQL_NODE] for val in rlist], dtype=int)
+    dvec_mcw = np.array([val[SQL_MCW] for val in rlist], dtype=float)
+    dvec_age = np.array([val[SQL_AGE] for val in rlist], dtype=float)
+
+    return (dvec_time, dvec_node, dvec_mcw, dvec_age)
 
 # *****************************************************************************

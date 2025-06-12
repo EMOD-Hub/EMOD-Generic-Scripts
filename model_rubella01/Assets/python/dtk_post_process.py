@@ -9,7 +9,8 @@ import global_data as gdata
 
 import numpy as np
 
-from emod_postproc_func import post_proc_poppyr, post_proc_cbr, post_proc_R0
+from emod_postproc_func import post_proc_poppyr, post_proc_cbr, post_proc_R0, \
+                               post_proc_sql
 from emod_constants import SQL_TIME, SQL_MCW, SQL_AGE, POP_AGE_DAYS, O_FILE, \
                            SQL_FILE
 
@@ -32,17 +33,8 @@ def application(output_path):
     # Estimate R0 from output
     post_proc_R0(output_path, parsed_dat[key_str])
 
-    # Connect to SQL database; retreive new entries
-    connection_obj = sqlite3.connect(SQL_FILE)
-    cursor_obj = connection_obj.cursor()
-
-    sql_cmd = "SELECT * FROM SIM_EVENTS WHERE SIM_TIME >= {:.1f}".format(0.0)
-    cursor_obj.execute(sql_cmd)
-    rlist = cursor_obj.fetchall()
-
-    dvec_time = np.array([val[SQL_TIME] for val in rlist], dtype=float)
-    dvec_mcw = np.array([val[SQL_MCW] for val in rlist], dtype=float)
-    dvec_age = np.array([val[SQL_AGE] for val in rlist], dtype=float)
+    # Update SQL data
+    (dvec_time, _, dvec_mcw, dvec_age) = post_proc_sql(0.0)
 
     # Yearly timeseries by age
     DAY_BINS = [365]

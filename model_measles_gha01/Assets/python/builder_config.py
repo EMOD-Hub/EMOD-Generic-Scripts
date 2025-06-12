@@ -38,7 +38,7 @@ def update_config_obj(config):
     NI_POWER = gdata.var_params['net_inf_power']
     NI_MAXFRAC = gdata.var_params['net_inf_maxfrac']
     RUN_NUM = gdata.var_params['run_number']
-    TIME_DELTA = gdata.var_params['num_tsteps']
+    RUN_YEARS = gdata.var_params['run_years']
     AGENT_RATE = gdata.var_params['agent_rate']
     CORR_ACQ_TRANS = gdata.var_params['corr_acq_trans']
 
@@ -50,7 +50,7 @@ def update_config_obj(config):
 
     # Time
     cp.Start_Time = 365.0*(gdata.start_year-gdata.base_year)
-    cp.Simulation_Duration = TIME_DELTA + gdata.t_step_days
+    cp.Simulation_Duration = 365.0*RUN_YEARS + gdata.t_step_days
     cp.Simulation_Timestep = gdata.t_step_days
 
     cp.Enable_Termination_On_Total_Wall_Time = 1
@@ -58,7 +58,7 @@ def update_config_obj(config):
 
     # Intrahost
     cp.Base_Infectivity_Distribution = DIST_GAMMA
-    cp.Base_Infectivity_Scale = R0/8.0
+    cp.Base_Infectivity_Scale = R0/gdata.inf_dur_mean
     cp.Base_Infectivity_Shape = 1.0
 
     cp.Incubation_Period_Distribution = DIST_GAMMA
@@ -66,7 +66,7 @@ def update_config_obj(config):
     cp.Incubation_Period_Shape = 3.5
 
     cp.Infectious_Period_Distribution = DIST_GAUSS
-    cp.Infectious_Period_Gaussian_Mean = 18.0
+    cp.Infectious_Period_Gaussian_Mean = gdata.inf_dur_mean
     cp.Infectious_Period_Gaussian_Std_Dev = 2.0
 
     cp.Enable_Nonuniform_Shedding = 1.0
@@ -142,7 +142,7 @@ def update_config_obj(config):
     cp.Enable_Default_Reporting = 1
     cp.Enable_Demographics_Reporting = 1
     cp.Enable_Event_DB = 1
-    cp.SQL_Start_Time = = 365.0*(gdata.start_year_log-gdata.base_year)
+    cp.SQL_Start_Time = 365.0*(gdata.start_year_log-gdata.base_year)
     cp.SQL_Events = ["NewlySymptomatic"]
 
     cp.Enable_Spatial_Output = 0

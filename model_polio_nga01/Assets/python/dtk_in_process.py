@@ -11,10 +11,9 @@ import numpy as np
 
 import emod_api.campaign as camp_module
 
+from emod_camp_events import ce_OPV_SIA
 from emod_constants import RST_FILE, RST_TIME, RST_NODE, RST_CLADE, \
                            RST_GENOME, RST_NEW_INF
-
-from emod_camp_events import ce_OPV_SIA
 
 # *****************************************************************************
 

@@ -1,16 +1,19 @@
-#********************************************************************************
+# *****************************************************************************
 #
-#********************************************************************************
+# *****************************************************************************
 
-import os, sys, shutil, json, sqlite3
+import os
+import json
 
 import global_data as gdata
 
 import numpy as np
 
-from aux_obj_calc     import     norpois_opt
+from emod_analysis import norpois_opt
+from emod_postproc_func import post_proc_poppyr, post_proc_sql
+from emod_constants import O_FILE
 
-#********************************************************************************
+# *****************************************************************************
 
 pop_age_days  = [     0,   1825,   3650,   5475,   7300,   9125,  10950,  12775,
                   14600,  16425,  18250,  20075,  21900,  23725,  25550,  27375,
@@ -44,96 +47,63 @@ ref_dat   = [  4,  17,  26,  11,  11,   6,   5,   8,  13,  17,  12,   6,
              161, 194,  51,  66, 144,  39,  19,  66,  95, 198, 137,  38,
               30, 260, 250, 242, 100,  37,  43,  72,  47,  77, 189,  73]
 
-#********************************************************************************
+# *****************************************************************************
+
 
 def application(output_path):
 
-  DAY_BINS  = [31,28,31,30,31,30,31,31,30,31,30,31]
-  BIN_EDGES = np.cumsum(15*DAY_BINS) + gdata.start_log + 0.5  # Hist for 15 years
-  BIN_EDGES = np.insert(BIN_EDGES, 0, gdata.start_log + 0.5)
+    # Variables for this simulation
+    RUN_YEARS = gdata.var_params['run_years']
 
-  SIM_IDX         = gdata.sim_index
-  PREV_TIME       = gdata.prev_proc_time
-  REP_MAP_DICT    = gdata.demog_node_map    # LGA Dotname:     [NodeIDs]
-  REP_DEX_DICT    = gdata.demog_rep_index   # LGA Dotname:  Output row number
-  TIME_START      = gdata.start_time
+    # Prep output dictionary
+    SIM_IDX = gdata.sim_index
+    key_str = '{:05d}'.format(SIM_IDX)
+    parsed_dat = {key_str: dict()}
 
+    DAY_BINS  = [31,28,31,30,31,30,31,31,30,31,30,31]
+    BIN_EDGES = np.cumsum(15*DAY_BINS) + gdata.start_log + 0.5  # Hist for 15 years
+    BIN_EDGES = np.insert(BIN_EDGES, 0, gdata.start_log + 0.5)
 
-  # ***** Get variables for this simulation *****
-  TIME_DELTA      = gdata.var_params['num_tsteps']
+    PREV_TIME = gdata.prev_proc_time
+    REP_MAP_DICT = gdata.demog_node_map    # LGA Dotname:     [NodeIDs]
+    REP_DEX_DICT = gdata.demog_rep_index   # LGA Dotname:  Output row number
+    START_YEAR = gdata.start_year
+    T_STEP = gdata.t_step_days
 
+    # Sample population pyramid every year
+    post_proc_poppyr(output_path, parsed_dat[key_str])
 
-  # Connect to SQL database; retreive new entries
-  connection_obj = sqlite3.connect('simulation_events.db')
-  cursor_obj     = connection_obj.cursor()
+    # Update SQL data
+    (dvec_time, dvec_node, dvec_mcw, _) = post_proc_sql(PREV_TIME)
 
-  sql_cmd = "SELECT * FROM SIM_EVENTS WHERE SIM_TIME > {:.1f}".format(PREV_TIME)
-  cursor_obj.execute(sql_cmd)
-  row_list = cursor_obj.fetchall()
+    gdata.data_vec_time = np.append(gdata.data_vec_time, dvec_time)
+    gdata.data_vec_node = np.append(gdata.data_vec_node, dvec_node)
+    gdata.data_vec_mcw = np.append(gdata.data_vec_mcw, dvec_mcw)
 
-  data_time = np.array([val[0] for val in row_list], dtype = float)  # Time
-  data_node = np.array([val[2] for val in row_list], dtype = int  )  # Node
-  data_mcw  = np.array([val[4] for val in row_list], dtype = float)  # MCW
+    # Timestamps
+    time_vec = np.arange(START_YEAR, START_YEAR + RUN_YEARS, T_STEP)
 
-  gdata.data_vec_time = np.append(gdata.data_vec_time, data_time)
-  gdata.data_vec_node = np.append(gdata.data_vec_node, data_node)
-  gdata.data_vec_mcw  = np.append(gdata.data_vec_mcw,  data_mcw)
+    # Aggregate new infections by month
+    (inf_mo, tstamps) = np.histogram(gdata.data_vec_time,
+                                     bins = BIN_EDGES,
+                                     weights = gdata.data_vec_mcw)
 
+    # Monthly timeseries
+    parsed_dat[key_str]['timeseries'] = inf_mo.tolist()
 
-  # Prep output dictionary
-  key_str    = '{:05d}'.format(SIM_IDX)
-  parsed_dat = {key_str: dict()}
+    # Calibration score from timeseries data
+    (obj_val, scal_vec) = norpois_opt(ref_dat, inf_mo[:len(ref_dat)])
 
+    parsed_dat[key_str]['cal_val'] = float(obj_val)
+    parsed_dat[key_str]['rep_rate'] = float(scal_vec[0])
 
-  # Timestamps
-  time_vec = np.arange(TIME_START, TIME_START + TIME_DELTA)
+    # Common output data
+    parsed_dat['tstamps'] = (np.diff(tstamps)/2.0 + tstamps[:-1]).tolist()
 
+    # Write output dictionary
+    with open(O_FILE, 'w') as fid01:
+        json.dump(parsed_dat, fid01)
 
-  # Aggregate new infections by month
-  (inf_mo, tstamps) = np.histogram(gdata.data_vec_time,
-                                   bins    = BIN_EDGES,
-                                   weights = gdata.data_vec_mcw)
+    return None
 
-
-  # Monthly timeseries
-  parsed_dat[key_str]['timeseries']   = inf_mo.tolist()
-
-
-  # Calibration score from timeseries data
-  (obj_val, scal_vec) = norpois_opt([ref_dat], inf_mo[:len(ref_dat)])
-
-  parsed_dat[key_str]['cal_val']   = float(obj_val)
-  parsed_dat[key_str]['rep_rate']  = float(scal_vec[0])
-
-
-  # Sample population pyramid every year
-  with open(os.path.join(output_path,'DemographicsSummary.json')) as fid01:
-    demog_output = json.load(fid01)
-
-  age_key_list = [   '<5',   '5-9', '10-14', '15-19', '20-24', '25-29',
-                  '30-34', '35-39', '40-44', '45-49', '50-54', '55-59',
-                  '60-64', '65-69', '70-74', '75-79', '80-84', '85-89',
-                  '90-94', '95-99']
-  pyr_dat      = np.zeros((int(np.floor(TIME_DELTA/365.0))+1,len(age_key_list)))
-
-  for k1 in range(len(age_key_list)):
-    age_key_str = 'Population Age {:s}'.format(age_key_list[k1])
-    age_vec_dat = np.array(demog_output['Channels'][age_key_str]['Data'])
-    pyr_dat[0,  k1] = age_vec_dat[0]
-    pyr_dat[1:, k1] = age_vec_dat[364::365]
-
-  parsed_dat[key_str]['pyramid'] = pyr_dat.tolist()
-
-
-  # Common output data
-  parsed_dat['tstamps'] = (np.diff(tstamps)/2.0 + tstamps[:-1]).tolist()
-
-
-  # Write output dictionary
-  with open('parsed_out.json','w') as fid01:
-    json.dump(parsed_dat, fid01)
-
-
-  return None
-
-#*******************************************************************************
+# *****************************************************************************

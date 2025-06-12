@@ -1,107 +1,106 @@
-#********************************************************************************
+# *****************************************************************************
 #
-#********************************************************************************
+# *****************************************************************************
 
 import json
+import os
+import sys
 
 import numpy as np
 
-#*******************************************************************************
+# Ought to go in emodpy
+sys.path.insert(0, os.path.abspath(os.path.join('..', '..', 'local_python')))
+from py_assets_common.emod_constants import EXP_C, EXP_V, EXP_NAME, NUM_SIMS, \
+                                            P_FILE
+
+# *****************************************************************************
 
 # This script makes a json dictionary that is used by the pre-processing script
 # in EMOD. Variable names defined here will be available to use in creating
-# the input files. Please don't change the variable name for 'EXP_NAME' or
-# for 'NUM_SIMS' because those are also used in scripts outside of EMOD.
+# the input files.
 
 # The pre-process script will open the json dict created by this method. For
-# everything in the 'EXP_VARIABLE' key, that script will assume a list and
-# get a value from that list based on the sim index. For everything in the 
-# 'EXP_CONSTANT' key, it will assume a single value and copy that value.
+# everything with the EXP_V key, that script will assume a list and get a value
+# from that list based on the sim index. For everything with the EXP_C key, it
+# will assume a single value and copy that value.
 
 
+def write_param_dict():
 
-# ***** Setup *****
-param_dict = dict()
+    # Setup
+    param_dict = dict()
 
-param_dict['EXP_NAME']     = 'Measles-GHA-Test01'
-param_dict['NUM_SIMS']     =  5000
-param_dict['EXP_VARIABLE'] = dict()
-param_dict['EXP_CONSTANT'] = dict()
+    param_dict[EXP_NAME] = 'Measles-GHA-Test01'
+    param_dict[NUM_SIMS] = 5000
+    param_dict[EXP_V] = dict()
+    param_dict[EXP_C] = dict()
 
-# Random number consistency
-np.random.seed(4)
+    # Random number consistency
+    np.random.seed(4)
 
-# Convenience naming
-NSIMS = param_dict['NUM_SIMS']
+    # Convenience naming
+    NSIMS = param_dict[NUM_SIMS]
+    P_VAR = param_dict[EXP_V]
+    P_CON = param_dict[EXP_C]
 
+    # Run number (EMOD random seed)
+    P_VAR['run_number'] = list(range(NSIMS))
 
+    # Number of simulated years
+    P_CON['run_years'] = 18.0
 
-# ***** Specify sim-variable parameters *****
+    # Coverage of SIAs in WHO calendar
+    P_CON['SIA_cover_GHA_2010'] = 0.85
+    P_CON['SIA_cover_GHA_2013'] = 0.55
+    P_CON['SIA_cover_GHA_2018'] = 0.40
 
-param_dict['EXP_VARIABLE']['run_number']           =   list(range(NSIMS))
+    # R0 value
+    P_CON['R0'] = 14.0
 
-# Reactive campaign case threshold (observed) for admin-1
-param_dict['EXP_VARIABLE']['adm01_case_threshold'] = np.random.uniform(low=   10, high= 1000, size=NSIMS).tolist()
+    # R0 seasonality
+    P_CON['R0_peak_day'] = 65.0
+    P_CON['R0_peak_width'] = 45.0
+    P_CON['R0_peak_magnitude'] = 1.3
 
-# Reactive campaign case threshold (observed) for admin-1
-param_dict['EXP_VARIABLE']['log10_min_reporting']  = np.random.uniform(low= -3.0, high= -1.0, size=NSIMS).tolist()
+    # Importation rate per-100k per-day
+    P_CON['log10_import_rate'] = -0.50
 
+    # Parameters for gravity model for network connections
+    P_CON['net_inf_power'] = 2.0
+    P_CON['net_inf_ln_mult'] = -2.0
+    P_CON['net_inf_maxfrac'] = 0.1
 
+    # Correlation between acqusition and transmission heterogeneity
+    P_CON['corr_acq_trans'] = 0.9
 
-# ***** Constants for this experiment *****
+    # Individual risk variance
+    P_CON['ind_variance_risk'] = 0.6
 
-# Number of days to run simulation (start Jan 1, 2008 = 40150)
-param_dict['EXP_CONSTANT']['num_tsteps']           =   365.0*(2.0 + 10.0 + 6.0) + 1
+    # Base agent weight; less than 10 may have memory issues
+    P_CON['agent_rate'] = 25.0
 
-# Coverage of SIAs in WHO calendar
-param_dict['EXP_CONSTANT']['SIA_cover_GHA_2010_4'] =     0.85
-param_dict['EXP_CONSTANT']['SIA_cover_GHA_2013_5'] =     0.55
-param_dict['EXP_CONSTANT']['SIA_cover_GHA_2018_6'] =     0.40
+    # Node level overdispersion; 0.0 = Poisson
+    P_CON['proc_overdispersion'] = 0.4
 
-# R0 value
-param_dict['EXP_CONSTANT']['R0']                   =    14.0
+    # Reactive campaign case threshold (observed) for admin-1
+    case_thresh = np.random.uniform(low=10, high=1000, size=NSIMS).tolist()
+    P_VAR['adm01_case_threshold'] = case_thresh
 
-# R0 seasonality
-param_dict['EXP_CONSTANT']['R0_peak_day']          =    65.0
-param_dict['EXP_CONSTANT']['R0_peak_width']        =    45.0
-param_dict['EXP_CONSTANT']['R0_peak_magnitude']    =     1.3
+    # Reactive campaign case threshold (observed) for admin-1
+    min_reporting = np.random.uniform(low=-3.0, high=-1.0, size=NSIMS).tolist()
+    P_VAR['log10_min_reporting'] = min_reporting
 
-# Importation rate per-100k per-day
-param_dict['EXP_CONSTANT']['log10_import_rate']    =   -0.50
+    # Write parameter dictionary
+    with open(P_FILE, 'w') as fid01:
+        json.dump(param_dict, fid01)
 
-# Parameters for gravity model for network connections
-param_dict['EXP_CONSTANT']['net_inf_power']        =    2.0
-param_dict['EXP_CONSTANT']['net_inf_ln_mult']      =   -2.0
-param_dict['EXP_CONSTANT']['net_inf_maxfrac']      =     0.1
+    return None
 
-# Correlation between acqusition and transmission heterogeneity
-param_dict['EXP_CONSTANT']['corr_acq_trans']       =     0.9
-
-# Individual level risk variance (risk of acquisition multiplier; mean = 1.0; log-normal distribution)
-param_dict['EXP_CONSTANT']['ind_variance_risk']    =     0.6
-
-# Base agent weight; less than 10 may have memory issues
-param_dict['EXP_CONSTANT']['agent_rate']           =    25.0
-
-# Abort sim if running for more than specified time in minutes
-param_dict['EXP_CONSTANT']['max_clock_minutes']    =   240.0
-
-# Node level overdispersion; 0.0 = Poisson
-param_dict['EXP_CONSTANT']['proc_overdispersion']  =     0.4
-
-
-
-
-
+# *****************************************************************************
 
 
+if (__name__ == "__main__"):
 
+    write_param_dict()
 
-# ***** Write parameter dictionary *****
-
-with open('param_dict.json','w') as fid01:
-  json.dump(param_dict,fid01)
-
-
-
-#*******************************************************************************
+# *****************************************************************************
