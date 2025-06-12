@@ -17,6 +17,7 @@ CNEC = 'CoverageByNodeEventCoordinator'
 CHWEC = 'CommunityHealthWorkerEventCoordinator'
 
 NLHT = 'NodeLevelHealthTriggeredIV'
+NLHTS = 'NodeLevelHealthTriggeredIVScaleUpSwitch'
 MID = 'MultiInterventionDistributor'
 DI = 'DelayedIntervention'
 VAX = 'Vaccine'
@@ -192,6 +193,7 @@ def ce_inf_mod(node_list,
 
 def ce_RI(node_list,
           coverage=1.0, start_day=0.0, base_take=1.0,
+          coverage_x=[0.0], coverage_y=[1.0],
           age_one=300.0, frac_two=None, age_two=475.0, age_std=90.0,
           acq_fact=0.0, age_dep=False):
 
@@ -199,7 +201,7 @@ def ce_RI(node_list,
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
     camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
     camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
-    camp_iv01 = s2c.get_class_with_defaults(NLHT, SPATH)
+    camp_iv01 = s2c.get_class_with_defaults(NLHTS, SPATH)
     camp_iv02 = s2c.get_class_with_defaults(MID, SPATH)
     camp_iv03 = s2c.get_class_with_defaults(DI, SPATH)
     camp_iv04 = s2c.get_class_with_defaults(VAX, SPATH)
@@ -213,7 +215,11 @@ def ce_RI(node_list,
     camp_coord.Intervention_Config = camp_iv01
 
     camp_iv01.Actual_IndividualIntervention_Config = camp_iv02
+    camp_iv01.Coverage_vs_Time_Interpolation_Map.Times = coverage_x
+    camp_iv01.Coverage_vs_Time_Interpolation_Map.Values = coverage_y
     camp_iv01.Demographic_Coverage = coverage
+    camp_iv01.Demographic_Coverage_Time_Profile = 'InterpolationMap'
+    camp_iv01.Not_Covered_IndividualIntervention_Configs = []  # Needed?
     camp_iv01.Trigger_Condition_List = ['Births']
 
     camp_iv02.Intervention_List = [camp_iv03]

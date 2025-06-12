@@ -11,7 +11,7 @@ import numpy as np
 
 from emod_postproc_func import post_proc_poppyr, post_proc_cost
 from emod_constants import RST_FILE, RST_TIME, RST_NODE, RST_CLADE, \
-                           RST_GENOME, RST_NEW_INF
+                           RST_GENOME, RST_NEW_INF, O_FILE
 
 # *****************************************************************************
 
@@ -80,7 +80,7 @@ def application(output_path):
         parsed_dat = dict()
 
     # Write output dictionary
-    with open('parsed_out.json', 'w') as fid01:
+    with open(O_FILE, 'w') as fid01:
         json.dump(parsed_dat, fid01)
 
     return None

@@ -15,13 +15,12 @@ from emod_api.demographics.Demographics import Demographics, Node
 from emod_demog_func import demog_vd_calc, demog_vd_over, demog_is_over
 from emod_constants import DEMOG_FILE
 
-#********************************************************************************
+# *****************************************************************************
 
 
 def demographicsBuilder():
 
     # Variables for this simulation
-    TIME_START = gdata.start_time
     PROC_DISPER = gdata.var_params['proc_overdispersion']
     SUB_ADM02 = True
     IND_RISK_VAR = gdata.var_params['ind_variance_risk']
@@ -62,7 +61,7 @@ def demographicsBuilder():
                       name=list_nam[k1],
                       forced_id=(k1+1)) for k1 in range(list_nam.shape[0])]
 
-    imp_case  = np.power(10.0, LOG10_IMP)
+    imp_case = np.power(10.0, LOG10_IMP)
     for node_obj in node_list:
         imp_rate = imp_case*node_obj.initial_population/1.0e5
         add_attrib = {'InfectivityReservoirSize': imp_rate}
@@ -121,6 +120,9 @@ def demographicsBuilder():
     birth_rate = vd_tup[3]
     br_mult_x = vd_tup[4]
     br_mult_y = vd_tup[5]
+
+    gdata.brate_mult_x = br_mult_x.tolist()
+    gdata.brate_mult_y = br_mult_y.tolist()
 
     # Write vital dynamics overlay
     nfname = demog_vd_over(ref_name, node_list, birth_rate,
