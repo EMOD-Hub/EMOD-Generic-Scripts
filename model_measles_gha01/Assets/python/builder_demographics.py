@@ -63,7 +63,7 @@ def demographicsBuilder():
 
     imp_case = np.power(10.0, LOG10_IMP)
     for node_obj in node_list:
-        imp_rate = imp_case*node_obj.initial_population/1.0e5
+        imp_rate = imp_case*node_obj.node_attributes.initial_population/1.0e5
         add_attrib = {'InfectivityReservoirSize': imp_rate}
         node_obj.node_attributes.extra_attributes = add_attrib
 
@@ -88,10 +88,6 @@ def demographicsBuilder():
                           if nname.startswith(adm01+':') or nname == adm01]
                   for adm01 in list_adm01}
     gdata.adm01_idlist = adm01_dict
-
-    node_rep_dict = {val[0]: val[1] for val in
-                     zip(list_adm02, range(len(list_adm02)))}
-    gdata.demog_rep_index = node_rep_dict
 
     # Create primary file
     ref_name = 'measles-custom'

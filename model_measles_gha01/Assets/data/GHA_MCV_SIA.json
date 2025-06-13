@@ -2,16 +2,16 @@
     "GHA_2010": {
         "age_yr_max": 5.0,
         "age_yr_min": 0.75,
-        "date": 40460,
+        "date": 40460
     },
     "GHA_2013": {
         "age_yr_max": 15.0,
         "age_yr_min": 0.75,
-        "date": 41508,
+        "date": 41508
     },
     "GHA_2018": {
         "age_yr_max": 1825,
         "age_yr_min": 0.75,
-        "date": 43365,
+        "date": 43365
     }
 }

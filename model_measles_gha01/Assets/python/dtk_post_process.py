@@ -11,7 +11,7 @@ import numpy as np
 
 from emod_analysis import norpois_opt
 from emod_postproc_func import post_proc_poppyr, post_proc_sql
-from emod_constants import O_FILE
+from emod_constants import O_FILE, MO_DAYS
 
 # *****************************************************************************
 
@@ -37,16 +37,6 @@ tpop_yval = [23563832, 24170943, 24779614, 25387713, 25996454, 26607641,
              31072945, 31732000, 32395000, 33063000, 33734000, 34409000,
              35087000]
 
-ref_dat   = [  4,  17,  26,  11,  11,   6,   5,   8,  13,  17,  12,   6,
-              32,  47,  73,  48,  39,  33,  15,  27,  11,   7,  14,   1,
-              38,  48,  58,  71,  25,  10,  16,  14,  20,   5,   9,   8,
-              38,  35,  21,  13,  14,  16,   2,   1,   1,   1,   0,   0,
-               1,   5,   3,   7,  11,   4,   3,   3,   5,   4,   5,   0,
-               6,   5,   9,  39,  78,  90,  74,  96,  38,  17,   2,   1,
-              12,   4,  14,  80, 191, 167,  52,   1,   5, 166, 147, 104,
-             161, 194,  51,  66, 144,  39,  19,  66,  95, 198, 137,  38,
-              30, 260, 250, 242, 100,  37,  43,  72,  47,  77, 189,  73]
-
 # *****************************************************************************
 
 
@@ -60,30 +50,23 @@ def application(output_path):
     key_str = '{:05d}'.format(SIM_IDX)
     parsed_dat = {key_str: dict()}
 
-    DAY_BINS  = [31,28,31,30,31,30,31,31,30,31,30,31]
-    BIN_EDGES = np.cumsum(15*DAY_BINS) + gdata.start_log + 0.5  # Hist for 15 years
-    BIN_EDGES = np.insert(BIN_EDGES, 0, gdata.start_log + 0.5)
-
-    PREV_TIME = gdata.prev_proc_time
-    REP_MAP_DICT = gdata.demog_node_map    # LGA Dotname:     [NodeIDs]
-    REP_DEX_DICT = gdata.demog_rep_index   # LGA Dotname:  Output row number
-    START_YEAR = gdata.start_year
-    T_STEP = gdata.t_step_days
-
     # Sample population pyramid every year
     post_proc_poppyr(output_path, parsed_dat[key_str])
 
     # Update SQL data
+    PREV_TIME = gdata.prev_proc_time
     (dvec_time, dvec_node, dvec_mcw, _) = post_proc_sql(PREV_TIME)
 
     gdata.data_vec_time = np.append(gdata.data_vec_time, dvec_time)
     gdata.data_vec_node = np.append(gdata.data_vec_node, dvec_node)
     gdata.data_vec_mcw = np.append(gdata.data_vec_mcw, dvec_mcw)
 
-    # Timestamps
-    time_vec = np.arange(START_YEAR, START_YEAR + RUN_YEARS, T_STEP)
-
     # Aggregate new infections by month
+    DAY_BINS = MO_DAYS
+    START_TIME = 365.0*(gdata.start_year-gdata.base_year)
+    BIN_EDGES = np.cumsum(int(RUN_YEARS)*DAY_BINS) + START_TIME + 0.5
+    BIN_EDGES = np.insert(BIN_EDGES, 0, START_TIME + 0.5)
+
     (inf_mo, tstamps) = np.histogram(gdata.data_vec_time,
                                      bins = BIN_EDGES,
                                      weights = gdata.data_vec_mcw)
@@ -92,10 +75,9 @@ def application(output_path):
     parsed_dat[key_str]['timeseries'] = inf_mo.tolist()
 
     # Calibration score from timeseries data
-    (obj_val, scal_vec) = norpois_opt(ref_dat, inf_mo[:len(ref_dat)])
-
-    parsed_dat[key_str]['cal_val'] = float(obj_val)
-    parsed_dat[key_str]['rep_rate'] = float(scal_vec[0])
+    #(obj_val, scal_vec) = norpois_opt(ref_dat, inf_mo[:len(ref_dat)])
+    #parsed_dat[key_str]['cal_val'] = float(obj_val)
+    #parsed_dat[key_str]['rep_rate'] = float(scal_vec)
 
     # Common output data
     parsed_dat['tstamps'] = (np.diff(tstamps)/2.0 + tstamps[:-1]).tolist()

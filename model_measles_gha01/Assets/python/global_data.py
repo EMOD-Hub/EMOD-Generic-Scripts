@@ -14,13 +14,13 @@ demog_files = list()
 demog_object = None
 
 # Other stuff
-demog_min_pop = 50
+demog_min_pop = 75
 
 node_idval = None
-demog_dict = dict()
-demog_node = dict()
-demog_node_map = dict()  # LGA:  [NodeIDs]
-demog_rep_index = dict()  # LGA:  Output row number
+adm01_idlist = None
+adm02_idlist = None
+
+adm01_cases = None
 
 first_call_bool = True
 prev_proc_time = -1.0
@@ -40,6 +40,7 @@ brate_mult_y = None
 
 start_year = 2008.0
 start_year_log = 2011.0
+start_year_obr = 2020.0
 base_year = 1900.0
 t_step_days = 1.0
 

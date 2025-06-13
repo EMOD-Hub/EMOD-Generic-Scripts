@@ -11,7 +11,7 @@ import numpy as np
 import emod_api.campaign as camp_module
 
 from emod_camp_events import ce_SIA
-from emod_post_proc_func import post_proc_sql
+from emod_postproc_func import post_proc_sql
 
 # *****************************************************************************
 
@@ -21,37 +21,36 @@ def application(timestep):
     TIME_VAL = float(timestep)
 
     PREV_TIME = gdata.prev_proc_time
-    NODE_DICT = gdata.demog_node
+    NODE_IDS = gdata.node_idval
     CASE_THRESH = gdata.var_params['adm01_case_threshold']
     LOG_REP_RATE = gdata.var_params['log10_min_reporting']
+
+    ADM01_DICT = gdata.adm01_idlist
+    ADM01_CASE = gdata.adm01_cases
 
     # First call to in-process; initialize as needed
     if (gdata.first_call_bool):
         gdata.first_call_bool = False
+
         gdata.data_vec_time = np.array(list())
         gdata.data_vec_node = np.array(list())
         gdata.data_vec_mcw = np.array(list())
 
-        adm01_name = list(set([':'.join(val.split(':')[:3]) for val in NODE_DICT]))
-        adm01_list = [[val, list(), 0] for val in adm01_name]
-        for nname in NODE_DICT:
-            for adm01_tup in adm01_list:
-                if (nname.startswith(adm01_tup[0]+':')):
-                    adm01_tup[1].append(NODE_DICT[nname])
+        gdata.adm01_cases = {adm01: 0 for adm01 in ADM01_DICT}
 
-        adm02_name = list(set([':'.join(val.split(':')[:4]) for val in NODE_DICT]))
-        adm02_rate = {val: np.random.beta(0.33, 8.0) for val in adm02_name}
+        adm02_rate = {adm02: np.random.beta(0.33, 8.0) 
+                      for adm02 in gdata.adm02_idlist}
 
         with open('adm02_obsrate.json', 'w') as fid01:
             json.dump(adm02_rate, fid01)
 
-        nobs_list = np.zeros(gdata.max_node_id, dtype=float)
-        for nname in NODE_DICT:
+        max_node_id = np.max(gdata.demog_object.node_ids)
+        nobs_list = np.zeros(max_node_id, dtype=float)
+        for nname in NODE_IDS:
             for adm02_name in adm02_rate:
                 if (nname.startswith(adm02_name+':')):
-                    nobs_list[NODE_DICT[nname]-1] = adm02_rate[adm02_name]
+                    nobs_list[NODE_IDS[nname]-1] = adm02_rate[adm02_name]
 
-        gdata.adm01_list = adm01_list
         gdata.nobs_vec = nobs_list
 
         print("Hello from in-process at time {:.1f}".format(TIME_VAL))
@@ -70,24 +69,25 @@ def application(timestep):
     # Record timestamp of previous process
     gdata.prev_proc_time = TIME_VAL
 
-    # Only do response starting in 2020
-    if (TIME_VAL > 43800.0):
-        for k1 in range(gdata.max_node_id):
+    # Only do response post-2020
+    obr_time = 365.0*(gdata.start_year_obr - gdata.base_year)
+    if (TIME_VAL > obr_time):
+        for k1 in range(gdata.nobs_vec.shape[0]):
             nid_val = k1 + 1
             gidx = (dvec_node == nid_val)
             min_rate = np.power(10.0, LOG_REP_RATE)
             nreprate = np.maximum(gdata.nobs_vec[nid_val-1], min_rate)
             obs_inf = np.sum(dvec_mcw[gidx])*nreprate
-            for adm01_tup in gdata.adm01_list:
-                if (nid_val in adm01_tup[1]):
-                    adm01_tup[2] += obs_inf
+            for adm01 in ADM01_DICT:
+                if (nid_val in ADM01_DICT[adm01]):
+                    gdata.adm01_cases += obs_inf
 
     # Reactive campaign
     targ_nodes = list()
-    for adm01_tup in gdata.adm01_list:
-        if (adm01_tup[2] > CASE_THRESH):
-            targ_nodes.extend(adm01_tup[1])
-            adm01_tup[2] = 0
+    for adm01 in ADM01_DICT:
+        if (gdata.adm01_cases[adm01] > CASE_THRESH):
+            targ_nodes.extend(ADM01_DICT[adm01])
+            gdata.adm01_cases = 0
 
     # New campaign file
     camp_module.reset()
@@ -100,7 +100,6 @@ def application(timestep):
                             yrs_min=0.75, yrs_max=5.0)
         camp_module.add(camp_event)
 
-    if (camp_module.campaign_dict["Events"]):
         camp_module.save(filename=CAMP_FILE)
         return CAMP_FILE
 
