@@ -31,7 +31,7 @@ def write_param_dict():
     param_dict = dict()
 
     param_dict[EXP_NAME] = 'Measles-GHA-Base01'
-    param_dict[NUM_SIMS] = 10
+    param_dict[NUM_SIMS] = 500
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -47,7 +47,7 @@ def write_param_dict():
     P_VAR['run_number'] = list(range(NSIMS))
 
     # Number of simulated years
-    P_CON['run_years'] = 1.0
+    P_CON['run_years'] = 10.0
 
     # Coverage of SIAs in WHO calendar
     P_CON['SIA_cover_GHA_2010'] = 0.85
