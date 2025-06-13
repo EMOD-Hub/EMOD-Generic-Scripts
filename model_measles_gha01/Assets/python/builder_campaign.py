@@ -14,7 +14,7 @@ import numpy as np
 import emod_api.campaign as camp_module
 
 from emod_camp_events import build_node_list, ce_br_force, ce_RI, ce_SIA, \
-                             ce_inf_force
+                             ce_inf_force, ce_inf_mod
 from emod_constants import CAMP_FILE
 
 # *****************************************************************************
@@ -91,8 +91,8 @@ def campaignBuilder():
 
     # Add infectivity trough
     start_day = 365.0*(2020.0-gdata.base_year)
-    camp_event = ce_inf_force(ALL_NODES, 0.0, 365.0*2.0, 0.75, nreps=1,
-                              start_day=start_day, dt=gdata.t_step_days)
+    camp_event = ce_inf_mod(ALL_NODES, start_day=start_day,
+                            dt_days=365.0*2.0, mult_val=0.75)
     camp_module.add(camp_event)
 
     # End file construction
