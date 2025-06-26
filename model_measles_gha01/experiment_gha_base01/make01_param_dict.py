@@ -47,15 +47,16 @@ def write_param_dict():
     P_VAR['run_number'] = list(range(NSIMS))
 
     # Number of simulated years
-    P_CON['run_years'] = 10.0
+    P_CON['run_years'] = 12.0
 
     # Coverage of SIAs in WHO calendar
-    P_CON['SIA_cover_GHA_2010'] = 0.85
+    P_CON['SIA_cover_GHA_2010'] = 0.90
     P_CON['SIA_cover_GHA_2013'] = 0.55
     P_CON['SIA_cover_GHA_2018'] = 0.40
 
-    # R0 value
-    P_CON['R0'] = 14.0
+    # Infectivity
+    vals = 10.0 + np.random.gamma(30.0, scale=0.133, size=NSIMS)
+    P_VAR['R0'] = (np.round(vals, 2)).tolist()
 
     # R0 seasonality
     P_CON['R0_peak_day'] = 65.0
