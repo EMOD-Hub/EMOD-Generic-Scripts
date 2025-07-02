@@ -10,7 +10,7 @@
         "date": 41508
     },
     "GHA_2018": {
-        "age_yr_max": 1825,
+        "age_yr_max": 5.0,
         "age_yr_min": 0.75,
         "date": 43365
     }
