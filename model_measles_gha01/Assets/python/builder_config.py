@@ -38,7 +38,7 @@ def update_config_obj(config):
     NI_POWER = gdata.var_params['net_inf_power']
     NI_MAXFRAC = gdata.var_params['net_inf_maxfrac']
     RUN_NUM = gdata.var_params['run_number']
-    RUN_YEARS = gdata.var_params['run_years']
+    END_YEAR = gdata.var_params['end_year']
     AGENT_RATE = gdata.var_params['agent_rate']
     CORR_ACQ_TRANS = gdata.var_params['corr_acq_trans']
 
@@ -49,6 +49,7 @@ def update_config_obj(config):
     cp.Run_Number = RUN_NUM
 
     # Time
+    RUN_YEARS = END_YEAR - gdata.start_year
     cp.Start_Time = 365.0*(gdata.start_year-gdata.base_year)
     cp.Simulation_Duration = 365.0*RUN_YEARS + gdata.t_step_days
     cp.Simulation_Timestep = gdata.t_step_days

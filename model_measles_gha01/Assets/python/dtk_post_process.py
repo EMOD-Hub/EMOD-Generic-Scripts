@@ -19,7 +19,7 @@ from emod_constants import O_FILE, MO_DAYS
 def application(output_path):
 
     # Variables for this simulation
-    RUN_YEARS = gdata.var_params['run_years']
+    pass
 
     # Prep output dictionary
     SIM_IDX = gdata.sim_index

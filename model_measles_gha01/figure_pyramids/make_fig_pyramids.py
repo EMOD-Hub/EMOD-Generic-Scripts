@@ -14,7 +14,7 @@ from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, \
                                             POP_PYR, EXP_C
 from py_assets_common.emod_local_proc import pyr_chart
 
-from global_data import start_year, base_year
+from global_data import start_year
 
 # *****************************************************************************
 
@@ -37,10 +37,10 @@ def make_fig():
             param_dict = json.load(fid01)
 
         NSIMS = int(param_dict[NUM_SIMS])
-        run_years = param_dict[EXP_C]['run_years']
+        run_years = param_dict[EXP_C]['end_year']-start_year
         pyr_mat = np.zeros((NSIMS, int(run_years)+1, 20))-1
         year_vec = np.arange(start_year, start_year+run_years+1, dtype=int)
-        chart_yrs = year_vec[::5]
+        chart_yrs = year_vec[::6]
         num_charts = chart_yrs.shape[0]
 
         fig01 = plt.figure(figsize=(8*num_charts, 6))
