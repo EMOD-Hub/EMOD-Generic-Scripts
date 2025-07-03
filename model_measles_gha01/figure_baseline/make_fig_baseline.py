@@ -26,7 +26,7 @@ DIRNAMES = ['experiment_gha_base01']
 def make_fig():
 
     YMAX = 350
-    CCUT = -50e3
+    CCUT = -4e3
 
     for dirname in DIRNAMES:
 
@@ -128,8 +128,10 @@ def make_fig():
         axs01.grid(visible=True, which='major', ls='-', lw=0.5, label='')
         axs01.grid(visible=True, which='minor', ls=':', lw=0.1)
         axs01.set_axisbelow(True)
+        axs01.set_xlabel('Objective Function', fontsize=16)
 
-        axs01.hist(cal_vec, edgecolor='k', bins=np.arange(-8e3, -2e3, 200))
+        axs01.hist(cal_vec[gidx], edgecolor='k',
+                   bins=np.arange(-8e3, -2e3, 200))
 
         # Reporting rate
         axs01 = fig01.add_subplot(1, 3, 3)
@@ -138,8 +140,9 @@ def make_fig():
         axs01.grid(visible=True, which='major', ls='-', lw=0.5, label='')
         axs01.grid(visible=True, which='minor', ls=':', lw=0.1)
         axs01.set_axisbelow(True)
+        axs01.set_xlabel('Reporting Rate (%)', fontsize=16)
 
-        axs01.hist(1/scale_vec, edgecolor='k', bins=100)
+        axs01.hist(100*scale_vec[gidx], edgecolor='k', bins=100)
 
         plt.tight_layout()
         plt.savefig('fig_baseline_01.png')

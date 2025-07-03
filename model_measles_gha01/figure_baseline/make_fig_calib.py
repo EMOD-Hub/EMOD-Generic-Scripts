@@ -79,7 +79,7 @@ def make_fig():
                 axs01.set_xlabel(skeys[k1])
                 axs01.set_ylabel(skeys[k2])
                 axs01.scatter(xval[gidx], yval[gidx], c=cal_vec[gidx],
-                              vmin=-5e3, vmax=-3e3)
+                              vmin=-4.0e3, vmax=-2.5e3)
 
 
         print(min(cal_vec[gidx]), max(cal_vec[gidx]))

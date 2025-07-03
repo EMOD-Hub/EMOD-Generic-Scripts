@@ -46,16 +46,17 @@ def write_param_dict():
     # Run number (EMOD random seed)
     P_VAR['run_number'] = list(range(NSIMS))
 
-    # Number of simulated years
-    P_CON['run_years'] = 18.0
+    # Year to end simulation
+    P_CON['end_year'] = 2026
 
     # Coverage of SIAs in WHO calendar
-    P_CON['SIA_cover_GHA_2010'] = 0.85
-    P_CON['SIA_cover_GHA_2013'] = 0.55
-    P_CON['SIA_cover_GHA_2018'] = 0.40
+    P_CON['SIA_cover_GHA_2010'] = 0.75
+    P_CON['SIA_cover_GHA_2013'] = 0.40
+    P_CON['SIA_cover_GHA_2018'] = 0.15
 
-    # R0 value
-    P_CON['R0'] = 14.0
+    # Infectivity
+    vals = 7.0 + np.random.gamma(30.0, scale=0.133, size=NSIMS)
+    P_VAR['R0'] = (np.round(vals, 2)).tolist()
 
     # R0 seasonality
     P_CON['R0_peak_day'] = 65.0
@@ -67,14 +68,14 @@ def write_param_dict():
 
     # Parameters for gravity model for network connections
     P_CON['net_inf_power'] = 2.0
-    P_CON['net_inf_ln_mult'] = -2.0
+    P_CON['net_inf_ln_mult'] = 0.2
     P_CON['net_inf_maxfrac'] = 0.1
 
     # Correlation between acqusition and transmission heterogeneity
-    P_CON['corr_acq_trans'] = 0.9
+    P_CON['corr_acq_trans'] = 0.8
 
     # Individual risk variance
-    P_CON['ind_variance_risk'] = 0.6
+    P_CON['ind_variance_risk'] = 0.4
 
     # Base agent weight; less than 10 may have memory issues
     P_CON['agent_rate'] = 25.0
@@ -84,11 +85,13 @@ def write_param_dict():
 
     # Reactive campaign case threshold (observed) for admin-1
     case_thresh = np.random.uniform(low=10, high=1000, size=NSIMS).tolist()
-    P_VAR['adm01_case_threshold'] = case_thresh
+    #P_VAR['adm01_case_threshold'] = case_thresh
+    P_CON['adm01_case_threshold'] = 1.0e6
 
     # Reactive campaign case threshold (observed) for admin-1
     min_reporting = np.random.uniform(low=-3.0, high=-1.0, size=NSIMS).tolist()
-    P_VAR['log10_min_reporting'] = min_reporting
+    #P_VAR['log10_min_reporting'] = min_reporting
+    P_CON['log10_min_reporting'] = -7
 
     # Write parameter dictionary
     with open(P_FILE, 'w') as fid01:
