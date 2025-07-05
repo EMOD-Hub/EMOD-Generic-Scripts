@@ -1,6 +1,4 @@
-=================
-model_polio_nga01
-=================
+# Polio
 
 Demonstration simulations for poliovirus type-2 transmission in Nigeria. The model structure was used to examine the impact Sabin vaccine reversion dynamics in contrast to nOPV vaccines.
 

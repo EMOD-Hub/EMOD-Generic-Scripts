@@ -7,31 +7,16 @@ version: 2
 
 # Set the version of Python and other tools you might need
 build:
-  os: ubuntu-20.04
+  os: ubuntu-22.04
   tools:
-    python: "3.9"
-
-# Build documentation in the docs/ directory with Sphinx
-sphinx:
-  configuration: docs/conf.py
-  fail_on_warning: true
+    python: "3.12"
 
 # Build documentation with MkDocs
-#mkdocs:
-#  configuration: mkdocs.yml
-
-# Optionally build your docs in additional formats such as PDF
-formats:
-  - htmlzip
+mkdocs:
+  configuration: mkdocs.yml
+  fail_on_warning: true
 
 # Optionally set the version of Python and requirements required to build your docs
 python:
   install:
     - requirements: docs/requirements.txt
-        
-# Optionally rank topics in search results, between -10 (lower) and 10 (higher).
-# 0 is normal rank, not no rank
-
-# search:
-#   ranking:
-

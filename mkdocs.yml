@@ -1,0 +1,68 @@
+site_name: EMOD-Generic-Scripts
+site_url: https://docs.idmod.org/projects/emod-generic-scripts/
+repo_name: EMOD-Hub/EMOD-Generic-Scripts
+repo_url: https://github.com/EMOD-Hub/EMOD-Generic-Scripts
+
+theme:
+  name: material
+  font: 
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.footer
+  palette:
+    - scheme: default
+      primary: black
+      toggle:
+        icon: material/toggle-switch
+        name: Light mode
+    - scheme: slate
+      primary: black
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Dark mode
+  favicon: assets/favicon.ico
+  logo: assets/idm-logo-transparent.png
+
+nav:
+  - Home: index.md
+  - Getting Started: getting_started.md
+  - Workflow Overview: workflow.md
+  - Examples: 
+    - examples.md
+    - examples/model_covariance01.md
+    - examples/model_covid01.md
+    - examples/model_demographics_wpp01.md
+    - examples/model_demographics01.md
+    - examples/model_measles_cod01.md
+    - examples/model_measles_gha01.md
+    - examples/model_measles_nga01.md
+    - examples/model_measles_nga02.md
+    - examples/model_measles01.md
+    - examples/model_network01.md
+    - examples/model_polio_nga01.md
+    - examples/model_rubella01.md
+    - examples/model_transtree01.md
+
+plugins:
+  - search
+  - autorefs
+  - include-markdown
+  - glightbox
+  - mkdocs-autoapi:
+      autoapi_ignore:
+        - tests/**/*
+        - build/**/*
+        - docs/*
+        - env_*/**/*
+        - model_*/**/*
+        - refdat_*/**/*
+      autoapi_add_nav_entry: True
+  - mkdocstrings
+
+markdown_extensions:
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+
+copyright: Copyright &copy; 2025 Gates Foundation. All rights reserved.

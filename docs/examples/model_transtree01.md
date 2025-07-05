@@ -1,12 +1,10 @@
-=================
-model_transtree01
-=================
+# Transmission Trees
 
-This example demonstrates the implementation of superspreading behavior and its visualization using transmission trees. These simulations use a constant R\ :sub:`0`\  value of 1.5 and one of two variance levels for the secondary transmission rate: constant or exponential. A constant rate has all infected individuals tranmsit with a Poisson rate equal to the R\ :sub:`0`\  value; an exponential rate has each infected individual transmit with a Poisson rate that is drawn from an exponential distribution with mean equal to the R\ :sub:`0`\  value.
+This example demonstrates the implementation of superspreading behavior and its visualization using transmission trees. These simulations use a constant R~0~ value of 1.5 and one of two variance levels for the secondary transmission rate: constant or exponential. A constant rate has each infected individual cause secondary infections via a Poisson process with rate equal to R~0~; an exponential rate has each infected individual cause secondary infections via a Poisson process where the rate is drawn from an exponential distribution with mean equal to R~0~.
 
 One tree diagram for each simulation is shown in the figure below:
 
-.. figure:: figures/ref_track_transtree.png
+![Figure 1: Transmission trees](figures/ref_track_transtree.png)​
 
 Each simulation has a default network of 16 nodes (4-by-4 grid) that are well mixed using the network infectivity feature. Simulations are implemented as multi-core (two cores per simulation) to demonstrate logging and transmisssion between nodes hosted on different cores (note that cores may or may not be co-located on a common machine.)
 
