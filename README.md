@@ -1,7 +1,6 @@
 # EMOD-Generic-Scripts
 
-See documentation at https://docs.idmod.org/projects/emod-generic-scripts/en/latest/ for
-additional information about how to use these scripts.
+See documentation at https://docs.idmod.org/projects/emod-generic-scripts/en/latest/ for additional information about how to use these scripts.
 
 ---------------------
 
@@ -16,7 +15,7 @@ additional information about how to use these scripts.
 | model_demographics01     | Example demographics for UK measles simulations. |
 | model_demographics_wpp01 | [Example demographics using UN WPP data as inputs.](https://docs.idmod.org/projects/emod-generic-scripts/en/latest/examples/model_demographics_wpp01.html) |
 | model_measles_cod01      | Documentation. |
-| model_measles_gha01      | Examination of RDT use and responsive campaigns for measles using Ghana as an example context. |
+| model_measles_gha01      | [Examination of RDT use and measles outbreak response using Ghana as an example context.](https://docs.idmod.org/projects/emod-generic-scripts/en/latest/examples/model_measles_gha01.html) |
 | model_measles_nga01      | Documentation. |
 | model_measles_nga02      | Documentation. |
 | model_measles01          | [Estimates of measles burden under various policies for age of MCV1.](https://docs.idmod.org/projects/emod-generic-scripts/en/latest/examples/model_measles01.html) |
@@ -33,7 +32,7 @@ additional information about how to use these scripts.
 
 To get started:
 
-1. Setup a virtual environment (e.g., conda)
+1. Create and activate a virtual environment.
 
 2. Install requirements:
    ```
@@ -58,7 +57,7 @@ To get started:
 
 To build the documentation locally, do the following:
 
-1. Create and activate a venv.
+1. Create and activate a virtual environment.
 
 2. Navigate to the root directory of the repo and enter the following
 
