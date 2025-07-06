@@ -1,6 +1,6 @@
 # EMOD-Generic-Scripts
 
-See documentation at https://docs.idmod.org/projects/emod-generic-scripts/en/latest/ for additional information about how to use these scripts.
+See documentation at https://docs.idmod.org/projects/emod-generic-scripts for additional information.
 
 ---------------------
 
