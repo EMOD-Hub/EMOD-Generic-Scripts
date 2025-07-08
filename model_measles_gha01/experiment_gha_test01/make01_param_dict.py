@@ -47,7 +47,7 @@ def write_param_dict():
     P_VAR['run_number'] = list(range(NSIMS))
 
     # Year to end simulation
-    P_CON['end_year'] = 2026
+    P_CON['end_year'] = 2025
 
     # Coverage of SIAs in WHO calendar
     P_CON['SIA_cover_GHA_2010'] = 0.75
@@ -85,13 +85,11 @@ def write_param_dict():
 
     # Reactive campaign case threshold (observed) for admin-1
     case_thresh = np.random.uniform(low=10, high=1000, size=NSIMS).tolist()
-    #P_VAR['adm01_case_threshold'] = case_thresh
-    P_CON['adm01_case_threshold'] = 1.0e6
+    P_VAR['adm01_case_threshold'] = case_thresh
 
     # Reactive campaign case threshold (observed) for admin-1
     min_reporting = np.random.uniform(low=-3.0, high=-1.0, size=NSIMS).tolist()
-    #P_VAR['log10_min_reporting'] = min_reporting
-    P_CON['log10_min_reporting'] = -7
+    P_VAR['log10_min_reporting'] = min_reporting
 
     # Write parameter dictionary
     with open(P_FILE, 'w') as fid01:

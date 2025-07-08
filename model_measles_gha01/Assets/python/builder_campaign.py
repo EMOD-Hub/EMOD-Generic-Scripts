@@ -92,7 +92,7 @@ def campaignBuilder():
     # Add infectivity trough
     start_day = 365.0*(2020.0-gdata.base_year)
     camp_event = ce_inf_mod(ALL_NODES, start_day=start_day,
-                            dt_days=365.0*2.0, mult_val=0.75)
+                            dt_days=365.0*2.7, mult_val=0.60)
     camp_module.add(camp_event)
 
     # End file construction

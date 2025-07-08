@@ -25,7 +25,7 @@ DIRNAMES = ['experiment_gha_base01']
 
 def make_fig():
 
-    YMAX = 350
+    YMAX = 400
     CCUT = -4e3
 
     for dirname in DIRNAMES:
@@ -83,6 +83,14 @@ def make_fig():
                   edgecolor='k', width=0.9/12)
         axs01.set_ylabel('Monthly Cases', fontsize=16)
 
+        ref_cases = np.array(ref_dat['cases_mo_long'])
+        ref_start = ref_dat['start_year']
+        ref_years = int(np.ceil(ref_cases.shape[0]/12))
+        ref_dates = np.arange(ref_start, ref_start+ref_years, 1/12) + 1/24
+
+        axs01.bar(ref_dates, ref_cases, color='r', linewidth=0.5,
+                  edgecolor='k', width=0.9/12, alpha=0.2)
+
         xval = np.array(tvals)/365+base_year
 
         inf_data_sort = np.sort(inf_data[gidx, :]*scale_vec[gidx], axis=0)
@@ -100,7 +108,7 @@ def make_fig():
         yval = np.mean(inf_data[gidx]*scale_vec[gidx], axis=0)
         axs01.plot(xval, yval, color='C0', linewidth=2)
 
-        axs01.set_xlim(2010, 2020)
+        axs01.set_xlim(2010, 2025)
         axs01.set_ylim(0, YMAX)
 
         tpath = os.path.join('..', 'Assets', 'data', 'GHA_MCV_SIA.json')

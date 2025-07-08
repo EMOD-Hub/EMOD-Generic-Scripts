@@ -56,7 +56,7 @@ def application(timestep):
         print("Hello from in-process at time {:.1f}".format(TIME_VAL))
 
     # Only evaluate every month-ish
-    if (((TIME_VAL % 365.0) % 30.0) < 29.0):
+    if ((TIME_VAL % 365.0) % 30.0):
         return None
 
     # Update SQL data
@@ -80,14 +80,14 @@ def application(timestep):
             obs_inf = np.sum(dvec_mcw[gidx])*nreprate
             for adm01 in ADM01_DICT:
                 if (nid_val in ADM01_DICT[adm01]):
-                    gdata.adm01_cases += obs_inf
+                    gdata.adm01_cases[adm01] += obs_inf
 
     # Reactive campaign
     targ_nodes = list()
     for adm01 in ADM01_DICT:
         if (gdata.adm01_cases[adm01] > CASE_THRESH):
             targ_nodes.extend(ADM01_DICT[adm01])
-            gdata.adm01_cases = 0
+            gdata.adm01_cases[adm01] = 0
 
     # New campaign file
     camp_module.reset()
@@ -96,7 +96,7 @@ def application(timestep):
 
     if (targ_nodes):
         sia_day = TIME_VAL+30.0
-        camp_event = ce_SIA(ALL_NODES, start_day=sia_day, coverage=0.50,
+        camp_event = ce_SIA(targ_nodes, start_day=sia_day, coverage=0.50,
                             yrs_min=0.75, yrs_max=5.0)
         camp_module.add(camp_event)
 

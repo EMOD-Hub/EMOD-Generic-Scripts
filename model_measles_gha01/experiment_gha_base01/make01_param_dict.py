@@ -47,7 +47,7 @@ def write_param_dict():
     P_VAR['run_number'] = list(range(NSIMS))
 
     # Year to end simulation
-    P_CON['end_year'] = 2020
+    P_CON['end_year'] = 2025
 
     # Coverage of SIAs in WHO calendar
     P_CON['SIA_cover_GHA_2010'] = 0.75
