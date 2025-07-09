@@ -114,9 +114,9 @@ def make_fig():
 
         plt.contour(np.power(10.0,xvec[:-1,:-1]+dxval/2),
                                   yvec[:-1,:-1]+dyval/2,
-                                  zmat, levels=[80e3,120e3,160e3,190e3], linewidths=3, vmin=0, vmax=220e3)
+                                  zmat, levels=[25e3,40e3,60e3,80e3], linewidths=3, vmin=0, vmax=100e3)
 
-        axs01.scatter(np.power(10.0, xval[gdx2]), yval[gdx2], c=cval[gdx2], s=2, vmin=0, vmax=250e3, alpha=0.7)
+        axs01.scatter(np.power(10.0, xval[gdx2]), yval[gdx2], c=cval[gdx2], s=2, vmin=0, vmax=100e3, alpha=0.7)
 
         ticloc = [0.001, 0.01, 0.1]
         ticlab = ['0.1%', '1.0%', '10%']
@@ -129,7 +129,7 @@ def make_fig():
         axs01.plot([0.04, 0.04],[0,1000],'k:')
 
         ticloc = [0.0,0.2,0.4,0.6,0.8,1.0]
-        ticlab = ['0','50k','100k','150k','200k','250k']
+        ticlab = ['0','20k','40k','60k','80k','100k']
 
         cbar_handle.set_ticks(ticks=ticloc)
         cbar_handle.set_ticklabels(ticlab)

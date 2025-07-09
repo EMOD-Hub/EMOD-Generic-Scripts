@@ -107,6 +107,8 @@ def make_fig():
 
         yval = np.mean(inf_data[gidx]*scale_vec[gidx], axis=0)
         axs01.plot(xval, yval, color='C0', linewidth=2)
+        # print(np.mean(np.sum(inf_data[gidx, -60:], axis=1)))
+        # print(np.std(np.sum(inf_data[gidx, -60:], axis=1)))
 
         axs01.set_xlim(2010, 2025)
         axs01.set_ylim(0, YMAX)
