@@ -13,7 +13,7 @@ from idmtools_models.python.python_task import PythonTask
 from idmtools_platform_comps.ssmt_work_items.comps_workitems \
                                         import SSMTWorkItem
 
-from emodpy.emod_task import EMODTask, add_ep4_from_path
+from emodpy.emod_task import EMODTask
 
 from py_assets_common.emod_constants import ID_EXE, ID_ENV, ID_SCHEMA, \
                                             DOCK_PACK, VE_PY_PATHS, \
@@ -46,17 +46,24 @@ def sweep_func(simulation, arg_tuple):
 
 
 def exp_from_def_file(path_param_dict, path_python, path_exe, path_data,
-                      run_local=False):
+                      plat_obj, run_local=False):
 
     # Create EMODTask
     task_obj = EMODTask(config=None, campaign=None)
-    task_obj = add_ep4_from_path(task_obj, path_python)
 
-    # Set path to python
+    # Add model specific python files as assets
+    task_obj.add_embedded_python_scripts_from_path(path_python)
+
+    # Add everything in the common python scripts directory as assets
+    f_dir = os.path.dirname(os.path.abspath(__file__))
+    path_assets = os.path.join(f_dir, 'py_assets_common')
+    task_obj.add_embedded_python_scripts_from_path(path_assets)
+
+    # Set python path in embedded interpreter
     for py_path in VE_PY_PATHS:
         task_obj.add_py_path(py_path)
 
-    # Get parameters from json file
+    # Get parameter dictionary from json file
     with open(path_param_dict) as fid01:
         param_dict = json.load(fid01)
 
@@ -75,7 +82,7 @@ def exp_from_def_file(path_param_dict, path_python, path_exe, path_data,
         task_obj.common_assets.add_directory(path_assets)
     else:
         # Environment on COMPS
-        task_obj.set_sif(os.path.join(path_exe, ID_ENV))
+        task_obj.set_sif(os.path.join(path_exe, ID_ENV), plat_obj)
         # Executable on COMPS
         f_dir = os.path.join(path_exe, ID_EXE)
         exe_asset = AssetCollection.from_id_file(f_dir)
@@ -87,11 +94,6 @@ def exp_from_def_file(path_param_dict, path_python, path_exe, path_data,
 
     # Add everything in the data assets directory as assets;
     task_obj.common_assets.add_directory(path_data, relative_path='data')
-
-    # Add everything in the common python scripts directory as assets;
-    f_dir = os.path.dirname(os.path.abspath(__file__))
-    path_assets = os.path.join(f_dir, 'py_assets_common')
-    task_obj.common_assets.add_directory(path_assets, relative_path='python')
 
     # Create simulation sweep with builder
     #   Odd syntax; sweep definition needs two args: sweep function and a list.
@@ -178,7 +180,7 @@ def start_exp(path_python, path_data, path_exp_def,
     f_dir = os.path.dirname(os.path.abspath(__file__))
     PATH_EXE = os.path.abspath(os.path.join(f_dir, '..', 'env_Debian12'))
     exp_obj = exp_from_def_file(path_exp_def, path_python, PATH_EXE, path_data,
-                                run_local)
+                                plat_obj, run_local)
 
     # Start processing
     plat_obj.run_items(exp_obj)
