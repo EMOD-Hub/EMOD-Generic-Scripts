@@ -17,9 +17,8 @@ _param_*.json
 __pycache__/
 *output/
 
-# Sphinx documentation
-docs/_build/
-!docs/images/*
+# Documentation
+!docs/assets/*
 !docs/examples/*
 !docs/examples/figures/*
 
