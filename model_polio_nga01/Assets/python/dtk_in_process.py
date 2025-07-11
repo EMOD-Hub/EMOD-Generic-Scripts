@@ -38,7 +38,7 @@ def application(timestep):
     OBR_START = gdata.var_params['obr_start']
     OBR_END = gdata.var_params['obr_end']
     DAY_OBR_START = 365.0*(OBR_START-gdata.base_year)
-    DAY_OBR_END = 365.0*(OBR_START-gdata.base_year)
+    DAY_OBR_END = 365.0*(OBR_END-gdata.base_year)
 
     # Evaluate outbreak status every dt days
     if (TIME_VAL < DAY_OBR_START or TIME_VAL > DAY_OBR_END):
