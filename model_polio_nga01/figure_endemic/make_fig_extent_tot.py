@@ -26,9 +26,6 @@ DIRNAMES = [
             ('experiment_cVDPV2_100km_base_obr2026', 0),
             ('experiment_cVDPV2_100km_base_obr2026_ri2027', 0),
 
-            #('experiment_cVDPV2_100km_base_obr2026y1_ri2027d2', 4),
-            #('experiment_cVDPV2_100km_base_sia01p1-NGAN_ri2027d2', 5),
-
             ('experiment_cVDPV2_100km_base_sia01-NGA', 1),
             ('experiment_cVDPV2_100km_base_sia01-NGA_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia01u2-NGA', 0),
@@ -55,6 +52,31 @@ DIRNAMES = [
             ('experiment_cVDPV2_100km_base_sia02-LKCHAD_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia02u2-LKCHAD', 0),
             ('experiment_cVDPV2_100km_base_sia02u2-LKCHAD_ri2027', 0),
+
+            #('experiment_cVDPV2_100km_base_sia1p1-LKCHAD_obr2026', 0),
+            #('experiment_cVDPV2_100km_base_sia1p1-NGA_obr2026', 0),
+            #('experiment_cVDPV2_100km_base_sia1p1-NGAN_obr2026', 0),
+
+            ('experiment_cVDPV2_100km_base_sia2p1-LKCHAD', 0),
+            #('experiment_cVDPV2_100km_base_sia2p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia2p1-NGA', 0),
+            #('experiment_cVDPV2_100km_base_sia2p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia2p1-NGAN', 0),
+            #('experiment_cVDPV2_100km_base_sia2p1-NGAN_obr2026', 0),
+
+            ('experiment_cVDPV2_100km_base_sia3p1-LKCHAD', 0),
+            #('experiment_cVDPV2_100km_base_sia3p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia3p1-NGA', 0),
+            #('experiment_cVDPV2_100km_base_sia3p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia3p1-NGAN', 0),
+            #('experiment_cVDPV2_100km_base_sia3p1-NGAN_obr2026', 0),
+
+            ('experiment_cVDPV2_100km_base_sia4p1-LKCHAD', 0),
+            #('experiment_cVDPV2_100km_base_sia4p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia4p1-NGA', 0),
+            #('experiment_cVDPV2_100km_base_sia4p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia4p1-NGAN', 0),
+            #('experiment_cVDPV2_100km_base_sia4p1-NGAN_obr2026', 0),
             ]
 
 # *****************************************************************************
@@ -159,14 +181,20 @@ def make_fig():
 
         tot_inf = np.sum(inf_data, axis=1)
         cum_inf = np.cumsum(tot_inf, axis=1)
-        gidx = (cum_inf[:, -1] >= init_ob_thresh)
+        gidx0 = (cum_inf[:, -1] >= init_ob_thresh)
         #gidx = gidx & (cum_inf[:, -1] > 900e3) #& (cum_inf[:, -1] < 180e3)
         #gidx = gidx & (cum_inf[:, -1] > 150e3) & (cum_inf[:, -1] < 280e3)
-        gidx = gidx & (np.sum(tot_inf[:, -12:], axis=1) > 0)
+        gidx = gidx0 & (np.sum(tot_inf[:, -12:], axis=1) > 0)
         #gidx = gidx & (np.array(list(range(N_SIMS))) == 14) #& (np.array(list(range(N_SIMS))) < 900)
 
         #print(np.sum(gidx))
         #print(np.argwhere(gidx), cum_inf[gidx, -1])
+
+        gidx29 = gidx0 & (np.sum(tot_inf[:, -6:], axis=1) > 0)
+        gidx28 = gidx0 & (np.sum(tot_inf[:, -18:], axis=1) > 0)
+        gidx27 = gidx0 & (np.sum(tot_inf[:, -30:], axis=1) > 0)
+        gidx26 = gidx0 & (np.sum(tot_inf[:, -42:], axis=1) > 0)
+        gidx25 = gidx0 & (np.sum(tot_inf[:, -54:], axis=1) > 0)
 
         if (False):
             cal_list = np.argsort(cal_data[:,0])[::-1]
@@ -190,6 +218,11 @@ def make_fig():
         str_out = ''
         str_out = str_out + str(np.sum(gidx)) + ','
         str_out = str_out + dirname + ','
+        str_out = str_out + str(np.sum(gidx29)) + ','
+        str_out = str_out + str(np.sum(gidx28)) + ','
+        str_out = str_out + str(np.sum(gidx27)) + ','
+        str_out = str_out + str(np.sum(gidx26)) + ','
+        str_out = str_out + str(np.sum(gidx25)) + ','
         str_out = str_out + str(int(quant_val[0])) + ','
         str_out = str_out + str(int(mean_val)) + ','
         str_out = str_out + str(int(quant_val[1]))
@@ -279,7 +312,7 @@ def make_fig():
                     shape_patch(axs01, adm02_pts, adm02_prt, clr=clr_val)
 
         plt.tight_layout()
-        plt.savefig('fig_extent_{:s}_01_v7.png'.format(dirname))
+        plt.savefig('fig_extent_{:s}_v8.png'.format(dirname))
         plt.close()
 
     return None

@@ -25,7 +25,7 @@ DIRNAMES = [
             ('experiment_cVDPV2_100km_base_obr2026', 0),
             ('experiment_cVDPV2_100km_base_obr2026_ri2027', 0),
 
-            ('experiment_cVDPV2_100km_base_sia01-NGA', 0),
+            ('experiment_cVDPV2_100km_base_sia01-NGA', 1),
             ('experiment_cVDPV2_100km_base_sia01-NGA_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia01u2-NGA', 0),
             ('experiment_cVDPV2_100km_base_sia01u2-NGA_ri2027', 0),
@@ -51,6 +51,31 @@ DIRNAMES = [
             ('experiment_cVDPV2_100km_base_sia02-LKCHAD_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia02u2-LKCHAD', 0),
             ('experiment_cVDPV2_100km_base_sia02u2-LKCHAD_ri2027', 0),
+
+            #('experiment_cVDPV2_100km_base_sia1p1-LKCHAD_obr2026', 0),
+            #('experiment_cVDPV2_100km_base_sia1p1-NGA_obr2026', 0),
+            #('experiment_cVDPV2_100km_base_sia1p1-NGAN_obr2026', 0),
+
+            ('experiment_cVDPV2_100km_base_sia2p1-LKCHAD', 0),
+            #('experiment_cVDPV2_100km_base_sia2p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia2p1-NGA', 0),
+            #('experiment_cVDPV2_100km_base_sia2p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia2p1-NGAN', 0),
+            #('experiment_cVDPV2_100km_base_sia2p1-NGAN_obr2026', 0),
+
+            ('experiment_cVDPV2_100km_base_sia3p1-LKCHAD', 0),
+            #('experiment_cVDPV2_100km_base_sia3p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia3p1-NGA', 0),
+            #('experiment_cVDPV2_100km_base_sia3p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia3p1-NGAN', 0),
+            #('experiment_cVDPV2_100km_base_sia3p1-NGAN_obr2026', 0),
+
+            ('experiment_cVDPV2_100km_base_sia4p1-LKCHAD', 0),
+            #('experiment_cVDPV2_100km_base_sia4p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia4p1-NGA', 0),
+            #('experiment_cVDPV2_100km_base_sia4p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia4p1-NGAN', 0),
+            #('experiment_cVDPV2_100km_base_sia4p1-NGAN_obr2026', 0),
             ]
 
 # *****************************************************************************
@@ -135,7 +160,7 @@ def make_fig():
 
         tot_inf = np.sum(inf_data, axis=1)
         cum_inf = np.cumsum(tot_inf, axis=1)
-        gidx = (cum_inf[:, -1] >= init_ob_thresh)
+        gidx0 = (cum_inf[:, -1] >= init_ob_thresh)
 
         #gidx = gidx & (cum_inf[:, -1] > 900e3) #& (cum_inf[:, -1] < 180e3)
         #gidx = gidx & (cum_inf[:, -1] > 150e3)
@@ -146,7 +171,7 @@ def make_fig():
         #print(np.argwhere(gidx))
         #print(cum_inf[gidx, -1])
 
-        gidx = gidx & (np.sum(tot_inf[:, -12:], axis=1) > 0)
+        gidx = gidx0 & (np.sum(tot_inf[:, -12:], axis=1) > 0)
 
         #dcases = (cum_inf[:, -1] - cum_inf[:, -60])/1200
         #dcidx = np.argsort(dcases)[-200:]
