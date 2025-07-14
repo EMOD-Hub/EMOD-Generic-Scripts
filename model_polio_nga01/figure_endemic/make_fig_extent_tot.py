@@ -53,30 +53,40 @@ DIRNAMES = [
             ('experiment_cVDPV2_100km_base_sia02u2-LKCHAD', 0),
             ('experiment_cVDPV2_100km_base_sia02u2-LKCHAD_ri2027', 0),
 
-            #('experiment_cVDPV2_100km_base_sia1p1-LKCHAD_obr2026', 0),
-            #('experiment_cVDPV2_100km_base_sia1p1-NGA_obr2026', 0),
-            #('experiment_cVDPV2_100km_base_sia1p1-NGAN_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia1p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia1p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia1p1-NGAN_obr2026', 0),
 
             ('experiment_cVDPV2_100km_base_sia2p1-LKCHAD', 0),
-            #('experiment_cVDPV2_100km_base_sia2p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia2p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia2p1-LKCHAD_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia2p1-NGA', 0),
-            #('experiment_cVDPV2_100km_base_sia2p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia2p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia2p1-NGA_ri2027', 0),
+
             ('experiment_cVDPV2_100km_base_sia2p1-NGAN', 0),
-            #('experiment_cVDPV2_100km_base_sia2p1-NGAN_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia2p1-NGAN_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia2p1-NGAN_ri2027', 0),
 
             ('experiment_cVDPV2_100km_base_sia3p1-LKCHAD', 0),
-            #('experiment_cVDPV2_100km_base_sia3p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia3p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia3p1-LKCHAD_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia3p1-NGA', 0),
-            #('experiment_cVDPV2_100km_base_sia3p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia3p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia3p1-NGA_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia3p1-NGAN', 0),
-            #('experiment_cVDPV2_100km_base_sia3p1-NGAN_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia3p1-NGAN_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia3p1-NGAN_ri2027', 0),
 
             ('experiment_cVDPV2_100km_base_sia4p1-LKCHAD', 0),
-            #('experiment_cVDPV2_100km_base_sia4p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia4p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia4p1-LKCHAD_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia4p1-NGA', 0),
-            #('experiment_cVDPV2_100km_base_sia4p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia4p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia4p1-NGA_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia4p1-NGAN', 0),
-            #('experiment_cVDPV2_100km_base_sia4p1-NGAN_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia4p1-NGAN_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia4p1-NGAN_ri2027', 0),
             ]
 
 # *****************************************************************************
@@ -209,6 +219,8 @@ def make_fig():
         #print(np.sum(gidx))
         #print(np.argwhere(gidx))
         #gidx = (np.array(list(range(N_SIMS))) == 249)
+
+        gidx = gidx28
 
         dcases = (cum_inf[gidx, -1] - cum_inf[gidx, -60])/1200
         #dcases = np.sort(dcases)[-200:]
