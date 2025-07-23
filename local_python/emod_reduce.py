@@ -101,7 +101,7 @@ def get_sim_files(exp_id=''):
 
     # Download reduced output and delete work item
     resp_dict = plat.get_files(wi_obj, [D_FILE])
-    ret_val = json.loads(resp_dict[D_FILE].decode())
+    ret_val = resp_dict[D_FILE].decode()  # String rep of json content
     plat_obj = wi_obj.get_platform_object()
     plat_obj.delete()
 
@@ -123,6 +123,11 @@ def get_data_brick(run_local=False):
                 with open(fpath) as fid01:
                     data_bit = json.load(fid01)
                 data_brick.update(data_bit)
+
+        # Write json object
+        with open(D_FILE, 'w') as fid01:
+            json.dump(data_brick, fid01)
+
     else:
         # Get Experiment ID
         (exp_id, _, _, _) = read_id_file(COMPS_ID_FILE)
@@ -130,8 +135,9 @@ def get_data_brick(run_local=False):
         # Reduce output and write data brick
         data_brick = get_sim_files(exp_id)
 
-    with open(D_FILE, 'w') as fid01:
-        json.dump(data_brick, fid01)
+        # Write string data
+        with open(D_FILE, 'w') as fid01:
+            fid01.write(data_brick)
 
     return None
 
