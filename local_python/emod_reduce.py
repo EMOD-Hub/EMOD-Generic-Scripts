@@ -5,7 +5,7 @@
 import json
 import os
 
-from multiprocessing import Pool
+import multiprocessing.pool as mp_pool
 
 from idmtools.core.id_file import read_id_file
 from idmtools.core.platform_factory import Platform
@@ -18,9 +18,9 @@ from COMPS import Client
 from COMPS.Data import Experiment
 from COMPS.Data.Simulation import SimulationState
 
-from py_assets_common.emod_constants import DOCK_PACK, COMPS_URL, D_FILE, \
+from py_assets_common.emod_constants import DOCK_PACK, PY_PATH, COMPS_URL, \
                                             COMPS_ID_FILE, LOCAL_EXP_DIR, \
-                                            O_FILE
+                                            D_FILE, O_FILE
 
 # *****************************************************************************
 
@@ -55,7 +55,7 @@ def pool_manager(exp_id=None):
     sims_valid = [s for s in sims_all if s.state.value ==
                   SimulationState.Succeeded.value]
 
-    with Pool() as pool_obj:
+    with mp_pool.Pool(processes=16) as pool_obj:
         resp_list = pool_obj.map(getter_worker, sims_valid)
 
     merged_dict = dict()
@@ -81,7 +81,7 @@ def get_sim_files(exp_id=''):
     f_path = os.path.abspath(__file__)
     f_dir = os.path.dirname(f_path)
     f_name = os.path.basename(f_path)
-    task_obj = PythonTask(python_path='python3', script_path=f_name)
+    task_obj = PythonTask(python_path=PY_PATH, script_path=f_name)
 
     # Add script for python task and exp id file to assets
     asset01 = Asset(filename=COMPS_ID_FILE, content=exp_id)

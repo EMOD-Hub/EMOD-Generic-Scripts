@@ -10,8 +10,12 @@ COMPS_URL = 'https://comps.idmod.org'
 LOCAL_EXP_ROOT = 'docker_suites'
 LOCAL_EXP_DIR = 'LOCAL_EXP_PATH.txt'
 
-DOCK_PACK = r'docker-production-public.packages.idmod.org/emodpy/' + \
-            r'comps_ssmt_worker:latest'
+PY_PATH = r'python3'
+#PY_PATH = r'/py_env/bin/python3'
+DOCK_PACK = r'docker-staging.packages.idmod.org/idmtools/' + \
+            r'comps_ssmt_worker:2.2.1.2'
+#DOCK_PACK = r'docker-staging.packages.idmod.org/emodpy/' + \
+#            r'comps_ssmt_worker:2.1.0'
 
 VE_PY_PATHS = ['/py_env/lib/python3.9/site-packages/',
                '/py_env/lib/python3.10/site-packages/',
