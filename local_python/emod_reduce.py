@@ -10,6 +10,7 @@ import multiprocessing.pool as mp_pool
 from idmtools.core.id_file import read_id_file
 from idmtools.core.platform_factory import Platform
 from idmtools.assets import Asset
+from idmtools.entities.command_task import CommandTask
 from idmtools_models.python.python_task import PythonTask
 from idmtools_platform_comps.ssmt_work_items.comps_workitems \
                                         import SSMTWorkItem
@@ -81,7 +82,13 @@ def get_sim_files(exp_id=''):
     f_path = os.path.abspath(__file__)
     f_dir = os.path.dirname(f_path)
     f_name = os.path.basename(f_path)
-    task_obj = PythonTask(python_path=PY_PATH, script_path=f_name)
+    #task_obj = PythonTask(python_path=PY_PATH, script_path=f_name)
+
+    # Magic words
+    cmd_line = "/py_env/bin/python3 " + "Assets/"+f_name
+
+    # Create CommandTask
+    task_obj = CommandTask(command=cmd_line)
 
     # Add script for python task and exp id file to assets
     asset01 = Asset(filename=COMPS_ID_FILE, content=exp_id)
