@@ -53,39 +53,53 @@ DIRNAMES = [
             ('experiment_cVDPV2_100km_base_sia02u2-LKCHAD', 0),
             ('experiment_cVDPV2_100km_base_sia02u2-LKCHAD_ri2027', 0),
 
+            ('experiment_cVDPV2_100km_base_sia1p1-LKCHAD', 0),
             ('experiment_cVDPV2_100km_base_sia1p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia1p1-LKCHAD_obr2026_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia1p1-NGA', 0),
             ('experiment_cVDPV2_100km_base_sia1p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia1p1-NGA_obr2026_ri2027', 0),
+            ('experiment_cVDPV2_100km_base_sia1p1-NGAN', 0),
             ('experiment_cVDPV2_100km_base_sia1p1-NGAN_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia1p1-NGAN_obr2026_ri2027', 0),
 
             ('experiment_cVDPV2_100km_base_sia2p1-LKCHAD', 0),
             ('experiment_cVDPV2_100km_base_sia2p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia2p1-LKCHAD_obr2026_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia2p1-LKCHAD_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia2p1-NGA', 0),
             ('experiment_cVDPV2_100km_base_sia2p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia2p1-NGA_obr2026_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia2p1-NGA_ri2027', 0),
-
             ('experiment_cVDPV2_100km_base_sia2p1-NGAN', 0),
             ('experiment_cVDPV2_100km_base_sia2p1-NGAN_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia2p1-NGAN_obr2026_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia2p1-NGAN_ri2027', 0),
 
             ('experiment_cVDPV2_100km_base_sia3p1-LKCHAD', 0),
             ('experiment_cVDPV2_100km_base_sia3p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia3p1-LKCHAD_obr2026_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia3p1-LKCHAD_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia3p1-NGA', 0),
             ('experiment_cVDPV2_100km_base_sia3p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia3p1-NGA_obr2026_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia3p1-NGA_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia3p1-NGAN', 0),
             ('experiment_cVDPV2_100km_base_sia3p1-NGAN_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia3p1-NGAN_obr2026_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia3p1-NGAN_ri2027', 0),
 
             ('experiment_cVDPV2_100km_base_sia4p1-LKCHAD', 0),
             ('experiment_cVDPV2_100km_base_sia4p1-LKCHAD_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia4p1-LKCHAD_obr2026_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia4p1-LKCHAD_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia4p1-NGA', 0),
             ('experiment_cVDPV2_100km_base_sia4p1-NGA_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia4p1-NGA_obr2026_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia4p1-NGA_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia4p1-NGAN', 0),
             ('experiment_cVDPV2_100km_base_sia4p1-NGAN_obr2026', 0),
+            ('experiment_cVDPV2_100km_base_sia4p1-NGAN_obr2026_ri2027', 0),
             ('experiment_cVDPV2_100km_base_sia4p1-NGAN_ri2027', 0),
             ]
 
@@ -205,6 +219,7 @@ def make_fig():
         gidx27 = gidx0 & (np.sum(tot_inf[:, -30:], axis=1) > 0)
         gidx26 = gidx0 & (np.sum(tot_inf[:, -42:], axis=1) > 0)
         gidx25 = gidx0 & (np.sum(tot_inf[:, -54:], axis=1) > 0)
+        gidx24 = gidx0 & (np.sum(tot_inf[:, -66:], axis=1) > 0)
 
         if (False):
             cal_list = np.argsort(cal_data[:,0])[::-1]
@@ -220,26 +235,88 @@ def make_fig():
         #print(np.argwhere(gidx))
         #gidx = (np.array(list(range(N_SIMS))) == 249)
 
-        gidx = gidx28
-
-        dcases = (cum_inf[gidx, -1] - cum_inf[gidx, -60])/1200
-        #dcases = np.sort(dcases)[-200:]
-        mean_val = np.mean(dcases)
-        quant_val = np.quantile(dcases, [0.05, 0.95])
-
         str_out = ''
-        str_out = str_out + str(np.sum(gidx)) + ','
         str_out = str_out + dirname + ','
         str_out = str_out + str(np.sum(gidx29)) + ','
         str_out = str_out + str(np.sum(gidx28)) + ','
         str_out = str_out + str(np.sum(gidx27)) + ','
         str_out = str_out + str(np.sum(gidx26)) + ','
         str_out = str_out + str(np.sum(gidx25)) + ','
+        str_out = str_out + str(np.sum(gidx24)) + ','
+
+
+
+        gidx = gidx29
+        if (np.sum(gidx) > 0):
+            dcases = (cum_inf[gidx, -1] - cum_inf[gidx, -60])/1200
+            mean_val = np.mean(dcases)
+            quant_val = np.quantile(dcases, [0.05, 0.95])
+        else:
+            mean_val = 0
+            quant_val = [0, 0]
+
         str_out = str_out + str(int(quant_val[0])) + ','
         str_out = str_out + str(int(mean_val)) + ','
-        str_out = str_out + str(int(quant_val[1]))
+        str_out = str_out + str(int(quant_val[1])) + ','
+
+
+        gidx = gidx28
+        if (np.sum(gidx) > 0):
+            dcases = (cum_inf[gidx, -12] - cum_inf[gidx, -60])/1200
+            mean_val = np.mean(dcases)
+            quant_val = np.quantile(dcases, [0.05, 0.95])
+        else:
+            mean_val = 0
+            quant_val = [0, 0]
+
+        str_out = str_out + str(int(quant_val[0])) + ','
+        str_out = str_out + str(int(mean_val)) + ','
+        str_out = str_out + str(int(quant_val[1])) + ','
+
+
+        gidx = gidx27
+        if (np.sum(gidx) > 0):
+            dcases = (cum_inf[gidx, -24] - cum_inf[gidx, -60])/1200
+            mean_val = np.mean(dcases)
+            quant_val = np.quantile(dcases, [0.05, 0.95])
+        else:
+            mean_val = 0
+            quant_val = [0, 0]
+
+        str_out = str_out + str(int(quant_val[0])) + ','
+        str_out = str_out + str(int(mean_val)) + ','
+        str_out = str_out + str(int(quant_val[1])) + ','
+
+
+        gidx = gidx26
+        if (np.sum(gidx) > 0):
+            dcases = (cum_inf[gidx, -36] - cum_inf[gidx, -60])/1200
+            mean_val = np.mean(dcases)
+            quant_val = np.quantile(dcases, [0.05, 0.95])
+        else:
+            mean_val = 0
+            quant_val = [0, 0]
+
+        str_out = str_out + str(int(quant_val[0])) + ','
+        str_out = str_out + str(int(mean_val)) + ','
+        str_out = str_out + str(int(quant_val[1])) + ','
+
+
+        gidx = gidx25
+        if (np.sum(gidx) > 0):
+            dcases = (cum_inf[gidx, -48] - cum_inf[gidx, -60])/1200
+            mean_val = np.mean(dcases)
+            quant_val = np.quantile(dcases, [0.05, 0.95])
+        else:
+            mean_val = 0
+            quant_val = [0, 0]
+
+        str_out = str_out + str(int(quant_val[0])) + ','
+        str_out = str_out + str(int(mean_val)) + ','
+        str_out = str_out + str(int(quant_val[1])) + ','
 
         print(str_out)
+        continue
 
         if (False):
             for n7 in range(gidx.shape[0]):
