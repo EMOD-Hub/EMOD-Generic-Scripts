@@ -186,33 +186,32 @@ def make_fig():
         cum_inf = np.cumsum(tot_inf, axis=1)
         gidx0 = (cum_inf[:, -1] >= init_ob_thresh)
 
-        #gidx = gidx & (cum_inf[:, -1] > 900e3) #& (cum_inf[:, -1] < 180e3)
-        #gidx = gidx & (cum_inf[:, -1] > 150e3)
-        #gidx = gidx & (np.sum(tot_inf[:, -96:-90], axis=1) > 0)
-        #gidx = gidx & (np.array(list(range(n_sims))) == 55) #& (np.array(list(range(n_sims))) < 900) #104
-
-        #print(np.sum(gidx))
-        #print(np.argwhere(gidx))
-        #print(cum_inf[gidx, -1])
-
         gidx = gidx0 & (np.sum(tot_inf[:, -12:], axis=1) > 0)
 
-        #dcases = (cum_inf[:, -1] - cum_inf[:, -60])/1200
-        #dcidx = np.argsort(dcases)[-200:]
-        ddoses = (sia_data[gidx, -1] - sia_data[gidx, -(73*5)])/1e6
-        #mdoses = ddoses[dcidx]
-        mean_val = np.mean(ddoses)
-        quant_val = np.quantile(ddoses, [0.05, 0.95])
+        gidx29 = gidx0 & (np.sum(tot_inf[:, -6:], axis=1) > 0)
+        gidx28 = gidx0 & (np.sum(tot_inf[:, -18:], axis=1) > 0)
+        gidx27 = gidx0 & (np.sum(tot_inf[:, -30:], axis=1) > 0)
+        gidx26 = gidx0 & (np.sum(tot_inf[:, -42:], axis=1) > 0)
+        gidx25 = gidx0 & (np.sum(tot_inf[:, -54:], axis=1) > 0)
+        gidx24 = gidx0 & (np.sum(tot_inf[:, -66:], axis=1) > 0)
+
+        gidx = gidx28
+        if (np.sum(gidx) > 0):
+            ddoses = (sia_data[gidx, -1] - sia_data[gidx, -(73*5)])/1e6
+            mean_val = np.mean(ddoses)
+            quant_val = np.quantile(ddoses, [0.05, 0.95])
+        else:
+            mean_val = 0
+            quant_val = [0, 0]
 
         str_out = ''
         str_out = str_out + str(np.sum(gidx)) + ','
         str_out = str_out + dirname + ','
         str_out = str_out + str(int(quant_val[0])) + ','
         str_out = str_out + str(int(mean_val)) + ','
-        str_out = str_out + str(int(quant_val[1]))
+        str_out = str_out + str(int(quant_val[1])) + ','
 
         print(str_out)
-
         continue
 
         # Figure setup

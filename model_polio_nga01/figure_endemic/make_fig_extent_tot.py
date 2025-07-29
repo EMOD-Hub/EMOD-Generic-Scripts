@@ -244,8 +244,6 @@ def make_fig():
         str_out = str_out + str(np.sum(gidx25)) + ','
         str_out = str_out + str(np.sum(gidx24)) + ','
 
-
-
         gidx = gidx29
         if (np.sum(gidx) > 0):
             dcases = (cum_inf[gidx, -1] - cum_inf[gidx, -60])/1200
@@ -305,6 +303,19 @@ def make_fig():
         gidx = gidx25
         if (np.sum(gidx) > 0):
             dcases = (cum_inf[gidx, -48] - cum_inf[gidx, -60])/1200
+            mean_val = np.mean(dcases)
+            quant_val = np.quantile(dcases, [0.05, 0.95])
+        else:
+            mean_val = 0
+            quant_val = [0, 0]
+
+        str_out = str_out + str(int(quant_val[0])) + ','
+        str_out = str_out + str(int(mean_val)) + ','
+        str_out = str_out + str(int(quant_val[1])) + ','
+
+        gidx = gidx28
+        if (np.sum(gidx) > 0):
+            dcases = (cum_inf[gidx, -1] - cum_inf[gidx, -60])/1200
             mean_val = np.mean(dcases)
             quant_val = np.quantile(dcases, [0.05, 0.95])
         else:
