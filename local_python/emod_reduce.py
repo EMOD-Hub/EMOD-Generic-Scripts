@@ -5,6 +5,21 @@
 import json
 import os
 
+from pip import _internal
+_internal.main(['list'])
+
+import platform
+print(platform.platform())
+print(platform.system())
+print(platform.release())
+print(platform.version())
+
+import sys
+print(sys.version)
+
+print()
+print(os.environ)
+
 import multiprocessing.pool as mp_pool
 
 from idmtools.core.id_file import read_id_file
@@ -103,7 +118,7 @@ def get_sim_files(exp_id=''):
     resp_dict = plat.get_files(wi_obj, [D_FILE])
     ret_val = resp_dict[D_FILE].decode()  # String rep of json content
     plat_obj = wi_obj.get_platform_object()
-    plat_obj.delete()
+    #plat_obj.delete()
 
     return ret_val
 
