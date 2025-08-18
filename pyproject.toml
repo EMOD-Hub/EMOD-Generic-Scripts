@@ -2,7 +2,7 @@
 name = "emod-generic-scripts"
 dynamic = ["version"]
 description = "Demonstration simulations using the Generic-Ongoing branch of EMOD."
-license = {file = "LICENSE"}
+license = "MIT"
 authors = [
     { name="Kurt Frey", email="kurt.frey@gatesfoundation.org" }
 ]
@@ -28,3 +28,6 @@ Homepage = "https://github.com/EMOD-Hub/EMOD-Generic-Scripts"
 
 [build-system]
 requires = ["setuptools", "setuptools-scm"]
+
+[tool.setuptools.dynamic]
+version = "0.0.1"
