@@ -42,6 +42,3 @@ packages = []
 
 [tool.setuptools_scm]
 version_file = "docs/version.py"
-
-[tool.pip]
-extra-index-url = "https://packages.idmod.org/api/pypi/pypi-production/simple"
