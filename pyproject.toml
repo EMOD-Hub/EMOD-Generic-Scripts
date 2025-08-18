@@ -1,6 +1,7 @@
 [project]
 name = "emod-generic-scripts"
-dynamic = ["version"]
+#dynamic = ["version"]
+version = "0.0.1"
 description = "Demonstration simulations using the Generic-Ongoing branch of EMOD."
 license = "MIT"
 authors = [
@@ -29,5 +30,4 @@ Homepage = "https://github.com/EMOD-Hub/EMOD-Generic-Scripts"
 [build-system]
 requires = ["setuptools", "setuptools-scm"]
 
-[tool.setuptools.dynamic]
-version = "0.0.1"
+#[tool.setuptools.dynamic]
