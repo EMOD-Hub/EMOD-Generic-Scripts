@@ -11,6 +11,13 @@ requires-python = ">=3.9"
 dependencies = [
     "emodpy==2.1.0",
 ]
+classifiers=[
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Bio-Informatics"
+]
 
 [project.optional-dependencies]
 docs = [
@@ -24,7 +31,8 @@ tests = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/EMOD-Hub/EMOD-Generic-Scripts"
+Repository="https://github.com/EMOD-Hub/EMOD-Generic-Scripts"
+Issues="https://github.com/EMOD-Hub/EMOD-Generic-Scripts/issues"
 
 [build-system]
 requires = ["setuptools", "setuptools-scm"]
@@ -35,3 +43,6 @@ packages = []
 
 [tool.setuptools_scm]
 version_file = "docs/version.py"
+
+[tool.pip]
+extra-index-url = "https://packages.idmod.org/api/pypi/pypi-production/simple"
