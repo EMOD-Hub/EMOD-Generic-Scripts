@@ -1,0 +1,30 @@
+[project]
+name = "emod-generic-scripts"
+dynamic = ["version"]
+description = "Demonstration simulations using the Generic-Ongoing branch of EMOD."
+license = {file = "LICENSE"}
+authors = [
+    { name="Kurt Frey", email="kurt.frey@gatesfoundation.org" }
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "emodpy==2.1.0",
+]
+
+[project.optional-dependencies]
+docs = [
+    "mkdocs-material",
+    "mkdocs-include-markdown-plugin",
+    "mkdocstrings-python",
+    "mkdocs-autoapi",
+    "mkdocs-glightbox",
+]
+tests = [
+]
+
+[project.urls]
+Homepage = "https://github.com/EMOD-Hub/EMOD-Generic-Scripts"
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]

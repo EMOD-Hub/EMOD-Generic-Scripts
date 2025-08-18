@@ -1,0 +1,44 @@
+name: Deploy docs to GH pages
+
+on:
+  push:
+    branches:
+      - main
+
+  # Allows manual run from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Install packages
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install '.[docs]'
+      - name: Build static files
+        run: |
+          mkdocs build -d site
+      - name: Upload static files as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}  # Not used
+    permissions:
+      id-token: write
+      pages: write
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
