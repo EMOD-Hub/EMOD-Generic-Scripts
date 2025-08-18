@@ -13,7 +13,7 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
-    "emodpy==2.1.0",
+    "emodpy==2.1.13",
 ]
 classifiers=[
     "Intended Audience :: Science/Research",
