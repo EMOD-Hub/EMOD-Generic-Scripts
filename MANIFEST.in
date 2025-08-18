@@ -1,3 +1,0 @@
-prune env_*
-prune model_*
-prune refdat_*
