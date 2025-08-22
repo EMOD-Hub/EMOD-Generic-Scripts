@@ -16,8 +16,8 @@ from global_data import run_years, AGE_HIST_BINS, IHME_MORT_X, IHME_MORT_Y
 
 # *****************************************************************************
 
-DIRNAMES = ['experiment_sweep_base',
-            'experiment_sweep_base_MCV2',
+DIRNAMES = [#'experiment_sweep_base',
+            #'experiment_sweep_base_MCV2',
             'experiment_sweep_base_SIAs',]
 
 # *****************************************************************************
@@ -63,6 +63,7 @@ def make_fig():
         xyrs = np.arange(0, run_years, 1) + 1/2
         xages = AGE_HIST_BINS[1:] + np.diff(AGE_HIST_BINS)/2
         mort_prob = np.interp(xages, IHME_MORT_X, IHME_MORT_Y)
+        mort_prob = 1 + mort_prob*0
 
         for skey in data_brick:
             if (not skey.isdigit()):
@@ -93,22 +94,24 @@ def make_fig():
         axs01.grid(visible=True, which='minor', ls=':', lw=0.1)
         axs01.set_axisbelow(True)
 
-        axs01.set_ylabel('Monthly Mortality per-100k', fontsize=16)
+        axs01.set_ylabel('Monthly Infections per-100k', fontsize=16)
         axs01.set_xlabel('MCV Coverage', fontsize=16)
-        axs01.set_ylim(0, 4.0)
+        #axs01.set_ylim(0, 4.0)
         axs01.set_xlim(0.2, 1.0)
 
         for k1 in range(len(mcv1_age_lvl)):
             mcv1_age_val = mcv1_age_lvl[k1]
+            if ( mcv1_age_val < 200 ):
+                continue
             idx02 = (mcv1_age_vec == mcv1_age_val)
             for k2 in range(len(sia_min_age_yr_lvl)):
                 sia_min_age_yr_val = sia_min_age_yr_lvl[k2]
                 idx03 = (sia_min_age_yr_vec == sia_min_age_yr_val)
 
                 lstyle = '-'
-                if(sia_min_age_yr_val < 0.7):
-                    axs01.set_ylim(0, 1.8)
-                    lstyle = '--'
+                #if(sia_min_age_yr_val < 0.7):
+                    #axs01.set_ylim(0, 1.8)
+                    #lstyle = '--'
 
                 tidx = (fidx & idx02 & idx03)
                 xval = mcv1_vec[tidx]
@@ -123,7 +126,7 @@ def make_fig():
                 #    idx = (xval==xval2[k3])
                 #    yval2[k3] = np.mean(yval[idx])
 
-                cval = 'C{:d}'.format(k1)
+                cval = 'C{:d}'.format(k2)
                 xpos = 3.76-0.24*k1-0.48*k2
 
                 mcv1_mo = int(np.round(mcv1_age_val/365*12))
