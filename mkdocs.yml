@@ -21,8 +21,8 @@ theme:
       toggle:
         icon: material/toggle-switch-off-outline
         name: Dark mode
-  favicon: assets/favicon.ico
-  logo: assets/idm-logo-transparent.png
+  favicon: images/favicon.ico
+  logo: images/EMOD_logo.png
 
 nav:
   - Home: index.md
@@ -51,6 +51,7 @@ plugins:
   - glightbox
   - mkdocs-autoapi:
       autoapi_ignore:
+        - .github/**/*
         - tests/**/*
         - build/**/*
         - docs/*

@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "emod-generic-scripts"
 dynamic = ["version"]
@@ -32,10 +36,6 @@ tests = [
 [project.urls]
 Repository="https://github.com/EMOD-Hub/EMOD-Generic-Scripts"
 Issues="https://github.com/EMOD-Hub/EMOD-Generic-Scripts/issues"
-
-[build-system]
-requires = ["setuptools", "setuptools-scm"]
-build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 packages = []
