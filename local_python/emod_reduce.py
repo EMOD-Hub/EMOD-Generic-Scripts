@@ -20,7 +20,8 @@ from COMPS.Data.Simulation import SimulationState
 
 from py_assets_common.emod_constants import DOCK_PACK, PY_PATH, COMPS_URL, \
                                             COMPS_ID_FILE, LOCAL_EXP_DIR, \
-                                            D_FILE, O_FILE
+                                            D_FILE, O_FILE, COMPS_SU_EXE, \
+                                            COMPS_SU_ENV, COMPS_SU_DICT
 
 # *****************************************************************************
 
@@ -75,7 +76,8 @@ def pool_manager(exp_id=None):
 def get_sim_files(exp_id=''):
 
     # Connect to COMPS
-    plat = Platform(type='COMPS', endpoint=COMPS_URL, environment='Calculon')
+    plat_obj = Platform(type='COMPS', endpoint=COMPS_URL,
+                        environment='Calculon')
 
     # Create python task for SSMT work item
     f_path = os.path.abspath(__file__)
@@ -97,13 +99,23 @@ def get_sim_files(exp_id=''):
     # Reduce experiment output to single file
     wi_obj = SSMTWorkItem(name='ReduceExpOutput', task=task_obj,
                           docker_image=DOCK_PACK)
-    wi_obj.run(wait_until_done=True)
+
+    # Manually update work order to use python virtual environment
+    task_obj.pre_creation(parent=wi_obj, platform=plat_obj)
+    wo_dict = wi_obj.get_base_work_order()
+    wo_dict[COMPS_SU_EXE][COMPS_SU_ENV] = COMPS_SU_DICT
+    wi_obj.set_work_order(wo_dict)
+
+    # Run work item
+    wi_obj.run(wait_until_done=True, platform=plat_obj)
 
     # Download reduced output and delete work item
-    resp_dict = plat.get_files(wi_obj, [D_FILE])
+    resp_dict = plat_obj.get_files(wi_obj, [D_FILE])
     ret_val = resp_dict[D_FILE].decode()  # String rep of json content
-    plat_obj = wi_obj.get_platform_object()
-    plat_obj.delete()
+
+    # Convert from idmtools work item to COMPS work item; delete
+    comps_wi_obj = wi_obj.get_platform_object()
+    comps_wi_obj.delete()
 
     return ret_val
 

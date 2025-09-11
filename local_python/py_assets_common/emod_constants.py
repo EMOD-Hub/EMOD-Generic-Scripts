@@ -6,16 +6,18 @@ API_MIN = '2.0.0'
 
 COMPS_ID_FILE = 'COMPS_ID.id'
 COMPS_URL = 'https://comps.idmod.org'
+COMPS_SU_EXE = 'Execution'
+COMPS_SU_ENV = 'Environment'
+COMPS_SU_CMD = 'export PYTHONPATH="$PYTHONPATH:$COMPS_WORKING_DIR/Assets";' + \
+               '/py_env/bin/python3 /mnt/idm2/comps/scripts/startup.py'
+COMPS_SU_DICT = {'COMPS_STARTUP_CMD': COMPS_SU_CMD}
 
 LOCAL_EXP_ROOT = 'docker_suites'
 LOCAL_EXP_DIR = 'LOCAL_EXP_PATH.txt'
 
 PY_PATH = r'python3'
-#PY_PATH = r'/py_env/bin/python3'
-DOCK_PACK = r'docker-staging.packages.idmod.org/idmtools/' + \
-            r'comps_ssmt_worker:2.2.1.2'
-#DOCK_PACK = r'docker-staging.packages.idmod.org/emodpy/' + \
-#            r'comps_ssmt_worker:2.1.0'
+
+DOCK_PACK = r'mesokurtic/emodpy:2.1.0.03'
 
 VE_PY_PATHS = ['/py_env/lib/python3.9/site-packages/',
                '/py_env/lib/python3.10/site-packages/',
