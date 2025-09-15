@@ -19,7 +19,8 @@ from py_assets_common.emod_constants import ID_EXE, ID_ENV, ID_SCHEMA, \
                                             DOCK_PACK, VE_PY_PATHS, \
                                             EXP_V, EXP_NAME, NUM_SIMS, \
                                             COMPS_ID_FILE, LOCAL_EXP_ROOT, \
-                                            LOCAL_EXP_DIR
+                                            LOCAL_EXP_DIR, DEFAULT_OS, \
+                                            I_FILE, I_FILE_FMT
 
 # *****************************************************************************
 
@@ -36,8 +37,7 @@ def sweep_func(simulation, arg_tuple):
         simulation.tags[var_name] = vars_dict[var_name][sim_idx]
 
     # Create index file as simulation level asset
-    asset_obj = Asset(filename='idx_str_file.txt',
-                      content='{:05d}'.format(sim_idx))
+    asset_obj = Asset(filename=I_FILE, content=I_FILE_FMT.format(sim_idx))
     simulation.task.transient_assets.add_asset(asset_obj)
 
     return None
@@ -178,7 +178,7 @@ def start_exp(path_python, path_data, path_exp_def,
 
     # Create experiment object
     f_dir = os.path.dirname(os.path.abspath(__file__))
-    PATH_EXE = os.path.abspath(os.path.join(f_dir, '..', 'env_Debian12'))
+    PATH_EXE = os.path.abspath(os.path.join(f_dir, '..', DEFAULT_OS))
     exp_obj = exp_from_def_file(path_exp_def, path_python, PATH_EXE, path_data,
                                 plat_obj, run_local)
 
