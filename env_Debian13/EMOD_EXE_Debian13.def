@@ -1,5 +1,5 @@
 Bootstrap: localimage
-From: Assets/EMOD_OS_Debian12.sif
+From: Assets/EMOD_OS_Debian13.sif
 
 %post
     apt-get update
