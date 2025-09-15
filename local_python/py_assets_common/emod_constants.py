@@ -12,6 +12,8 @@ COMPS_SU_CMD = 'export PYTHONPATH="$PYTHONPATH:$COMPS_WORKING_DIR/Assets";' + \
                '/py_env/bin/python3 /mnt/idm2/comps/scripts/startup.py'
 COMPS_SU_DICT = {'COMPS_STARTUP_CMD': COMPS_SU_CMD}
 
+DEFAULT_OS = 'env_Debian13'
+
 LOCAL_EXP_ROOT = 'docker_suites'
 LOCAL_EXP_DIR = 'LOCAL_EXP_PATH.txt'
 
@@ -35,6 +37,8 @@ D_FILE = 'data_brick.json'
 I_FILE = 'idx_str_file.txt'
 C_FILE = 'config.json'
 O_FILE = 'parsed_out.json'
+
+I_FILE_FMT = '{:05d}'
 
 EXP_C = 'EXP_CONSTANT'
 EXP_V = 'EXP_VARIABLE'
