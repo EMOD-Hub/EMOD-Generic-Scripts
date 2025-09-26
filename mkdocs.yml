@@ -5,24 +5,28 @@ repo_url: https://github.com/EMOD-Hub/EMOD-Generic-Scripts
 
 theme:
   name: material
+  custom_dir: docs/customization/overrides
   font: 
     text: Roboto
     code: Roboto Mono
+  logo: images/EMOD_logo.png
+  favicon: images/favicon.ico
   features:
     - navigation.footer
+    - content.code.copy
   palette:
     - scheme: default
-      primary: black
       toggle:
-        icon: material/toggle-switch
+        icon: material/weather-night
         name: Light mode
+      primary: white
+      accent: light blue
     - scheme: slate
-      primary: black
       toggle:
-        icon: material/toggle-switch-off-outline
+        icon: material/weather-sunny
         name: Dark mode
-  favicon: images/favicon.ico
-  logo: images/EMOD_logo.png
+      primary: black
+      accent: light blue
 
 nav:
   - Home: index.md
@@ -43,12 +47,13 @@ nav:
     - examples/model_polio_nga01.md
     - examples/model_rubella01.md
     - examples/model_transtree01.md
+  - API Reference: autoapi/
 
 plugins:
-  - search
-  - autorefs
-  - include-markdown
-  - glightbox
+  - search:
+  - autorefs:
+  - include-markdown:
+  - glightbox:
   - mkdocs-autoapi:
       autoapi_ignore:
         - .github/**/*
@@ -58,12 +63,62 @@ plugins:
         - env_*/**/*
         - model_*/**/*
         - refdat_*/**/*
-      autoapi_add_nav_entry: True
-  - mkdocstrings
+      autoapi_add_nav_entry:  false
+  - mkdocstrings:
 
 markdown_extensions:
-  - pymdownx.caret
-  - pymdownx.mark
-  - pymdownx.tilde
+  - def_list:
+  - pymdownx.caret:
+  - pymdownx.mark:
+  - pymdownx.tilde:
+  - pymdownx.snippets:
+  - pymdownx.blocks.details:
+  - pymdownx.highlight:
+      linenums: true
+      default_lang: 'python'
 
 copyright: Copyright &copy; 2025 Gates Foundation. All rights reserved.
+
+extra_javascript:
+  - customization/javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css:
+  - customization/css/extra.css
+
+extra:
+  generator: false  # Removes acknowledgement of mkdocs-material
+  footer_links:
+    - text: "Privacy and Cookies Notice"
+      href: "https://www.gatesfoundation.org/Privacy-and-Cookies-Notice"
+    - text: "Terms of Use"
+      href: "https://www.gatesfoundation.org/Terms-of-Use"
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/EMOD-Hub/emod-api
+    - icon: fontawesome/regular/envelope
+      link: mailto:idm@gatesfoundation.org
+    - icon: octicons/globe-24
+      link: https://idmod.org
+    - icon: simple/youtube
+      link: http://www.youtube.com/@institutefordiseasemodelin1987
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/company/institute-disease-modeling
+    - icon: fontawesome/brands/slack
+      link: https://gatesfoundation.enterprise.slack.com/
+  analytics:
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: This page was helpful
+          data: 1
+          note: >-
+            Thanks for your feedback! If you like, provide additional information by
+            using our <a href="https://app.smartsheet.com/b/form/ec8dbb77809949ecab7286a5ca74a206" target="_blank" rel="noopener">feedback form</a>.
+        - icon: material/emoticon-sad-outline
+          name: This page could be improved
+          data: 0
+          note: >- 
+            Thanks for your feedback! Help us improve this page by
+            using our <a href="https://app.smartsheet.com/b/form/ec8dbb77809949ecab7286a5ca74a206" target="_blank" rel="noopener">feedback form</a>.
