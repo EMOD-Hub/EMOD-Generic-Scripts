@@ -3,7 +3,7 @@ name: Build docs and deploy to GH Pages
 on:
   push:
     branches:
-      - 'main'
+      - main
     paths: 
       - 'mkdocs.yml'
       - 'docs/**'
