@@ -2,7 +2,7 @@
 #
 # *****************************************************************************
 
-API_MIN = '2.0.0'
+API_MIN = '2.0.26'
 
 COMPS_ID_FILE = 'COMPS_ID.id'
 COMPS_URL = 'https://comps.idmod.org'

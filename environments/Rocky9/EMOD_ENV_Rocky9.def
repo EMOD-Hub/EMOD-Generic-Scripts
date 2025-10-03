@@ -14,7 +14,7 @@ From: Assets/EMOD_OS_Rocky9.sif
     . py_env/bin/activate
 
     pip install pip              --upgrade
-    pip install emod-api==2.0.1  --extra-index-url https://packages.idmod.org/api/pypi/pypi-production/simple
+    pip install emod-api==2.0.26 --extra-index-url https://packages.idmod.org/api/pypi/pypi-production/simple
 
 %runscript
 
