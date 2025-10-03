@@ -6,6 +6,7 @@ API_MIN = '2.0.0'
 
 COMPS_ID_FILE = 'COMPS_ID.id'
 COMPS_URL = 'https://comps.idmod.org'
+COMPS_ENV = 'Calculon'
 COMPS_SU_EXE = 'Execution'
 COMPS_SU_ENV = 'Environment'
 COMPS_SU_CMD = 'export PYTHONPATH="$PYTHONPATH:$COMPS_WORKING_DIR/Assets";' + \

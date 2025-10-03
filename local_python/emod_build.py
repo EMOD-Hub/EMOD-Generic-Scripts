@@ -13,7 +13,8 @@ from idmtools_platform_comps.utils.singularity_build \
 from idmtools_platform_comps.utils.assetize_output.assetize_output \
                                          import AssetizeOutput
 
-from py_assets_common.emod_constants import ID_OS, ID_EXE, ID_ENV, ID_SCHEMA
+from py_assets_common.emod_constants import ID_OS, ID_EXE, ID_ENV, \
+                                            ID_SCHEMA, COMPS_URL, COMPS_ENV
 
 # ****************************************************************************
 
@@ -22,12 +23,12 @@ from py_assets_common.emod_constants import ID_OS, ID_EXE, ID_ENV, ID_SCHEMA
 def make_OS_asset():
 
     # Name for the OS
-    OS_NAME = os.getcwd().split('_')[1]
+    OS_NAME = os.path.basename(os.getcwd())
 
     # Prepare the platform
     plat_obj = Platform(type='COMPS',
-                        endpoint='https://comps.idmod.org',
-                        environment='Calculon')
+                        endpoint=COMPS_URL,
+                        environment=COMPS_ENV)
 
     # Creates a work item to build image
     def_file_name = 'EMOD_OS_'+OS_NAME+'.def'
@@ -50,12 +51,12 @@ def make_OS_asset():
 def make_EXE_asset():
 
     # Name for the OS
-    OS_NAME = os.getcwd().split('_')[1]
+    OS_NAME = os.path.basename(os.getcwd())
 
     # Prepare the platform
     plat_obj = Platform(type='COMPS',
-                        endpoint='https://comps.idmod.org',
-                        environment='Calculon',
+                        endpoint=COMPS_URL,
+                        environment=COMPS_ENV,
                         priority='Highest',
                         simulation_root='$COMPS_PATH(USER)',
                         node_group='idm_48cores',
@@ -117,12 +118,12 @@ def make_EXE_asset():
 def make_ENV_asset():
 
     # Name for the OS
-    OS_NAME = os.getcwd().split('_')[1]
+    OS_NAME = os.path.basename(os.getcwd())
 
     # Prepare the platform
     plat_obj = Platform(type='COMPS',
-                        endpoint='https://comps.idmod.org',
-                        environment='Calculon')
+                        endpoint=COMPS_URL,
+                        environment=COMPS_ENV)
 
     # Add image for base OS
     os_image = AssetCollection.from_id_file(ID_OS)

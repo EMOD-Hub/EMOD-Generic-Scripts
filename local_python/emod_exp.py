@@ -178,7 +178,8 @@ def start_exp(path_python, path_data, path_exp_def,
 
     # Create experiment object
     f_dir = os.path.dirname(os.path.abspath(__file__))
-    PATH_EXE = os.path.abspath(os.path.join(f_dir, '..', DEFAULT_OS))
+    PATH_EXE = os.path.abspath(os.path.join(f_dir, '..', 'environments',
+                                            DEFAULT_OS))
     exp_obj = exp_from_def_file(path_exp_def, path_python, PATH_EXE, path_data,
                                 plat_obj, run_local)
 
