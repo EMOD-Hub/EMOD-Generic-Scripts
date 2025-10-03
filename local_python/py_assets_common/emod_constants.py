@@ -13,7 +13,7 @@ COMPS_SU_CMD = 'export PYTHONPATH="$PYTHONPATH:$COMPS_WORKING_DIR/Assets";' + \
                '/py_env/bin/python3 /mnt/idm2/comps/scripts/startup.py'
 COMPS_SU_DICT = {'COMPS_STARTUP_CMD': COMPS_SU_CMD}
 
-DEFAULT_OS = 'env_Debian13'
+DEFAULT_OS = 'Debian13'
 
 LOCAL_EXP_ROOT = 'docker_suites'
 LOCAL_EXP_DIR = 'LOCAL_EXP_PATH.txt'
