@@ -439,7 +439,7 @@ def svg_defaultgrid(inf_dat, f_lab):
     fid01.write('</svg>'+'\n')
 
     # Write file
-    with open('networkviz_01_{:s}.svg'.format(f_lab), 'w') as dump01:
+    with open('networkviz01_{:s}.svg'.format(f_lab), 'w') as dump01:
         dump01.write(fid01.getvalue())
 
     return None
