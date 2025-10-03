@@ -23,7 +23,6 @@ inf_prd_mean = 6.0
 brate_mult_x = None
 brate_mult_y = None
 
-base_year = 1900.0
 start_year = 2000.0
 run_years = 60.0
 t_step_days = 5.0

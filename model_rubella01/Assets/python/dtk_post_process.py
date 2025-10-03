@@ -12,7 +12,7 @@ import numpy as np
 from emod_postproc_func import post_proc_poppyr, post_proc_cbr, post_proc_R0, \
                                post_proc_sql
 from emod_constants import SQL_TIME, SQL_MCW, SQL_AGE, POP_AGE_DAYS, O_FILE, \
-                           SQL_FILE
+                           SQL_FILE, BASE_YEAR
 
 # *****************************************************************************
 
@@ -38,7 +38,7 @@ def application(output_path):
 
     # Yearly timeseries by age
     DAY_BINS = [365]
-    START_TIME = 365.0*(gdata.start_year-gdata.base_year)
+    START_TIME = 365.0*(gdata.start_year-BASE_YEAR)
     BIN_EDGES = np.cumsum(int(gdata.run_years)*DAY_BINS) + START_TIME + 0.5
     BIN_EDGES = np.insert(BIN_EDGES, 0, START_TIME + 0.5)
 

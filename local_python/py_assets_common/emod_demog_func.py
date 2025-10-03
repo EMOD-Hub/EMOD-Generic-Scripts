@@ -15,6 +15,8 @@ from emod_api.demographics.susceptibility_distribution import \
 from emod_api.demographics.PropertiesAndAttributes import \
                                    IndividualAttributes, NodeAttributes
 
+from emod_api.demographics import DemographicsTemplates as DT
+
 from emod_constants import DEMOG_FILE, PATH_OVERLAY, \
                            MORT_XVAL, POP_AGE_DAYS, MAX_DAILY_MORT
 
@@ -173,7 +175,7 @@ def demog_r0mult_over(ref_name, node_list, R0_mult, idx=0):
 # *****************************************************************************
 
 
-def demog_vd_calc(fname_pop, start_year):
+def demog_vd_calc(fname_pop, start_year, steady_state=False):
 
     # Load population data
     pop_input = np.loadtxt(fname_pop, dtype=int, delimiter=',')
@@ -210,6 +212,9 @@ def demog_vd_calc(fname_pop, start_year):
     brmultx_02[1::2] = brmultx_01[1:]-0.5
     brmulty_02[1::2] = brmulty_01[0:-1]
 
+    if (steady_state):
+        brmulty_02 = 1.0 + 0.0*brmulty_02
+
     brmx = brmultx_02.tolist()
     brmy = brmulty_02.tolist()
 
@@ -235,7 +240,27 @@ def demog_vd_calc(fname_pop, start_year):
     mort_mat_yr = 365.0*mort_mat
     mort_mat_yr = mort_mat_yr.tolist()
 
-    return (pop_init, mort_year, mort_mat_yr, age_x, b_rate, brmx, brmy)
+    if (steady_state):
+        mort_vec = np.array([np.interp(start_year, mort_year, mort_mat[idx, :])
+                             for idx in range(mort_mat.shape[0])])
+        mort_year = [start_year]
+        mort_mat_yr = 365.0*mort_vec[:, np.newaxis]
+        mort_mat_yr = mort_mat_yr.tolist()
+        mort_vec = mort_vec.tolist()
 
+        forcing_vec = 12*[1.0]  # No seasonal forcing
+        (_, age_x_eq, age_y_eq) = DT._computeAgeDist(b_rate, MORT_XVAL,
+                                                     mort_vec, forcing_vec)
+        age_x = (np.interp(POP_AGE_DAYS, age_y_eq, age_x_eq)).tolist()
+
+    # Sanitize age cdf to insure it is increasing
+    age_x[-1] = 1.0
+    for k1 in range(2, len(age_x)):
+        if (age_x[-k1] > (1.0 - k1*1e-6)):
+            age_x[-k1] = (1.0 - k1*1e-6)
+        else:
+            break
+
+    return (pop_init, mort_year, mort_mat_yr, age_x, b_rate, brmx, brmy)
 
 # *****************************************************************************

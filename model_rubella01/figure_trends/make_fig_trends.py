@@ -12,9 +12,9 @@ sys.path.append(os.path.abspath(os.path.join('..', '..', 'local_python')))
 sys.path.append(os.path.abspath(os.path.join('..', 'Assets', 'python')))
 from py_assets_common.emod_constants import EXP_V, CBR_VEC, \
                                             NUM_SIMS, P_FILE, POP_PYR, \
-                                            POP_AGE_DAYS, R0_VEC, R0_TIME
-from global_data import run_years, start_year, base_year, t_step_days, \
-                        inf_prd_mean
+                                            POP_AGE_DAYS, R0_VEC, R0_TIME, \
+                                            BASE_YEAR
+from global_data import run_years, start_year, t_step_days, inf_prd_mean
 
 # *****************************************************************************
 
@@ -38,7 +38,7 @@ def make_fig():
             param_dict = json.load(fid01)
 
         nsims = int(param_dict[NUM_SIMS])
-        tref = (start_year-base_year)*365
+        tref = (start_year-BASE_YEAR)*365
         ri_vec = np.array(param_dict[EXP_V]['RI_rate'])
 
         ri_lev = sorted(list(set(ri_vec.tolist())), reverse=True)
