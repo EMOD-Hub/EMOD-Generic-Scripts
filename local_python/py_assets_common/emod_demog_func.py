@@ -2,14 +2,18 @@
 #
 # *****************************************************************************
 
-import json
 import os
 
 import numpy as np
 import scipy.optimize as opt
 
-from emod_api.demographics.Demographics import DemographicsOverlay
-from emod_api.demographics.PropertiesAndAttributes import IndividualAttributes
+from emod_api.demographics.demographics_overlay import DemographicsOverlay
+from emod_api.demographics.age_distribution import AgeDistribution
+from emod_api.demographics.mortality_distribution import MortalityDistribution
+from emod_api.demographics.susceptibility_distribution import \
+                                   SusceptibilityDistribution
+from emod_api.demographics.PropertiesAndAttributes import \
+                                   IndividualAttributes, NodeAttributes
 
 from emod_constants import DEMOG_FILE, PATH_OVERLAY, \
                            MORT_XVAL, POP_AGE_DAYS, MAX_DAILY_MORT
@@ -28,53 +32,39 @@ def demog_vd_over(ref_name, node_list, cb_rate,
         age_y_vec = age_y
     else:
         age_y_vec = POP_AGE_DAYS
+    age_y_list = (np.array(age_y_vec)/365.0).tolist()
 
     if (mort_age_in):
         mort_age_vec = mort_age_in
     else:
         mort_age_vec = MORT_XVAL
+    mort_y_list = (np.array(mort_age_vec)/365.0).tolist()
 
-    vd_over_dict = dict()
+    # Initial age and mortality distributions
+    ind_age = AgeDistribution(ages_years=age_y_list,
+                              cumulative_population_fraction=age_x)
 
-    vd_over_dict['Metadata'] = {'IdReference': ref_name}
-    vd_over_dict['Defaults'] = {'IndividualAttributes': dict(),
-                                'NodeAttributes': dict()}
-    vd_over_dict['Nodes'] = [{'NodeID': nid.forced_id} for nid in node_list]
+    ind_mort = MortalityDistribution(ages_years=mort_y_list,
+                                     calendar_years=mort_year,
+                                     mortality_rate_matrix=mort_mat)
 
-    vdodd = vd_over_dict['Defaults']
-    vdodd['NodeAttributes'] = {'BirthRate': cb_rate}
-    vdodd['IndividualAttributes'] = {'AgeDistribution': dict(),
-                                     'MortalityDistributionMale': dict(),
-                                     'MortalityDistributionFemale': dict()}
+    ind_att = IndividualAttributes()
+    ind_att.age_distribution = ind_age
+    ind_att.mortality_distribution_male = ind_mort
+    ind_att.mortality_distribution_female = ind_mort
 
-    vdoddiaad = vdodd['IndividualAttributes']['AgeDistribution']
-    vdoddiaad['DistributionValues'] = [age_x]
-    vdoddiaad['ResultScaleFactor'] = 1
-    vdoddiaad['ResultValues'] = [age_y_vec]
+    # Birth rate
+    node_att = NodeAttributes()
+    node_att.birth_rate = cb_rate
 
-    vdoddiamdm = vdodd['IndividualAttributes']['MortalityDistributionMale']
-    vdoddiamdm['AxisNames'] = ['age', 'year']
-    vdoddiamdm['AxisScaleFactors'] = [1, 1]
-    vdoddiamdm['NumDistributionAxes'] = 2
-    vdoddiamdm['NumPopulationGroups'] = [len(mort_age_vec), len(mort_year)]
-    vdoddiamdm['PopulationGroups'] = [mort_age_vec, mort_year]
-    vdoddiamdm['ResultScaleFactor'] = 1
-    vdoddiamdm['ResultValues'] = mort_mat.tolist()
-
-    vdoddiamdf = vdodd['IndividualAttributes']['MortalityDistributionFemale']
-    vdoddiamdf['AxisNames'] = ['age', 'year']
-    vdoddiamdf['AxisScaleFactors'] = [1, 1]
-    vdoddiamdf['NumDistributionAxes'] = 2
-    vdoddiamdf['NumPopulationGroups'] = [len(mort_age_vec), len(mort_year)]
-    vdoddiamdf['PopulationGroups'] = [mort_age_vec, mort_year]
-    vdoddiamdf['ResultScaleFactor'] = 1
-    vdoddiamdf['ResultValues'] = mort_mat.tolist()
+    # Overlay files
+    dover_obj = DemographicsOverlay(idref=ref_name, nodes=node_list,
+                                    individual_attributes=ind_att,
+                                    node_attributes=node_att)
 
     nfname = DEMOG_FILE.rsplit('.', 1)[0] + '_vd{:04d}.json'.format(idx)
     nfname = os.path.join(PATH_OVERLAY, nfname)
-
-    with open(nfname, 'w') as fid01:
-        json.dump(vd_over_dict, fid01)
+    dover_obj.to_file(file_name=nfname)
 
     return nfname
 
@@ -117,7 +107,7 @@ def demog_is_over(ref_name, node_list, R0, age_x, age_y=None, idx=0):
               for val in isus_x]
 
     # Initial susceptibility overlays
-    ind_sus = IndividualAttributes.SusceptibilityDistribution()
+    ind_sus = SusceptibilityDistribution()
     ind_sus.distribution_values = isus_x
     ind_sus.result_scale_factor = 1
     ind_sus.result_values = isus_y
@@ -183,7 +173,16 @@ def demog_r0mult_over(ref_name, node_list, R0_mult, idx=0):
 # *****************************************************************************
 
 
-def demog_vd_calc(year_vec, year_init, pop_mat, pop_init):
+def demog_vd_calc(fname_pop, start_year):
+
+    # Load population data
+    pop_input = np.loadtxt(fname_pop, dtype=int, delimiter=',')
+    year_vec = pop_input[0, :]
+    pop_mat = pop_input[1:, :] + 0.1
+
+    # Estimate total initial population
+    pop_init_vec = [np.interp(start_year, year_vec, pop_mat[idx, :])
+                    for idx in range(pop_mat.shape[0])]
 
     # Calculate vital dynamics
     diff_ratio = (pop_mat[:-1, :-1]-pop_mat[1:, 1:])/pop_mat[:-1, :-1]
@@ -197,8 +196,8 @@ def demog_vd_calc(year_vec, year_init, pop_mat, pop_init):
     pop_corr = np.exp(-mortvecs[0, :]*pow_vec/2.0)
 
     brate_vec = np.round(pop_mat[0, 1:]/tpop_mid/t_delta*1000.0, 1)/pop_corr
-    brate_val = np.interp(year_init, year_vec[:-1], brate_vec)
-    yrs_off = year_vec[:-1]-year_init
+    brate_val = np.interp(start_year, year_vec[:-1], brate_vec)
+    yrs_off = year_vec[:-1]-start_year
     yrs_dex = (yrs_off > 0)
 
     brmultx_01 = np.array([0.0] + (365.0*yrs_off[yrs_dex]).tolist())
@@ -211,14 +210,18 @@ def demog_vd_calc(year_vec, year_init, pop_mat, pop_init):
     brmultx_02[1::2] = brmultx_01[1:]-0.5
     brmulty_02[1::2] = brmulty_01[0:-1]
 
-    age_init_cdf = np.cumsum(pop_init[:-1])/np.sum(pop_init)
+    brmx = brmultx_02.tolist()
+    brmy = brmulty_02.tolist()
+
+    pop_init = np.sum(pop_init_vec)
+    age_init_cdf = np.cumsum(pop_init_vec[:-1])/pop_init
     age_x = [0] + age_init_cdf.tolist()
 
-    birth_rate = brate_val/365.0/1000.0
+    b_rate = brate_val/365.0/1000.0
     mort_year = np.zeros(2*year_vec.shape[0]-3)
 
     mort_year[0::2] = year_vec[0:-1]
-    mort_year[1::2] = year_vec[1:-1]-1e-4
+    mort_year[1::2] = year_vec[1:-1]-1e-3
     mort_year = mort_year.tolist()
 
     mort_mat = np.zeros((len(MORT_XVAL), len(mort_year)))
@@ -229,7 +232,10 @@ def demog_vd_calc(year_vec, year_init, pop_mat, pop_init):
     mort_mat[1:-2:2, 1::2] = mortvecs[:, :-1]
     mort_mat[-2:, :] = MAX_DAILY_MORT
 
-    return (mort_year, mort_mat, age_x, birth_rate, brmultx_02, brmulty_02)
+    mort_mat_yr = 365.0*mort_mat
+    mort_mat_yr = mort_mat_yr.tolist()
+
+    return (pop_init, mort_year, mort_mat_yr, age_x, b_rate, brmx, brmy)
 
 
 # *****************************************************************************

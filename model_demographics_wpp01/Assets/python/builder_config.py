@@ -6,7 +6,7 @@
 
 import global_data as gdata
 
-from emod_constants import CAMP_FILE, REPORTS_FILE
+from emod_constants import CAMP_FILE, REPORTS_FILE, BASE_YEAR
 
 # *****************************************************************************
 
@@ -26,7 +26,7 @@ def update_config_obj(config):
     cp.Run_Number = RUN_NUM
 
     # Time
-    cp.Start_Time = 365.0*(START_YEAR-gdata.base_year)
+    cp.Start_Time = 365.0*(START_YEAR-BASE_YEAR)
     cp.Simulation_Duration = 365.0*TIME_YEARS
     cp.Simulation_Timestep = gdata.t_step_days
     cp.Enable_Termination_On_Total_Wall_Time = 1

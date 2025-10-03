@@ -10,17 +10,13 @@ import matplotlib.pyplot as plt
 # Ought to go in emodpy
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..', 'local_python')))
 from py_assets_common.emod_local_proc import pyr_chart
-from py_assets_common.emod_constants import POP_AGE_DAYS, CLR_M, CLR_F, \
-                                            EXP_C, NUM_SIMS, P_FILE, POP_PYR, \
+from py_assets_common.emod_constants import EXP_C, NUM_SIMS, P_FILE, POP_PYR, \
                                             D_FILE
 
 # *****************************************************************************
 
 DIRNAMES = ['experiment_estimates01',
             'experiment_projections01']
-
-TLABS = ['12', '10', '8', '6', '4', '2', '0', '2', '4', '6', '8', '10', '12']
-TLOCS = [-12, -10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10, 12]
 
 # *****************************************************************************
 
@@ -101,7 +97,7 @@ def make_fig():
 
         # Save figure
         plt.tight_layout()
-        plt.savefig('fig_pyr_{:s}_{:s}.png'.format(pop_dat_str, dirname))
+        plt.savefig('fig_pyr_{:s}01_{:s}.png'.format(pop_dat_str, dirname))
         plt.close()
 
     return None

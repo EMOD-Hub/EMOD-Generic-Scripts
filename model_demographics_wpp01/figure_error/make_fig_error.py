@@ -99,7 +99,7 @@ def make_fig():
 
     # Save figure
     plt.tight_layout()
-    plt.savefig('fig_err_{:s}_01.png'.format(pop_dat_str))
+    plt.savefig('fig_err_{:s}01.png'.format(pop_dat_str))
     plt.close()
 
     return None
