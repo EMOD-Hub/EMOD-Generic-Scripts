@@ -19,7 +19,7 @@ LOCAL_EXP_DIR = 'LOCAL_EXP_PATH.txt'
 
 PY_PATH = r'python3'
 
-DOCK_PACK = r'mesokurtic/emodpy:2.1.0.03'
+DOCK_PACK = r'mesokurtic/emodpy:2.1.13'
 
 VE_PY_PATHS = ['/py_env/lib/python3.9/site-packages/',
                '/py_env/lib/python3.10/site-packages/',
