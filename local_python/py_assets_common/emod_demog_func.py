@@ -43,6 +43,8 @@ def demog_vd_over(ref_name, node_list, cb_rate,
     mort_y_list = (np.array(mort_age_vec)/365.0).tolist()
 
     # Initial age and mortality distributions
+    print(age_y_list)
+    print(age_x)
     ind_age = AgeDistribution(ages_years=age_y_list,
                               cumulative_population_fraction=age_x)
 
