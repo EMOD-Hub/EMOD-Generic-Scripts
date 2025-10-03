@@ -122,7 +122,7 @@ def make_fig():
 
     # Generate figures
     plt.tight_layout()
-    plt.savefig('fig_transtree_01.png')
+    plt.savefig('fig_transtree01.png')
     plt.close()
 
     return None
