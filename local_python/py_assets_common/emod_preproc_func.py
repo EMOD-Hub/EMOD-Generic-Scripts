@@ -20,17 +20,23 @@ from emod_api import __version__ as API_CUR
 from emod_api.config import default_from_schema_no_validation as dfs
 
 from emod_constants import API_MIN, P_FILE, I_FILE, C_FILE, \
-                           EXP_C, EXP_V, SPATH
+                           EXP_C, EXP_V, SPATH, BASE_YEAR
 
 # *****************************************************************************
 
 
 def config_builder():
 
+    # Generate default config from schema
     default_conf = dfs.get_default_config_from_schema(SPATH, as_rod=True)
 
-    # Probably ought to be an emod-api call
+    # Apply global updates
+    default_conf.parameters.Base_Year = BASE_YEAR
+
+    # Apply model-specific updates
     config_obj = update_config_obj(default_conf)
+
+    # Write config file
     config_obj.parameters.finalize()
     with open(C_FILE, 'w') as fid01:
         json.dump(config_obj, fid01, sort_keys=True, indent=4)
