@@ -64,8 +64,9 @@ def write_param_dict():
     # Use constant vital dynamics
     P_CON['steady_state_demog'] = True
 
-    # Use SIAs
-    P_CON['add_campaigns'] = False
+    # SIAs
+    P_CON['SIA_CU_coverage'] = 0.00
+    P_CON['SIA_CU_max_age_yr'] = 15.0
 
     # Initial number of agents
     P_CON['num_agents'] = 100000

@@ -64,7 +64,7 @@ def make_fig():
             pyr_chart(axs01, pop_dat, pop_dat_err, year_vec[gidx])
 
         plt.tight_layout()
-        plt.savefig('fig_pyr_{:s}_01.png'.format(dirname))
+        plt.savefig('fig_pyr_{:s}01.png'.format(dirname))
         plt.close()
 
     return None

@@ -36,7 +36,6 @@ def demographicsBuilder():
     vd_tup = demog_vd_calc(fname_pop, gdata.start_year,
                            steady_state=SS_DEMOG)
 
-    gdata.init_pop = vd_tup[0]
     gdata.brate_mult_x = vd_tup[5]
     gdata.brate_mult_y = vd_tup[6]
 

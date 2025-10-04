@@ -192,10 +192,18 @@ def ce_inf_mod(node_list,
 
 
 def ce_RI(node_list,
-          coverage=1.0, start_day=0.0, base_take=1.0,
-          coverage_x=[0.0], coverage_y=[1.0],
+          coverage=None, start_day=0.0, base_take=1.0,
+          coverage_x=None, coverage_y=None,
           age_one=300.0, frac_two=None, age_two=475.0, age_std=90.0,
           acq_fact=0.0, age_dep=False):
+
+    if coverage:
+        if (coverage_x or coverage_y):
+            err_text = 'Cannot specify both fixed and varying coverage.'
+            raise Exception(err_text)
+        else:
+            coverage_x = [0.0]
+            coverage_y = [coverage]
 
     # Vaccine
     camp_event = s2c.get_class_with_defaults(CE, SPATH)
@@ -217,7 +225,7 @@ def ce_RI(node_list,
     camp_iv01.Actual_IndividualIntervention_Config = camp_iv02
     camp_iv01.Coverage_vs_Time_Interpolation_Map.Times = coverage_x
     camp_iv01.Coverage_vs_Time_Interpolation_Map.Values = coverage_y
-    camp_iv01.Demographic_Coverage = coverage
+    camp_iv01.Demographic_Coverage = 1.0  # Not used
     camp_iv01.Demographic_Coverage_Time_Profile = 'InterpolationMap'
     camp_iv01.Not_Covered_IndividualIntervention_Configs = []  # Needed?
     camp_iv01.Trigger_Condition_List = ['Births']

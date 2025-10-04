@@ -31,7 +31,7 @@ def write_param_dict():
     param_dict = dict()
 
     param_dict[EXP_NAME] = 'Rubella01-SSA-Demog_EQL'
-    param_dict[NUM_SIMS] = 3
+    param_dict[NUM_SIMS] = 3000
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -64,8 +64,9 @@ def write_param_dict():
     # Use constant vital dynamics
     P_CON['steady_state_demog'] = True
 
-    # Use SIAs
-    P_CON['add_campaigns'] = False
+    # SIAs
+    P_CON['SIA_CU_coverage'] = 0.00
+    P_CON['SIA_CU_max_age_yr'] = 15.0
 
     # Initial number of agents
     P_CON['num_agents'] = 100000

@@ -132,7 +132,7 @@ def make_fig():
             axs01.plot(XDAT, ydat, label='RI = {:3d}%'.format(int(100*ri_val)))
 
         plt.tight_layout()
-        plt.savefig('fig_inf_{:s}_01.png'.format(dirname))
+        plt.savefig('fig_inf_{:s}01.png'.format(dirname))
         plt.close()
 
     return None

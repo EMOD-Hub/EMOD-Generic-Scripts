@@ -4,6 +4,8 @@
 #
 # *****************************************************************************
 
+import numpy as np
+
 import global_data as gdata
 
 import emod_api.campaign as camp_module
@@ -17,8 +19,9 @@ from emod_constants import CAMP_FILE, BASE_YEAR
 def campaignBuilder():
 
     # Variables for this simulation
-    ADD_SIA = gdata.var_params['add_campaigns']
     RI_RATE = gdata.var_params['RI_rate']
+    SIA_CU_COVERAGE = gdata.var_params['SIA_CU_coverage']
+    SIA_CU_MAX_AGE_YR = gdata.var_params['SIA_CU_max_age_yr']
 
     # Note: campaign module itself is the file object; no Campaign class
     ALL_NODES = gdata.demog_object.node_ids
@@ -30,17 +33,18 @@ def campaignBuilder():
     camp_event = ce_br_force(ALL_NODES, BR_MULT_X, BR_MULT_Y, start_day)
     camp_module.add(camp_event)
 
-    # Routine immunization
+    # RI
     start_day = 365.0*(gdata.start_year-BASE_YEAR+gdata.ri_offset)
     camp_event = ce_RI(ALL_NODES, coverage=RI_RATE, start_day=start_day)
     camp_module.add(camp_event)
 
     # SIAs
-    if (ADD_SIA):
-        # Catch-up
+    if SIA_CU_COVERAGE:
         start_day = 365.0*(gdata.start_year-BASE_YEAR+gdata.ri_offset)
-        camp_event = ce_SIA(ALL_NODES, coverage=0.8, start_day=start_day,
-                            yrs_min=0.75, yrs_max=15.0)
+        start_day = start_day + np.random.uniform(low=10.0, high=330.0)
+        camp_event = ce_SIA(ALL_NODES, coverage=SIA_CU_COVERAGE,
+                            start_day=start_day,
+                            yrs_min=0.75, yrs_max=SIA_CU_MAX_AGE_YR)
         camp_module.add(camp_event)
 
     # End file construction
