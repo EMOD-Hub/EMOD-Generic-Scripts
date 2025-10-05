@@ -13,7 +13,7 @@ import numpy as np
 from emod_api.demographics.Demographics import Demographics, Node
 
 from emod_demog_func import demog_vd_calc, demog_vd_over, demog_is_over
-from emod_constants import DEMOG_FILE
+from emod_constants import DEMOG_FILE, DEMOG_IRS
 
 # *****************************************************************************
 
@@ -42,12 +42,12 @@ def demographicsBuilder():
     node_list = list()
     pop_nodes = int(gdata.init_pop/NUM_NODES)
     imp_rate = pop_nodes * 1.615e-7 * np.power(10.0, LOG10_IMP)
-    irs_key = 'InfectivityReservoirSize'
     for nid in range(NUM_NODES):
         nname = POP_DAT_STR + '_{:04d}'.format(nid+1)
         node_obj = Node(lat=0.0, lon=0.0, pop=pop_nodes,
                         name=nname, forced_id=(nid+1))
-        node_obj.node_attributes.extra_attributes = {irs_key: imp_rate}
+        irs_dict = {DEMOG_IRS: imp_rate}
+        node_obj.node_attributes.extra_attributes = irs_dict
         node_list.append(node_obj)
 
     # Create primary file
