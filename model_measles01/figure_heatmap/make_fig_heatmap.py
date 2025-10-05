@@ -11,8 +11,11 @@ import matplotlib.cm as cm
 # Ought to go in emodpy
 sys.path.append(os.path.abspath(os.path.join('..', '..', 'local_python')))
 sys.path.append(os.path.abspath(os.path.join('..', 'Assets', 'python')))
-from py_assets_common.emod_constants import EXP_V, NUM_SIMS, P_FILE, POP_PYR
+
+from py_assets_common.emod_constants import EXP_V, NUM_SIMS, P_FILE, POP_PYR, \
+                                            D_FILE
 from global_data import run_years, AGE_HIST_BINS, IHME_MORT_X, IHME_MORT_Y
+                        
 
 # *****************************************************************************
 
@@ -29,7 +32,7 @@ def make_fig():
         # Sim outputs
         tpath = os.path.join('..', dirname)
 
-        with open(os.path.join(tpath, 'data_brick.json')) as fid01:
+        with open(os.path.join(tpath, D_FILE)) as fid01:
             data_brick = json.load(fid01)
 
         with open(os.path.join(tpath, P_FILE)) as fid01:
@@ -121,7 +124,7 @@ def make_fig():
         axs01.tick_params(axis='both', which='major', labelsize=14)
 
         plt.tight_layout()
-        plt.savefig('fig_heatmap_{:s}_01.png'.format(dirname))
+        plt.savefig('fig_heatmap_{:s}01.png'.format(dirname))
         plt.close()
 
     return None

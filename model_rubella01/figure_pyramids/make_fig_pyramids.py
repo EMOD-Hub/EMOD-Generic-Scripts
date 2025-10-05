@@ -10,7 +10,8 @@ import matplotlib.pyplot as plt
 # Ought to go in emodpy
 sys.path.append(os.path.abspath(os.path.join('..', '..', 'local_python')))
 sys.path.append(os.path.abspath(os.path.join('..', 'Assets', 'python')))
-from py_assets_common.emod_constants import NUM_SIMS, P_FILE, POP_PYR
+
+from py_assets_common.emod_constants import NUM_SIMS, P_FILE, POP_PYR, D_FILE
 from py_assets_common.emod_local_proc import pyr_chart
 from global_data import start_year, run_years
 
@@ -29,7 +30,7 @@ def make_fig():
         # Sim outputs
         tpath = os.path.join('..', dirname)
 
-        with open(os.path.join(tpath, 'data_brick.json')) as fid01:
+        with open(os.path.join(tpath, D_FILE)) as fid01:
             data_brick = json.load(fid01)
 
         with open(os.path.join(tpath, P_FILE)) as fid01:

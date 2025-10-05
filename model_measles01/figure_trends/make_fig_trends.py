@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 # Ought to go in emodpy
 sys.path.append(os.path.abspath(os.path.join('..', '..', 'local_python')))
 sys.path.append(os.path.abspath(os.path.join('..', 'Assets', 'python')))
+
 from py_assets_common.emod_constants import EXP_C, EXP_V, NUM_SIMS, \
                                             P_FILE, POP_PYR, D_FILE
 from global_data import run_years, AGE_HIST_BINS, IHME_MORT_X, IHME_MORT_Y
@@ -106,7 +107,7 @@ def make_fig():
                 idx03 = (sia_min_age_yr_vec == sia_min_age_yr_val)
 
                 lstyle = '-'
-                if(sia_min_age_yr_val < 0.7):
+                if (sia_min_age_yr_val < 0.7):
                     axs01.set_ylim(0, 1.8)
                     lstyle = '--'
 
@@ -117,14 +118,7 @@ def make_fig():
                 pcoef = np.polyfit(xval, yval, 5)
                 yval2 = np.polyval(pcoef, xval2)
 
-                #xval2 = mcv1_lev
-                #yval2 = np.zeros(len(xval2), dtype=float)
-                #for k3 in range(len(xval2)):
-                #    idx = (xval==xval2[k3])
-                #    yval2[k3] = np.mean(yval[idx])
-
                 cval = 'C{:d}'.format(k1)
-                xpos = 3.76-0.24*k1-0.48*k2
 
                 mcv1_mo = int(np.round(mcv1_age_val/365*12))
                 lstr = 'MCV1 {:>2d}mo'.format(mcv1_mo)
@@ -143,7 +137,7 @@ def make_fig():
         axs01.legend(fontsize=16)
 
         plt.tight_layout()
-        plt.savefig('fig_trends_{:s}_01.png'.format(dirname))
+        plt.savefig('fig_trends_{:s}01.png'.format(dirname))
         plt.close()
 
     return None

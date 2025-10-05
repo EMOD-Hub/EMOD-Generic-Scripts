@@ -11,7 +11,7 @@ import numpy as np
 import emod_api.campaign as camp_module
 
 from emod_camp_events import ce_br_force, ce_inf_force, ce_RI, ce_SIA
-from emod_constants import CAMP_FILE
+from emod_constants import CAMP_FILE, BASE_YEAR
 
 # *****************************************************************************
 
@@ -37,26 +37,26 @@ def campaignBuilder():
     # Time varying birth rate
     BR_MULT_X = gdata.brate_mult_x
     BR_MULT_Y = gdata.brate_mult_y
-    start_day = 365.0*(gdata.start_year-gdata.base_year)
+    start_day = 365.0*(gdata.start_year-BASE_YEAR)
     camp_event = ce_br_force(ALL_NODES, BR_MULT_X, BR_MULT_Y, start_day)
     camp_module.add(camp_event)
 
-    # Add seasonality
-    start_day = 365.0*(gdata.start_year-gdata.base_year)
+    # R0 seasonality
+    start_day = 365.0*(gdata.start_year-BASE_YEAR)
     camp_event = ce_inf_force(ALL_NODES, 15.0, 60.0, 1.30,
                               dt=gdata.t_step_days)
     camp_module.add(camp_event)
 
-    # Add MCV
-    start_day = 365.0*(gdata.start_year-gdata.base_year)
+    # RI
+    start_day = 365.0*(gdata.start_year-BASE_YEAR)
     acq_fact = MAT_FACTOR/2.0
     camp_event = ce_RI(ALL_NODES, coverage=MCV1_RATE, start_day=start_day,
                        base_take=0.95, acq_fact=acq_fact, age_dep=AGE_DEP,
                        age_one=MCV1_AGE, frac_two=MCV2_FRAC, age_std=60.0)
     camp_module.add(camp_event)
 
-    # Add SIAs
-    start_day = 365.0*(gdata.start_year-gdata.base_year)
+    # SIAs
+    start_day = 365.0*(gdata.start_year-BASE_YEAR)
     sia_year = SIA_START
     sia_rate = 1.0/(1.0-MCV1_RATE+0.001)
     acq_fact = MAT_FACTOR/2.0
