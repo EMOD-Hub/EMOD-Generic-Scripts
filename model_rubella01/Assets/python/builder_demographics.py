@@ -11,10 +11,9 @@ import global_data as gdata
 import numpy as np
 
 from emod_api.demographics.Demographics import Demographics, Node
-from emod_api.demographics import DemographicsTemplates as DT
 
 from emod_demog_func import demog_vd_calc, demog_vd_over, demog_is_over
-from emod_constants import DEMOG_FILE, MORT_XVAL
+from emod_constants import DEMOG_FILE
 
 # *****************************************************************************
 
