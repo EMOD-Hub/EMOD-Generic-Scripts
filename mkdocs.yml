@@ -38,11 +38,11 @@ nav:
     - examples/model_covid01.md
     - examples/model_demographics_wpp01.md
     - examples/model_demographics01.md
+    - examples/model_measles01.md
     - examples/model_measles_cod01.md
     - examples/model_measles_gha01.md
     - examples/model_measles_nga01.md
     - examples/model_measles_nga02.md
-    - examples/model_measles01.md
     - examples/model_network01.md
     - examples/model_polio_nga01.md
     - examples/model_rubella01.md
