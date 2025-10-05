@@ -8,10 +8,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Ought to go in emodpy
-sys.path.insert(0, os.path.abspath(os.path.join('..', '..', 'local_python')))
-from py_assets_common.emod_local_proc import pyr_chart
+sys.path.append(os.path.abspath(os.path.join('..', '..', 'local_python')))
+
 from py_assets_common.emod_constants import EXP_C, NUM_SIMS, P_FILE, POP_PYR, \
                                             D_FILE
+from py_assets_common.emod_local_proc import pyr_chart
 
 # *****************************************************************************
 
