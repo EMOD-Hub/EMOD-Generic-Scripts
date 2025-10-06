@@ -11,7 +11,7 @@ import numpy as np
 
 from emod_analysis import norpois_opt
 from emod_postproc_func import post_proc_poppyr, post_proc_sql
-from emod_constants import O_FILE, MO_DAYS
+from emod_constants import O_FILE, MO_DAYS, BASE_YEAR
 
 # *****************************************************************************
 
@@ -38,7 +38,7 @@ def application(output_path):
     gdata.data_vec_mcw = np.append(gdata.data_vec_mcw, dvec_mcw)
 
     # Aggregate new infections by month
-    START_TIME = 365.0*(gdata.start_year_log-gdata.base_year)
+    START_TIME = 365.0*(gdata.start_year_log-BASE_YEAR)
     NUM_YEARS = int(END_YEAR - gdata.start_year_log)
     BIN_EDGES = np.cumsum(NUM_YEARS*MO_DAYS) + START_TIME + 0.5
     BIN_EDGES = np.insert(BIN_EDGES, 0, START_TIME + 0.5)
@@ -62,7 +62,7 @@ def application(output_path):
     ref_years = int(np.ceil(ref_cases.shape[0]/12))
 
     # Aggregate new infections by month
-    START_TIME = 365.0*(ref_start-gdata.base_year)
+    START_TIME = 365.0*(ref_start-BASE_YEAR)
     BIN_EDGES = np.cumsum(ref_years*MO_DAYS) + START_TIME + 0.5
     BIN_EDGES = np.insert(BIN_EDGES, 0, START_TIME + 0.5)
 

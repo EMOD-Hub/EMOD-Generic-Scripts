@@ -12,6 +12,7 @@ import emod_api.campaign as camp_module
 
 from emod_camp_events import ce_SIA
 from emod_postproc_func import post_proc_sql
+from emod_constants import BASE_YEAR
 
 # *****************************************************************************
 
@@ -70,7 +71,7 @@ def application(timestep):
     gdata.prev_proc_time = TIME_VAL
 
     # Only do response post-2020
-    obr_time = 365.0*(gdata.start_year_obr - gdata.base_year)
+    obr_time = 365.0*(gdata.start_year_obr-BASE_YEAR)
     if (TIME_VAL > obr_time):
         for k1 in range(gdata.nobs_vec.shape[0]):
             nid_val = k1 + 1

@@ -8,7 +8,7 @@ import global_data as gdata
 
 import numpy as np
 
-from emod_constants import CAMP_FILE, REPORTS_FILE, \
+from emod_constants import CAMP_FILE, REPORTS_FILE, BASE_YEAR, \
                            DIST_CMPLX, DIST_GAMMA, DIST_GAUSS
 
 # *****************************************************************************
@@ -50,7 +50,7 @@ def update_config_obj(config):
 
     # Time
     RUN_YEARS = END_YEAR - gdata.start_year
-    cp.Start_Time = 365.0*(gdata.start_year-gdata.base_year)
+    cp.Start_Time = 365.0*(gdata.start_year-BASE_YEAR)
     cp.Simulation_Duration = 365.0*RUN_YEARS + gdata.t_step_days
     cp.Simulation_Timestep = gdata.t_step_days
 
@@ -144,7 +144,7 @@ def update_config_obj(config):
     cp.Enable_Default_Reporting = 1
     cp.Enable_Demographics_Reporting = 1
     cp.Enable_Event_DB = 1
-    cp.SQL_Start_Time = 365.0*(gdata.start_year_log-gdata.base_year)
+    cp.SQL_Start_Time = 365.0*(gdata.start_year_log-BASE_YEAR)
     cp.SQL_Events = ["NewlySymptomatic"]
 
     cp.Enable_Spatial_Output = 0

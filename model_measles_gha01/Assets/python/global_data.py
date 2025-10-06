@@ -41,7 +41,6 @@ brate_mult_y = None
 start_year = 2008.0
 start_year_log = 2011.0
 start_year_obr = 2020.0
-base_year = 1900.0
 t_step_days = 5.0
 
 max_clock = 180.0

@@ -13,7 +13,7 @@ import numpy as np
 from emod_api.demographics.Demographics import Demographics, Node
 
 from emod_demog_func import demog_vd_calc, demog_vd_over, demog_is_over
-from emod_constants import DEMOG_FILE
+from emod_constants import DEMOG_FILE, DEMOG_IRS
 
 # *****************************************************************************
 
@@ -27,15 +27,15 @@ def demographicsBuilder():
     R0 = gdata.var_params['R0']
     LOG10_IMP = gdata.var_params['log10_import_rate']
 
-    # Load demographic data
+    # Demographic reference data file
     dat_file = 'pop_dat_GHA.csv'
     fname_pop = os.path.join('Assets', 'data', dat_file)
-    pop_input = np.loadtxt(fname_pop, dtype=int, delimiter=',')
-    year_vec = pop_input[0, :] - gdata.base_year
-    year_init = gdata.start_year - gdata.base_year
-    pop_mat = pop_input[1:, :] + 0.1
-    pop_init = [np.interp(year_init, year_vec, pop_mat[idx, :])
-                for idx in range(pop_mat.shape[0])]
+
+    # Calculate vital dynamics
+    vd_tup = demog_vd_calc(fname_pop, gdata.start_year)
+
+    gdata.brate_mult_x = vd_tup[5]
+    gdata.brate_mult_y = vd_tup[6]
 
     # Load population data
     fname = 'demog_data_ADM02.csv'
@@ -48,9 +48,9 @@ def demographicsBuilder():
     n_lng = np.array([lval[1] for lval in flines], dtype=float)
     n_lat = np.array([lval[2] for lval in flines], dtype=float)
     n_pop = np.array([lval[3] for lval in flines], dtype=int)
-    n_pop = n_pop*(np.sum(pop_init)/np.sum(n_pop))
+    n_pop = n_pop*(vd_tup[0]/np.sum(n_pop))
 
-    # Construct node list
+    # Populate nodes in primary file
     list_nam = n_nam[n_pop > gdata.demog_min_pop]
     list_lat = n_lat[n_pop > gdata.demog_min_pop]
     list_lng = n_lng[n_pop > gdata.demog_min_pop]
@@ -64,8 +64,8 @@ def demographicsBuilder():
     imp_case = np.power(10.0, LOG10_IMP)
     for node_obj in node_list:
         imp_rate = imp_case*node_obj.node_attributes.initial_population/1.0e5
-        add_attrib = {'InfectivityReservoirSize': imp_rate}
-        node_obj.node_attributes.extra_attributes = add_attrib
+        irs_dict = {DEMOG_IRS: imp_rate}
+        node_obj.node_attributes.extra_attributes = irs_dict
 
     # Nameset for admin02
     adm02_subset = list_nam.tolist()
@@ -106,27 +106,13 @@ def demographicsBuilder():
               'InfectivityMultiplier': 1.0}
     demog_obj.raw['Defaults']['NodeAttributes'].update(nadict)
 
-    # Calculate vital dynamics
-    vd_tup = demog_vd_calc(year_vec, year_init, pop_mat, pop_init)
-
-    mort_year = vd_tup[0]
-    mort_mat = vd_tup[1]
-    age_x = vd_tup[2]
-    age_y = None
-    birth_rate = vd_tup[3]
-    br_mult_x = vd_tup[4]
-    br_mult_y = vd_tup[5]
-
-    gdata.brate_mult_x = br_mult_x.tolist()
-    gdata.brate_mult_y = br_mult_y.tolist()
-
     # Write vital dynamics overlay
-    nfname = demog_vd_over(ref_name, node_list, birth_rate,
-                           mort_year, mort_mat, age_x, age_y)
+    nfname = demog_vd_over(ref_name, node_list, vd_tup[4],
+                           vd_tup[1], vd_tup[2], vd_tup[3])
     gdata.demog_files.append(nfname)
 
     # Write initial susceptibility overlay
-    nfname = demog_is_over(ref_name, node_list, R0, age_x, age_y)
+    nfname = demog_is_over(ref_name, node_list, R0, vd_tup[3])
     gdata.demog_files.append(nfname)
 
     # Write primary demographics file

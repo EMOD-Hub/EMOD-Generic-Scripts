@@ -12,13 +12,13 @@ import matplotlib.cm as cm
 # Ought to go in emodpy
 sys.path.append(os.path.abspath(os.path.join('..', '..', 'local_python')))
 sys.path.append(os.path.abspath(os.path.join('..', 'Assets', 'python')))
+
 from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, \
-                                            EXP_C, EXP_V
-from global_data import base_year
+                                            EXP_C, EXP_V, BASE_YEAR
 
 # *****************************************************************************
 
-DIRNAMES = ['experiment_gha_test01']
+DIRNAMES = ['experiment_gha_test']
 
 # *****************************************************************************
 
@@ -60,7 +60,7 @@ def make_fig():
         gidx = (scale_vec[:,0] >= 0)
         gidx = gidx & (cal_vec > CCUT)
 
-        ntval = np.array(tvals)/365.0 + base_year
+        ntval = np.array(tvals)/365.0 + BASE_YEAR
         test_idx = np.argwhere(ntval>2020)[0][0]
 
         inf_data = inf_data[gidx, :]
@@ -137,7 +137,7 @@ def make_fig():
         cbar_handle.ax.tick_params(labelsize=14)
 
         plt.tight_layout()
-        plt.savefig('fig_averted_01.png')
+        plt.savefig('fig_averted01.png')
         plt.close()
 
     return None

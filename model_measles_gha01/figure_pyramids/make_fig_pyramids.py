@@ -10,15 +10,15 @@ import matplotlib.pyplot as plt
 # Ought to go in emodpy
 sys.path.append(os.path.abspath(os.path.join('..', '..', 'local_python')))
 sys.path.append(os.path.abspath(os.path.join('..', 'Assets', 'python')))
+
 from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, \
                                             POP_PYR, EXP_C
 from py_assets_common.emod_local_proc import pyr_chart
-
 from global_data import start_year
 
 # *****************************************************************************
 
-DIRNAMES = ['experiment_gha_base01']
+DIRNAMES = ['experiment_gha_base']
 
 # *****************************************************************************
 
@@ -67,7 +67,7 @@ def make_fig():
             pyr_chart(axs01, pop_dat, pop_dat_err, year_vec[gidx])
 
         plt.tight_layout()
-        plt.savefig('fig_pyr_{:s}_01.png'.format(dirname))
+        plt.savefig('fig_pyr_{:s}01.png'.format(dirname))
         plt.close()
 
     return None

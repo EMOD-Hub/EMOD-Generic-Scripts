@@ -15,7 +15,7 @@ import emod_api.campaign as camp_module
 
 from emod_camp_events import build_node_list, ce_br_force, ce_RI, ce_SIA, \
                              ce_inf_force, ce_inf_mod
-from emod_constants import CAMP_FILE
+from emod_constants import CAMP_FILE, BASE_YEAR
 
 # *****************************************************************************
 
@@ -28,7 +28,7 @@ def campaignBuilder():
     PEAK_WIDE = gdata.var_params['R0_peak_width']
 
     NODE_DICT = gdata.node_idval
-    DAY_MIN = 365.0*(gdata.start_year-gdata.base_year)
+    DAY_MIN = 365.0*(gdata.start_year-BASE_YEAR)
 
     # Note: campaign module itself is the file object; no Campaign class
     ALL_NODES = gdata.demog_object.node_ids
@@ -36,11 +36,11 @@ def campaignBuilder():
     # Time varying birth rate
     BR_MULT_X = gdata.brate_mult_x
     BR_MULT_Y = gdata.brate_mult_y
-    start_day = 365.0*(gdata.start_year-gdata.base_year)
+    start_day = 365.0*(gdata.start_year-BASE_YEAR)
     camp_event = ce_br_force(ALL_NODES, BR_MULT_X, BR_MULT_Y, start_day)
     camp_module.add(camp_event)
 
-    # Add MCV1 RI
+    # RI
     with open(os.path.join('Assets', 'data', 'GHA_MCV1.json')) as fid01:
         mcv1_dict = json.load(fid01)
 
@@ -66,7 +66,7 @@ def campaignBuilder():
                            coverage_x=time_list, coverage_y=mcv1_list)
         camp_module.add(camp_event)
 
-    # Add MCV SIAs
+    # SIAs
     with open(os.path.join('Assets', 'data', 'GHA_MCV_SIA.json')) as fid01:
         dict_sia = json.load(fid01)
 
@@ -83,14 +83,14 @@ def campaignBuilder():
                             yrs_min=age_yr_min, yrs_max=age_yr_max)
         camp_module.add(camp_event)
 
-    # Add seasonality
-    start_day = 365.0*(gdata.start_year-gdata.base_year)
+    # R0 seasonality
+    start_day = 365.0*(gdata.start_year-BASE_YEAR)
     camp_event = ce_inf_force(ALL_NODES, PEAK_TIME, PEAK_WIDE, PEAK_SIZE,
                               start_day=start_day, dt=gdata.t_step_days)
     camp_module.add(camp_event)
 
-    # Add infectivity trough
-    start_day = 365.0*(2020.0-gdata.base_year)
+    # Infectivity trough from COVID
+    start_day = 365.0*(2020.0-BASE_YEAR)
     camp_event = ce_inf_mod(ALL_NODES, start_day=start_day,
                             dt_days=365.0*2.7, mult_val=0.60)
     camp_module.add(camp_event)

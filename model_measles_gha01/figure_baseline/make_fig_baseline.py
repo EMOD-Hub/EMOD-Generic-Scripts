@@ -11,14 +11,13 @@ import matplotlib.patches as patch
 # Ought to go in emodpy
 sys.path.append(os.path.abspath(os.path.join('..', '..', 'local_python')))
 sys.path.append(os.path.abspath(os.path.join('..', 'Assets', 'python')))
-from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, \
-                                            EXP_C
 
-from global_data import base_year
+from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, \
+                                            EXP_C, BASE_YEAR
 
 # *****************************************************************************
 
-DIRNAMES = ['experiment_gha_base01']
+DIRNAMES = ['experiment_gha_base']
 
 # *****************************************************************************
 
@@ -91,7 +90,7 @@ def make_fig():
         axs01.bar(ref_dates, ref_cases, color='r', linewidth=0.5,
                   edgecolor='k', width=0.9/12, alpha=0.2)
 
-        xval = np.array(tvals)/365+base_year
+        xval = np.array(tvals)/365+BASE_YEAR
 
         inf_data_sort = np.sort(inf_data[gidx, :]*scale_vec[gidx], axis=0)
         for patwid in [0.475, 0.375, 0.25]:
@@ -119,7 +118,7 @@ def make_fig():
 
         for sia_name in ref_dat_sia:
             xval = ref_dat_sia[sia_name]['date']
-            sia01 = np.array([xval, xval])/365+base_year
+            sia01 = np.array([xval, xval])/365+BASE_YEAR
             lstyle = ':'
             lwidth = 3
             llabel = 'SIA'
@@ -138,6 +137,7 @@ def make_fig():
         axs01.grid(visible=True, which='major', ls='-', lw=0.5, label='')
         axs01.grid(visible=True, which='minor', ls=':', lw=0.1)
         axs01.set_axisbelow(True)
+        axs01.set_ylabel('Number of Simulations', fontsize=16)
         axs01.set_xlabel('Objective Function', fontsize=16)
 
         axs01.hist(cal_vec[gidx], edgecolor='k',
@@ -150,12 +150,13 @@ def make_fig():
         axs01.grid(visible=True, which='major', ls='-', lw=0.5, label='')
         axs01.grid(visible=True, which='minor', ls=':', lw=0.1)
         axs01.set_axisbelow(True)
+        axs01.set_ylabel('Probability', fontsize=16)
         axs01.set_xlabel('Reporting Rate (%)', fontsize=16)
 
-        axs01.hist(100*scale_vec[gidx], edgecolor='k', bins=100)
+        axs01.hist(100*scale_vec[gidx], edgecolor='k', bins=50, density=True)
 
         plt.tight_layout()
-        plt.savefig('fig_baseline_01.png')
+        plt.savefig('fig_baseline01.png')
         plt.close()
 
     return None

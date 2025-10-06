@@ -11,10 +11,9 @@ import matplotlib.patches as patch
 # Ought to go in emodpy
 sys.path.append(os.path.abspath(os.path.join('..', '..', 'local_python')))
 sys.path.append(os.path.abspath(os.path.join('..', 'Assets', 'python')))
+
 from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, \
                                             EXP_C, EXP_V
-
-from global_data import base_year
 
 # *****************************************************************************
 
@@ -84,7 +83,7 @@ def make_fig():
 
         print(min(cal_vec[gidx]), max(cal_vec[gidx]))
         plt.tight_layout()
-        plt.savefig('fig_baseline_01.png')
+        plt.savefig('fig_baseline01.png')
         plt.close()
 
     return None
