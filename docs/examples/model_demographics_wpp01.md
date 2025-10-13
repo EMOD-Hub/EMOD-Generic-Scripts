@@ -4,9 +4,9 @@ This model demonstrates the implementation of vital dynamics (births, deaths, an
 
 Outcomes below show the simulated population pyramids for Nigeria over two time periods: estimates (1950 - 2020) and median projections (2020 - 2090).
 
-![Figure 1: Nigeria estimates](figures/ref_demog_wpp_pyr_nga_estimates.png)​
+![Figure 1: Nigeria estimates](figures/ref_demog_wpp_pyr_nga_estimates.png)
 
-![Figure 2: Nigeria medium projections](figures/ref_demog_wpp_pyr_nga_projections.png)​
+![Figure 2: Nigeria medium projections](figures/ref_demog_wpp_pyr_nga_projections.png)
 
 Total population remains close to its target value for multiple decades of simulated time.
 

@@ -6,7 +6,7 @@ Each simulation uses a single node of fully susceptible individuals. An outbreak
 
 Example distributions for the four sets of heterogeneity examined in these simulations are shown below. Outcomes include heterogenity in transmission only, uncorrelated heterogeneity in both transmission and risk, heterogeneity in both transmission and risk with low correlation, and heterogeneity in both transmission and risk with high correlation.
 
-![Figure 1: Heterogeneity distributions](figures/ref_het_distributions.png)​
+![Figure 1: Heterogeneity distributions](figures/ref_het_distributions.png)
 
 Total attack rate of an outbreak is shown in the figure below for the four sets of heterogeneity described above. A range of infectivity (R~0~) is evaluated for each parameter set. Each dot is the outcome of a single stochastic simulation.
 
