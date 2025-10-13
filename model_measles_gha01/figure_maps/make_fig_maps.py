@@ -82,7 +82,7 @@ def make_fig():
         shape_line(axs01, adm_pts, adm_prt, wid=0.2)
 
     plt.tight_layout()
-    plt.savefig('fig_admin01.png', transparent=True)
+    plt.savefig('fig_admin01.png', transparent=False)
     plt.close()
 
     # Figure - Pop
@@ -136,7 +136,7 @@ def make_fig():
     cbar_handle.ax.tick_params(labelsize=16)
 
     plt.tight_layout()
-    plt.savefig('fig_pop01.png', transparent=True)
+    plt.savefig('fig_pop01.png', transparent=False)
     plt.close()
 
     return None
