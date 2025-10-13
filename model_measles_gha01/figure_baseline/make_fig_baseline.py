@@ -12,8 +12,7 @@ import matplotlib.patches as patch
 sys.path.append(os.path.abspath(os.path.join('..', '..', 'local_python')))
 sys.path.append(os.path.abspath(os.path.join('..', 'Assets', 'python')))
 
-from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, \
-                                            EXP_C, BASE_YEAR
+from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, BASE_YEAR
 
 # *****************************************************************************
 
@@ -55,7 +54,7 @@ def make_fig():
             scale_vec[sim_idx, 0] = sim_obj['rep_rate']
             cal_vec[sim_idx] = sim_obj['cal_val']
 
-        gidx = (scale_vec[:,0] >= 0)
+        gidx = (scale_vec[:, 0] >= 0)
         gidx = gidx & (cal_vec > CCUT)
 
         # Figure
@@ -97,8 +96,8 @@ def make_fig():
             xydat = np.zeros((2*inf_data_sort.shape[1], 2))
             xydat[:, 0] = np.hstack((xval, xval[::-1]))
             tidx = int((0.5-patwid)*inf_data_sort.shape[0])
-            xydat[:,1] = np.hstack((inf_data_sort[tidx, :],
-                                    inf_data_sort[-tidx, ::-1]))
+            xydat[:, 1] = np.hstack((inf_data_sort[tidx, :],
+                                     inf_data_sort[-tidx, ::-1]))
 
             poly_shp = patch.Polygon(xydat, facecolor='C0',
                                      alpha=0.7-patwid, edgecolor=None)

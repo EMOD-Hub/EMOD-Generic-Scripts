@@ -6,14 +6,12 @@ import sys
 
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.patches as patch
 
 # Ought to go in emodpy
 sys.path.append(os.path.abspath(os.path.join('..', '..', 'local_python')))
 sys.path.append(os.path.abspath(os.path.join('..', 'Assets', 'python')))
 
-from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, \
-                                            EXP_C, EXP_V
+from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, EXP_V
 
 # *****************************************************************************
 
@@ -36,7 +34,7 @@ def make_fig():
             dbrick = json.load(fid01)
 
         nsims = int(param_dict[NUM_SIMS])
-        tvals = dbrick.pop('tstamps')
+        dbrick.pop('tstamps')
 
         scale_vec = np.zeros((nsims, 1))-1
         cal_vec = np.zeros(nsims)
@@ -50,7 +48,7 @@ def make_fig():
             scale_vec[sim_idx, 0] = sim_obj['rep_rate']
             cal_vec[sim_idx] = sim_obj['cal_val']
 
-        gidx = (scale_vec[:,0] >= 0)
+        gidx = (scale_vec[:, 0] >= 0)
 
         sparam = param_dict[EXP_V]
         skeys = list(sparam.keys())
@@ -63,12 +61,11 @@ def make_fig():
 
         for k1 in range(nfigs):
             for k2 in range(k1, nfigs):
-
-                if (k1==k2):
+                if (k1 == k2):
                     continue
 
                 axs01 = fig01.add_subplot(nfigs, nfigs, k1*nfigs+k2+1)
-                axs01.grid(visible=True, which='major', ls='-', lw=0.5, label='')
+                axs01.grid(visible=True, which='major', ls='-', lw=0.5)
                 axs01.grid(visible=True, which='minor', ls=':', lw=0.1)
                 axs01.set_axisbelow(True)
 
@@ -79,7 +76,6 @@ def make_fig():
                 axs01.set_ylabel(skeys[k2])
                 axs01.scatter(xval[gidx], yval[gidx], c=cal_vec[gidx],
                               vmin=-4.0e3, vmax=-2.5e3)
-
 
         print(min(cal_vec[gidx]), max(cal_vec[gidx]))
         plt.tight_layout()
