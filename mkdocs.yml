@@ -108,6 +108,8 @@ extra:
     - icon: fontawesome/brands/slack
       link: https://gatesfoundation.enterprise.slack.com/
   analytics:
+    provider: google
+    property: # no tracking until we can implement OneTrust cookie consent
     feedback:
       title: Was this page helpful?
       ratings:
