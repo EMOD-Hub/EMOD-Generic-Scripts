@@ -21,7 +21,7 @@ jobs:
       - name: Install packages
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m pip install .[docs]
+          python3 -m pip install .[docs] --extra-index-url=https://packages.idmod.org/api/pypi/pypi-production/simple
       - name: Build static files
         run: |
           mkdocs build
