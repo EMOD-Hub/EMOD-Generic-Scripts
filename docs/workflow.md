@@ -14,7 +14,7 @@ On the client side, a Python environment with emodpy is used to communicate with
 
 ## Server-side
 
-The COMPS server supports a variety of environments via SIF containers. By default, EMOD will run using Debian and a Python environment with `emod-api`. 
+The COMPS server supports a variety of environments via SIF containers. By default, EMOD will run using Debian and a Python environment with `emod-api`.
 
 On the COMPS server, each EMOD simulation automatically runs functions named `application` from three separate Python modules: `dtk_pre_process`, `dtk_in_process`, and `dtk_post_process`.
 
