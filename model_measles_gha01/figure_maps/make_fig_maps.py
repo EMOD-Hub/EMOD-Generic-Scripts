@@ -46,13 +46,13 @@ def make_fig():
     # Figure dimensions
     llpad = 0.2
     (xmin, xmax, ymin, ymax) = (180, -180, 90, -90)
-    for cname in shp_adm00:
-        pts = np.array(shp_adm00[cname]['points'])
-        xmin = min(xmin, np.min(pts[:, 0])) - llpad
-        xmax = max(xmax, np.max(pts[:, 0])) + llpad
-        ymin = min(ymin, np.min(pts[:, 1])) - llpad
-        ymax = max(ymax, np.max(pts[:, 1])) + llpad
-        xyrat = (xmax-xmin)/(ymax-ymin)
+    cname = list(shp_adm00.keys())[0]
+    pts = np.array(shp_adm00[cname]['points'])
+    xmin = min(xmin, np.min(pts[:, 0])) - llpad
+    xmax = max(xmax, np.max(pts[:, 0])) + llpad
+    ymin = min(ymin, np.min(pts[:, 1])) - llpad
+    ymax = max(ymax, np.max(pts[:, 1])) + llpad
+    xyrat = (xmax-xmin)/(ymax-ymin)
 
     # Figure - Admin
     base_dim = 10
