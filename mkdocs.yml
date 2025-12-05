@@ -1,7 +1,7 @@
-site_name: EMOD-Generic-Scripts
-site_url: https://docs.idmod.org/projects/emod-generic-scripts/
+site_name: EMOD-Generic-Scripts Documentation
+site_url: https://emod-hub.github.io/emod-generic-scripts/
 repo_name: EMOD-Hub/EMOD-Generic-Scripts
-repo_url: https://github.com/EMOD-Hub/EMOD-Generic-Scripts
+repo_url: https://github.com/EMOD-Hub/EMOD-Generic-Scripts/
 
 theme:
   name: material
@@ -30,8 +30,8 @@ theme:
 
 nav:
   - Home: index.md
-  - Getting Started: getting_started.md
-  - Workflow Overview: workflow.md
+  - Getting started: getting_started.md
+  - Workflow overview: workflow.md
   - Examples: 
     - examples.md
     - examples/model_covariance01.md
@@ -47,7 +47,7 @@ nav:
     - examples/model_polio_nga01.md
     - examples/model_rubella01.md
     - examples/model_transtree01.md
-  - API Reference: autoapi/
+  - API reference: autoapi/
 
 plugins:
   - search:
@@ -56,28 +56,35 @@ plugins:
   - glightbox:
   - mkdocs-autoapi:
       autoapi_ignore:
-        - .github/**/*
-        - tests/**/*
         - build/**/*
-        - docs/*
-        - env_*/**/*
+        - docs/**/*
+        - environments/**/*
         - model_*/**/*
         - refdat_*/**/*
-      autoapi_add_nav_entry:  false
+        - tests/**/*
+      autoapi_add_nav_entry: false
   - mkdocstrings:
 
 markdown_extensions:
+  - admonition:
+  - attr_list:  # enables HTMl and CSS classes to inline elements
   - def_list:
-  - pymdownx.caret:
-  - pymdownx.mark:
-  - pymdownx.tilde:
-  - pymdownx.snippets:
-  - pymdownx.blocks.details:
-  - pymdownx.highlight:
-      linenums: true
-      default_lang: 'python'
-  - pymdownx.arithmatex:
+  - md_in_html:  # enables grids
+  - pymdownx.arithmatex:  # Latex processing for math equations
       generic: true
+  - pymdownx.blocks.caption:  # captions for images, tables, etc.
+  - pymdownx.blocks.details:  # allows nesting of collapsible code
+  - pymdownx.caret:  # superscripts
+  - pymdownx.details:  # collapsible elements
+  - pymdownx.highlight:  # syntax highlighting for code blocks
+      linenums: true  # adds line numbers to code blocks automatically
+      anchor_linenums: true  # adds HTML anchors (#L1, #L2, etc.) to each line so you can link to specific ones.
+      default_lang: 'python'
+  - pymdownx.mark:  # text highlighting
+  - pymdownx.snippets:  # snippet reuse functionality
+      auto_append:
+        - docs/bib.md
+  - pymdownx.tilde:  # subscripts
 
 copyright: Copyright &copy; 2025 Gates Foundation. All rights reserved.
 
@@ -96,7 +103,7 @@ extra:
       href: "https://www.gatesfoundation.org/Terms-of-Use"
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/EMOD-Hub/EMOD-Generic-Scripts
+      link: https://github.com/EMOD-Hub/
     - icon: fontawesome/regular/envelope
       link: mailto:idm@gatesfoundation.org
     - icon: octicons/globe-24

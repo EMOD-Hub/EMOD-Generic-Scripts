@@ -6,19 +6,20 @@ build-backend = "setuptools.build_meta"
 name = "emod-generic-scripts"
 dynamic = ["version"]
 description = "Demonstration models using the Generic-Ongoing branch of EMOD."
-license = "MIT"
-authors = [
-    { name="Kurt Frey", email="kurt.frey@gatesfoundation.org" }
-]
 readme = "README.md"
 requires-python = ">=3.9"
+authors = [
+    {name = "Kurt Frey", email = "kurt.frey@gatesfoundation.org"}
+]
+keywords = ['modeling', 'IDM']
 dependencies = [
     "emodpy==2.1.13",
 ]
-classifiers=[
+license = "MIT"
+classifiers = [
     "Intended Audience :: Science/Research",
-    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering :: Bio-Informatics"
 ]
 
@@ -34,8 +35,8 @@ tests = [
 ]
 
 [project.urls]
-Repository="https://github.com/EMOD-Hub/EMOD-Generic-Scripts"
-Issues="https://github.com/EMOD-Hub/EMOD-Generic-Scripts/issues"
+Repository = "https://github.com/EMOD-Hub/EMOD-Generic-Scripts"
+Issues = "https://github.com/EMOD-Hub/EMOD-Generic-Scripts/issues"
 
 [tool.setuptools]
 packages = []

@@ -1,5 +1,10 @@
-[emodpy]: https://docs.idmod.org/projects/emodpy/en/latest/index.html
-[idmtools]: https://docs.idmod.org/projects/idmtools/en/latest/index.html
+[emod-api]: https://emod-hub.github.io/emod-api/
 [emod-generic]: https://docs.idmod.org/projects/emod-generic/en/latest/parameter-overview.html
+[emodpy]: https://emod-hub.github.io/emodpy/
+[emodpy-hiv]: https://docs.idmod.org/projects/emodpy-hiv/
+[emodpy-malaria]: https://docs.idmod.org/projects/emodpy-malaria/
 [idmod]: https://www.idmod.org/
+[idmtools]: https://docs.idmod.org/projects/idmtools/
+[idmtools_cli]: https://docs.idmod.org/projects/idmtools/en/latest/cli/cli_index.html
+[idmtools_config]: https://docs.idmod.org/projects/idmtools/en/latest/configuration.html
 [idm_pypi]: https://packages.idmod.org/
