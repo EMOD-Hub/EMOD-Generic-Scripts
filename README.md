@@ -1,6 +1,6 @@
 # EMOD-Generic-Scripts
 
-See documentation at https://docs.idmod.org/projects/emod-generic-scripts for additional information.
+See documentation at https://emod-hub.github.io/EMOD-Generic-Scripts/ for additional information.
 
 ---------------------
 
@@ -36,7 +36,7 @@ To get started:
 
 2. Install requirements:
    ```
-   pip install -r requirements.txt --index-url=https://packages.idmod.org/api/pypi/pypi-production/simple
+   pip install . --index-url=https://packages.idmod.org/api/pypi/pypi-production/simple
    ```
 
 3. Run an experiment (requires COMPS credentials):
@@ -62,7 +62,7 @@ To build the documentation locally, do the following:
 2. Navigate to the root directory of the repo and enter the following
 
     ```
-    pip install -r docs/requirements.txt
+    pip install .[docs] --index-url=https://packages.idmod.org/api/pypi/pypi-production/simple
     ```
 
 ---------------------
