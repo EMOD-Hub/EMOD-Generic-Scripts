@@ -11,7 +11,7 @@ import numpy as np
 
 from emod_postproc_func import post_proc_poppyr, post_proc_prev
 from emod_constants import SQL_TIME, SQL_MCW, SQL_AGE, O_FILE, MO_DAYS, \
-                           SQL_FILE
+                           SQL_FILE, BASE_YEAR
 
 # *****************************************************************************
 
@@ -42,7 +42,7 @@ def application(output_path):
     dvec_age = np.array([val[SQL_AGE] for val in rlist], dtype=float)
 
     # Aggregate new infections by month
-    START_TIME = 365.0*(gdata.start_year-gdata.base_year)
+    START_TIME = 365.0*(gdata.start_year-BASE_YEAR)
     BIN_EDGES = np.cumsum(int(gdata.run_years)*MO_DAYS) + START_TIME - 0.5
     BIN_EDGES = np.insert(BIN_EDGES, 0, START_TIME - 0.5)
 
@@ -54,7 +54,7 @@ def application(output_path):
 
     # Age at infection histograms by year
     YR_BINS = [365]
-    START_TIME = 365.0*(gdata.start_year-gdata.base_year)
+    START_TIME = 365.0*(gdata.start_year-BASE_YEAR)
     BIN_EDGES = np.cumsum(int(gdata.run_years)*YR_BINS) + START_TIME - 0.5
     BIN_EDGES = np.insert(BIN_EDGES, 0, START_TIME - 0.5)
 
