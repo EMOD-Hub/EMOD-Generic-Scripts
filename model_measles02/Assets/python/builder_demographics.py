@@ -27,7 +27,7 @@ def demographicsBuilder():
     REF_YEAR = gdata.var_params['ref_year']
 
     # Demographic reference data file
-    dat_file = 'pop_dat_COD.csv'
+    dat_file = f'pop_dat_{REF_CODE}.csv'
     fname_pop = os.path.join('Assets', 'data', dat_file)
 
     # Calculate vital dynamics
