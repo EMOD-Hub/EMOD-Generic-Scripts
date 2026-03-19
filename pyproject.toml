@@ -1,19 +1,19 @@
 [build-system]
-requires = ["setuptools", "setuptools-scm"]
+requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "emod-generic-scripts"
-dynamic = ["version"]
+version = "0.0.0"
 description = "Demonstration models using the Generic-Ongoing branch of EMOD."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 authors = [
     {name = "Kurt Frey", email = "kurt.frey@gatesfoundation.org"}
 ]
-keywords = ['modeling', 'IDM']
+keywords = ["modeling", "IDM"]
 dependencies = [
-    "emodpy==2.1.13",
+    "emodpy~=3.1.0",
 ]
 license = "MIT"
 classifiers = [
@@ -31,6 +31,9 @@ docs = [
     "mkdocs-autoapi",
     "mkdocs-glightbox",
 ]
+lint = [
+    "flake8",
+]
 tests = [
 ]
 
@@ -40,6 +43,3 @@ Issues = "https://github.com/EMOD-Hub/EMOD-Generic-Scripts/issues"
 
 [tool.setuptools]
 packages = []
-
-[tool.setuptools_scm]
-version_file = "docs/version.py"

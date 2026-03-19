@@ -36,7 +36,7 @@ To get started:
 
 2. Install requirements:
    ```
-   pip install . --index-url=https://packages.idmod.org/api/pypi/pypi-production/simple
+   pip install .
    ```
 
 3. Run an experiment (requires COMPS credentials):
@@ -62,7 +62,7 @@ To build the documentation locally, do the following:
 2. Navigate to the root directory of the repo and enter the following
 
     ```
-    pip install .[docs] --index-url=https://packages.idmod.org/api/pypi/pypi-production/simple
+    pip install .[docs]
     ```
 
 ---------------------
