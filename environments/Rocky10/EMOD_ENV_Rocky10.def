@@ -1,16 +1,16 @@
 Bootstrap: localimage
-From: Assets/EMOD_OS_Amazon2023.sif
+From: Assets/EMOD_OS_Rocky10.sif
 
 %post
     dnf upgrade -y
 
-    dnf install -y python3.13
-    dnf install -y python3.13-pip
+    dnf install -y python
+    dnf install -y python-pip
     dnf install -y mpich
 
     dnf clean all
 
-    python3.13 -m venv py_env
+    python3 -m venv py_env
     . py_env/bin/activate
 
     pip install pip --upgrade

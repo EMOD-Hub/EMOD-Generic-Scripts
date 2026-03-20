@@ -8,7 +8,7 @@ See documentation at https://emod-hub.github.io/EMOD-Generic-Scripts/ for additi
 
 | Directory | Description |
 | --- | --- |
-| env_Alma9 <br /> env_Amazon2023 <br /> env_Debian13 <br /> env_Fedora42 <br /> env_Rocky9 <br /> env_Ubuntu24 | Definition files for singularity containers with various operating systems. Produces the the EMOD executable, schema, and reporters; creates an environment for running EMOD on COMPS with the python packages available to the embedded python interpreter. All files remain on COMPS and are provided to the various workflows as Asset Collection IDs. |
+| env_Alma10 <br /> env_Amazon2023 <br /> env_Debian13 <br /> env_Fedora42 <br /> env_Rocky10 <br /> env_Ubuntu24 | Definition files for Apptainer containers with various operating systems. Produces the the EMOD executable and schema file; creates an environment for running EMOD on COMPS with the python packages available to the embedded python interpreter. All files remain on COMPS and are provided to the various workflows as Asset Collection IDs. |
 | local_python             | Contains additional python scripts with helper functions common to all of the workflows. |
 | model_covariance01       | [Demonstration simulations for heterogeneity in individual behavior.](https://docs.idmod.org/projects/emod-generic-scripts/en/latest/examples/model_covariance01.html) |
 | model_covid01            | Baseline simulations for SARS-CoV-2 in EMOD. Collab with MvG. |
@@ -63,6 +63,7 @@ To build the documentation locally, do the following:
 
     ```
     pip install .[docs]
+    mkdocs build
     ```
 
 ---------------------

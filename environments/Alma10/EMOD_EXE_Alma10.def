@@ -1,15 +1,14 @@
 Bootstrap: localimage
-From: Assets/EMOD_OS_Alma9.sif
+From: Assets/EMOD_OS_Alma10.sif
 
 %post
     dnf upgrade -y
 
-    dnf install python-devel -y
-    dnf install mpich-devel -y
-    dnf install sqlite-devel -y
-    dnf install git -y
-    dnf install glibc-devel -y
-    dnf install gcc-c++ -y
+    dnf install -y python-devel
+    dnf install -y mpich-devel
+    dnf install -y git
+    dnf install -y glibc-devel
+    dnf install -y gcc-c++
 
     dnf clean all
 

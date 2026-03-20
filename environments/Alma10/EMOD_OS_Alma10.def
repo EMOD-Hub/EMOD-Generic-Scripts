@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: fedora:42
+From: almalinux:10.1
 
 %post
     dnf clean all

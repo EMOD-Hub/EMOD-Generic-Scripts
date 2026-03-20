@@ -1,16 +1,14 @@
 Bootstrap: localimage
-From: Assets/EMOD_OS_Ubuntu24.sif
+From: Assets/EMOD_OS_Fedora43.sif
 
 %post
-    apt-get update
-    apt-get upgrade -y
+    dnf upgrade -y
 
-    apt-get install -y python3
-    apt-get install -y python3-pip
-    apt-get install -y python3-venv
-    apt-get install -y mpich
+    dnf install -y python3
+    dnf install -y python3-pip
+    dnf install -y mpich
 
-    apt-get clean
+    dnf clean all
 
     python3 -m venv py_env
     . py_env/bin/activate
