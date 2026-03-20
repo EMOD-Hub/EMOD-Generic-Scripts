@@ -12,7 +12,7 @@ CE = 'CampaignEvent'
 
 NSNL = 'NodeSetNodeList'
 
-SEC = 'StandardEventCoordinator'
+SEC = 'StandardInterventionDistributionEventCoordinator'
 CNEC = 'CoverageByNodeEventCoordinator'
 CHWEC = 'CommunityHealthWorkerEventCoordinator'
 
