@@ -98,6 +98,10 @@ def standard_pre_process():
     # Seed random number generator
     np.random.seed(sim_index)
 
+    # Get schema
+    with open(SPATH) as fid01:
+        gdata.schema_json = json.load(fid01)
+
     # Demographics file
     demographicsBuilder()
     time.sleep(1)

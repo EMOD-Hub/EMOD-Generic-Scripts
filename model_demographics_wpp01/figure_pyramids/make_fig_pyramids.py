@@ -98,7 +98,7 @@ def make_fig():
 
         # Save figure
         plt.tight_layout()
-        plt.savefig('fig_pyr_{:s}01_{:s}.png'.format(pop_dat_str, dirname))
+        plt.savefig('fig_pyr_{:s}_{:s}.png'.format(pop_dat_str, dirname))
         plt.close()
 
     return None

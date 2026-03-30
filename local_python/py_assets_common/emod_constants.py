@@ -2,7 +2,7 @@
 #
 # *****************************************************************************
 
-API_MIN = '2.0.26'
+API_MIN = '3.1.0'
 
 COMPS_ID_FILE = 'COMPS_ID.id'
 COMPS_URL = 'https://comps.idmod.org'
@@ -20,13 +20,13 @@ LOCAL_EXP_DIR = 'LOCAL_EXP_PATH.txt'
 
 PY_PATH = r'python3'
 
-DOCK_PACK = r'mesokurtic/emodpy:2.1.13'
+DOCK_PACK = r'mesokurtic/emodpy:3.1'
 
-VE_PY_PATHS = ['/py_env/lib/python3.9/site-packages/',
-               '/py_env/lib/python3.10/site-packages/',
+VE_PY_PATHS = ['/py_env/lib/python3.10/site-packages/',
                '/py_env/lib/python3.11/site-packages/',
                '/py_env/lib/python3.12/site-packages/',
-               '/py_env/lib/python3.13/site-packages/']
+               '/py_env/lib/python3.13/site-packages/',
+               '/py_env/lib/python3.14/site-packages/']
 
 ID_OS = 'EMOD_OS.id'
 ID_EXE = 'EMOD_EXE.id'

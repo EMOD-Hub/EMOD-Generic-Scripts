@@ -22,6 +22,8 @@ MID = 'MultiInterventionDistributor'
 DI = 'DelayedIntervention'
 VAX = 'Vaccine'
 OI = 'OutbreakIndividual'
+IMPP = 'ImportPressure'
+NBRM = 'NodeBirthRateMult'
 
 VEC_AGE = [0/12*365, 3/12*365, 5/12*365, 7/12*365, 9/12*365]
 VEC_TAKE = [0.0, 0.0, 0.65, 0.92, 1.0]
@@ -43,15 +45,15 @@ def build_node_list(reg_list, node_dict):
 # *****************************************************************************
 
 
-def ce_import_pressure(node_list,
+def ce_import_pressure(schjson, node_list,
                        start_day=0.0, duration=1.0, magnitude=1.0,
                        age_yrs=40.0, clade=0, genome=0):
 
     # Import pressure
-    camp_event = s2c.get_class_with_defaults(CE, SPATH)
-    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
-    camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
-    camp_iv = s2c.get_class_with_defaults('ImportPressure', SPATH)
+    camp_event = s2c.get_class_with_defaults(CE, schema_json=schjson)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, schema_json=schjson)
+    camp_coord = s2c.get_class_with_defaults(SEC, schema_json=schjson)
+    camp_iv = s2c.get_class_with_defaults(IMPP, schema_json=schjson)
 
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
@@ -98,14 +100,14 @@ def ce_random_numbers(node_list,
 # *****************************************************************************
 
 
-def ce_br_force(node_list, times, values,
+def ce_br_force(schjson, node_list, times, values,
                 start_day=0.0):
 
     # Birth rate multiplier
-    camp_event = s2c.get_class_with_defaults(CE, SPATH)
-    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
-    camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
-    camp_iv = s2c.get_class_with_defaults('NodeBirthRateMult', SPATH)
+    camp_event = s2c.get_class_with_defaults(CE, schema_json=schjson)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, schema_json=schjson)
+    camp_coord = s2c.get_class_with_defaults(SEC, schema_json=schjson)
+    camp_iv = s2c.get_class_with_defaults(NBRM, schema_json=schjson)
 
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day

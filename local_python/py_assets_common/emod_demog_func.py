@@ -8,14 +8,15 @@ import numpy as np
 import scipy.optimize as opt
 
 from emod_api.demographics.demographics_overlay import DemographicsOverlay
+from emod_api.demographics.overlay_node import OverlayNode
 from emod_api.demographics.age_distribution import AgeDistribution
 from emod_api.demographics.mortality_distribution import MortalityDistribution
 from emod_api.demographics.susceptibility_distribution import \
                                    SusceptibilityDistribution
-from emod_api.demographics.PropertiesAndAttributes import \
+from emod_api.demographics.properties_and_attributes import \
                                    IndividualAttributes, NodeAttributes
 
-from emod_api.demographics import DemographicsTemplates as DT
+from emod_api.demographics.calculators import _computeAgeDist
 
 from emod_constants import DEMOG_FILE, PATH_OVERLAY, \
                            MORT_XVAL, POP_AGE_DAYS, MAX_DAILY_MORT
@@ -66,10 +67,17 @@ def demog_vd_over(ref_name, node_list, cb_rate,
     node_att = NodeAttributes()
     node_att.birth_rate = cb_rate
 
+    # Default node
+    node_obj = OverlayNode(node_id=0)
+    node_obj.individual_attributes = ind_att
+    node_obj.node_attributes = node_att
+
+    # Overlay node list
+    over_nodes = [OverlayNode(node_id=nobj.forced_id) for nobj in node_list]
+
     # Overlay files
-    dover_obj = DemographicsOverlay(idref=ref_name, nodes=node_list,
-                                    individual_attributes=ind_att,
-                                    node_attributes=node_att)
+    dover_obj = DemographicsOverlay(default_node=node_obj,
+                                    nodes=over_nodes, idref=ref_name)
 
     nfname = DEMOG_FILE.rsplit('.', 1)[0] + '_vd{:04d}.json'.format(idx)
     nfname = os.path.join(PATH_OVERLAY, nfname)
@@ -266,8 +274,8 @@ def demog_vd_calc(fname_pop, start_year, steady_state=False):
         mort_vec = mort_vec.tolist()
 
         forcing_vec = 12*[1.0]  # No seasonal forcing
-        (_, age_x_eq, age_y_eq) = DT._computeAgeDist(b_rate, MORT_XVAL,
-                                                     mort_vec, forcing_vec)
+        (_, age_x_eq, age_y_eq) = _computeAgeDist(b_rate, MORT_XVAL,
+                                                  mort_vec, forcing_vec)
         age_x = (np.interp(POP_AGE_DAYS, age_y_eq, age_x_eq)).tolist()
 
     return (pop_init, mort_year, mort_mat_yr, age_x, b_rate, brmx, brmy)

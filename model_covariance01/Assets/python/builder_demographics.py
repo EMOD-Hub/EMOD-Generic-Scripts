@@ -6,7 +6,8 @@
 
 import global_data as gdata
 
-from emod_api.demographics.demographics import Demographics, Node
+from emod_api.demographics.demographics import Demographics
+from emod_api.demographics.node import Node
 
 from emod_constants import DEMOG_FILE
 
