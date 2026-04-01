@@ -27,7 +27,8 @@ def demographicsBuilder():
 
     # Create primary file
     ref_name = 'Example_Covariance_Sims'
-    demog_obj = Demographics(nodes=node_list, idref=ref_name)
+    demog_obj = Demographics(nodes=node_list, idref=ref_name,
+                             set_defaults=False)
 
     # Update defaults in primary file
     demog_obj.default_node.individual_attributes.parameter_dict = dict()
