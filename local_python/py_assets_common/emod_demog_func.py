@@ -134,11 +134,22 @@ def demog_is_over(ref_name, node_list, R0, age_x, age_y=None, idx=0):
     ind_att = IndividualAttributes()
     ind_att.susceptibility_distribution = ind_sus
 
-    # Overlay files
-    dover_obj = DemographicsOverlay(idref=ref_name, nodes=node_list,
-                                    individual_attributes=ind_att)
+    # Node attributes
+    node_att = NodeAttributes()
 
-    dover_obj.raw['Defaults']['NodeAttributes'].clear()
+    # Default node
+    node_obj = OverlayNode(node_id=0)
+    node_obj.individual_attributes = ind_att
+    node_obj.node_attributes = node_att
+
+    # Overlay node list
+    over_nodes = [OverlayNode(node_id=nobj.forced_id) for nobj in node_list]
+
+    # Overlay files
+    dover_obj = DemographicsOverlay(default_node=node_obj,
+                                    nodes=over_nodes, idref=ref_name)
+
+    dover_obj.default_node.node_attributes.parameter_dict = dict()
 
     nfname = DEMOG_FILE.rsplit('.', 1)[0] + '_is{:04d}.json'.format(idx)
     nfname = os.path.join(PATH_OVERLAY, nfname)

@@ -9,7 +9,7 @@ import global_data as gdata
 
 import numpy as np
 
-from emod_postproc_func import post_proc_poppyr, post_proc_prev
+from emod_postproc_func import post_proc_poppyr, post_proc_prev, post_proc_cost
 from emod_constants import SQL_TIME, SQL_MCW, SQL_AGE, O_FILE, MO_DAYS, \
                            SQL_FILE, BASE_YEAR
 
@@ -28,6 +28,9 @@ def application(output_path):
 
     # Timeseries of prevalence
     post_proc_prev(output_path, parsed_dat[key_str])
+
+    # Retain campaign cost output channel
+    post_proc_cost(output_path, parsed_dat[key_str])
 
     # Connect to SQL database; retreive new entries
     connection_obj = sqlite3.connect(SQL_FILE)

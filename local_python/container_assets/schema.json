@@ -1,9 +1,9 @@
 {
     "Version": {
-        "Creator": "outputs/Eradication",
-        "DTK_Branch": "Generic-Ongoing(91be201e)",
-        "DTK_Build_Date": "Feb  7 2025 23:06:19",
-        "DTK_Version": "2.21.94.0"
+        "DTK_Branch": "Generic-Ongoing(cc21d557)",
+        "DTK_Build_Date": "Apr  5 2026 20:09:55",
+        "DTK_Version": "2.22.31",
+        "Supported_Simulation_Types": "GENERIC"
     },
     "config": {
         "AgentConfig": {
@@ -970,7 +970,25 @@
                 "type": "Constrained String",
                 "value_source": "ERROR,WARNING,INFO,DEBUG,VALID"
             },
+            "logLevel_BaseEventReport": {
+                "default": "INFO",
+                "description": "Logging level to be used for indicated module.",
+                "type": "Constrained String",
+                "value_source": "ERROR,WARNING,INFO,DEBUG,VALID"
+            },
+            "logLevel_BaseEventReportIntervalOutput": {
+                "default": "INFO",
+                "description": "Logging level to be used for indicated module.",
+                "type": "Constrained String",
+                "value_source": "ERROR,WARNING,INFO,DEBUG,VALID"
+            },
             "logLevel_BaseTextReport": {
+                "default": "INFO",
+                "description": "Logging level to be used for indicated module.",
+                "type": "Constrained String",
+                "value_source": "ERROR,WARNING,INFO,DEBUG,VALID"
+            },
+            "logLevel_BaseTextReportEvents": {
                 "default": "INFO",
                 "description": "Logging level to be used for indicated module.",
                 "type": "Constrained String",
@@ -1390,6 +1408,12 @@
                 "type": "Constrained String",
                 "value_source": "ERROR,WARNING,INFO,DEBUG,VALID"
             },
+            "logLevel_ProgVersion": {
+                "default": "INFO",
+                "description": "Logging level to be used for indicated module.",
+                "type": "Constrained String",
+                "value_source": "ERROR,WARNING,INFO,DEBUG,VALID"
+            },
             "logLevel_Properties": {
                 "default": "INFO",
                 "description": "Logging level to be used for indicated module.",
@@ -1456,13 +1480,43 @@
                 "type": "Constrained String",
                 "value_source": "ERROR,WARNING,INFO,DEBUG,VALID"
             },
+            "logLevel_ReportFactory": {
+                "default": "INFO",
+                "description": "Logging level to be used for indicated module.",
+                "type": "Constrained String",
+                "value_source": "ERROR,WARNING,INFO,DEBUG,VALID"
+            },
+            "logLevel_ReportHumanMigrationTracking": {
+                "default": "INFO",
+                "description": "Logging level to be used for indicated module.",
+                "type": "Constrained String",
+                "value_source": "ERROR,WARNING,INFO,DEBUG,VALID"
+            },
+            "logLevel_ReportNodeDemographics": {
+                "default": "INFO",
+                "description": "Logging level to be used for indicated module.",
+                "type": "Constrained String",
+                "value_source": "ERROR,WARNING,INFO,DEBUG,VALID"
+            },
             "logLevel_ReportStatsByIP": {
                 "default": "INFO",
                 "description": "Logging level to be used for indicated module.",
                 "type": "Constrained String",
                 "value_source": "ERROR,WARNING,INFO,DEBUG,VALID"
             },
+            "logLevel_ReportStrainTracking": {
+                "default": "INFO",
+                "description": "Logging level to be used for indicated module.",
+                "type": "Constrained String",
+                "value_source": "ERROR,WARNING,INFO,DEBUG,VALID"
+            },
             "logLevel_ReportSurveillanceEventRecorder": {
+                "default": "INFO",
+                "description": "Logging level to be used for indicated module.",
+                "type": "Constrained String",
+                "value_source": "ERROR,WARNING,INFO,DEBUG,VALID"
+            },
+            "logLevel_ReportUtilities": {
                 "default": "INFO",
                 "description": "Logging level to be used for indicated module.",
                 "type": "Constrained String",
@@ -4568,6 +4622,14 @@
                 ],
                 "type": "Vector Enum"
             },
+            "SQL_Report_Name": {
+                "default": "simulation_events.db",
+                "depends-on": {
+                    "Enable_Event_DB": 1
+                },
+                "description": "Output file name for SQL report.",
+                "type": "string"
+            },
             "SQL_Start_Time": {
                 "default": 0,
                 "depends-on": {
@@ -4682,7 +4744,7 @@
             "Base_Year": {
                 "default": 2015,
                 "depends-on": {
-                    "Simulation_Type": "STI_SIM,HIV_SIM,TYPHOID_SIM"
+                    "Simulation_Type": "GENERIC_SIM,STI_SIM,HIV_SIM,TYPHOID_SIM"
                 },
                 "description": "Absolute time in years when the simulation begins. This can be combined with CampaignEventByYear to trigger campaign events.",
                 "max": 2200,
@@ -5047,12 +5109,13 @@
         },
         "TBHIVConfig": {
             "TBHIV_Drug_Params": {
-                "default": {},
+                "default": [],
                 "depends-on": {
                     "Simulation_Type": "TBHIV_SIM"
                 },
                 "description": "This JSON structure contains the names of anti-tuberculosis drugs and the parameters that define them.",
-                "type": "idmType:TBHIVDrugCollection"
+                "item_type": "idmType:TBHIVDrugTypeParameters",
+                "type": "Vector idmType:TBHIVDrugTypeParameters"
             }
         }
     },
@@ -5272,6 +5335,11 @@
                 "class": "BroadcastCoordinatorEvent"
             },
             "CalendarEventCoordinator": {
+                "Cost_Assumes_Total_Coverage": {
+                    "default": 0,
+                    "description": "Individual intervention cost applies to all individuals in target demographic and ignores coverage.",
+                    "type": "bool"
+                },
                 "Distribution_Coverages": {
                     "ascending": 0,
                     "default": [],
@@ -5335,7 +5403,7 @@
                         "Target_Demographic": "ExplicitAgeRanges,ExplicitAgeRangesAndGender"
                     },
                     "description": "The lower end of ages targeted for an intervention, in years.",
-                    "max": 3.402823466e+38,
+                    "max": 9.322804028e+35,
                     "min": 0,
                     "type": "float"
                 },
@@ -5671,7 +5739,7 @@
                         "Target_Demographic": "ExplicitAgeRanges,ExplicitAgeRangesAndGender"
                     },
                     "description": "The lower end of ages targeted for an intervention, in years.",
-                    "max": 3.402823466e+38,
+                    "max": 9.322804028e+35,
                     "min": 0,
                     "type": "float"
                 },
@@ -5898,6 +5966,11 @@
                 "class": "CommunityHealthWorkerEventCoordinator"
             },
             "CoverageByNodeEventCoordinator": {
+                "Cost_Assumes_Total_Coverage": {
+                    "default": 0,
+                    "description": "Individual intervention cost applies to all individuals in target demographic and ignores coverage.",
+                    "type": "bool"
+                },
                 "Coverage_By_Node": {
                     "default": [],
                     "description": "An array of (nodeID, coverage) pairs configuring the demographic coverage of interventions by node for the targeted populations. The coverage value must be a float between 0 and 1.",
@@ -5958,7 +6031,7 @@
                         "Target_Demographic": "ExplicitAgeRanges,ExplicitAgeRangesAndGender"
                     },
                     "description": "The lower end of ages targeted for an intervention, in years.",
-                    "max": 3.402823466e+38,
+                    "max": 9.322804028e+35,
                     "min": 0,
                     "type": "float"
                 },
@@ -6757,6 +6830,11 @@
                 "class": "DelayEventCoordinator"
             },
             "GroupInterventionDistributionEventCoordinator": {
+                "Cost_Assumes_Total_Coverage": {
+                    "default": 0,
+                    "description": "Individual intervention cost applies to all individuals in target demographic and ignores coverage.",
+                    "type": "bool"
+                },
                 "Demographic_Coverage": {
                     "default": 1,
                     "description": "The fraction of individuals in the target demographic that will receive this intervention.",
@@ -6825,7 +6903,7 @@
                         "Target_Demographic": "ExplicitAgeRanges,ExplicitAgeRangesAndGender"
                     },
                     "description": "The lower end of ages targeted for an intervention, in years.",
-                    "max": 3.402823466e+38,
+                    "max": 9.322804028e+35,
                     "min": 0,
                     "type": "float"
                 },
@@ -6928,6 +7006,11 @@
                 "class": "NChooserEventCoordinator"
             },
             "StandardInterventionDistributionEventCoordinator": {
+                "Cost_Assumes_Total_Coverage": {
+                    "default": 0,
+                    "description": "Individual intervention cost applies to all individuals in target demographic and ignores coverage.",
+                    "type": "bool"
+                },
                 "Demographic_Coverage": {
                     "default": 1,
                     "description": "The fraction of individuals in the target demographic that will receive this intervention.",
@@ -6996,7 +7079,7 @@
                         "Target_Demographic": "ExplicitAgeRanges,ExplicitAgeRangesAndGender"
                     },
                     "description": "The lower end of ages targeted for an intervention, in years.",
-                    "max": 3.402823466e+38,
+                    "max": 9.322804028e+35,
                     "min": 0,
                     "type": "float"
                 },
@@ -7610,6 +7693,11 @@
                     "description": "The unique identifying coordinator name used to identify the different coordinators in reports.",
                     "type": "string"
                 },
+                "Cost_Assumes_Total_Coverage": {
+                    "default": 0,
+                    "description": "Individual intervention cost applies to all individuals in target demographic and ignores coverage.",
+                    "type": "bool"
+                },
                 "Duration": {
                     "default": -1,
                     "description": "The time period (in days) that the triggered event coordinator is active before it expires.",
@@ -8030,7 +8118,7 @@
                         "Target_Demographic": "ExplicitAgeRanges,ExplicitAgeRangesAndGender"
                     },
                     "description": "The lower end of ages targeted for an intervention, in years.",
-                    "max": 3.402823466e+38,
+                    "max": 9.322804028e+35,
                     "min": 0,
                     "type": "float"
                 },
@@ -9248,6 +9336,13 @@
                         "description": "An array of nested interventions to be distributed at the end of a delay period, to covered fraction of the population.",
                         "type": "idmAbstractType:IndividualIntervention"
                     },
+                    "Cost_To_Consumer": {
+                        "default": 0,
+                        "description": "Cost per individual receiving the intervention.",
+                        "max": 3.402823466e+38,
+                        "min": 0,
+                        "type": "float"
+                    },
                     "Coverage": {
                         "default": 1,
                         "description": "The proportion of individuals who receive the DelayedIntervention that actually receive the configured interventions.",
@@ -10250,6 +10345,808 @@
                         "*"
                     ],
                     "class": "IVCalendar"
+                },
+                "ImmunityBloodTest": {
+                    "Base_Sensitivity": {
+                        "default": 1,
+                        "description": "The sensitivity of the diagnostic. This sets the proportion of the time that individuals with the condition being tested receive a positive diagnostic test. When set to zero, then individuals who have the condition always receive a false-negative diagnostic test.",
+                        "max": 1,
+                        "min": 0,
+                        "type": "float"
+                    },
+                    "Base_Specificity": {
+                        "default": 1,
+                        "description": "The specificity of the diagnostic. This sets the proportion of the time that individuals without the condition being tested receive a negative diagnostic test. When set to 1, the diagnostic always accurately reflects the lack of having the condition. When set to zero, then individuals who do not have the condition always receive a false-positive diagnostic test.",
+                        "max": 1,
+                        "min": 0,
+                        "type": "float"
+                    },
+                    "Cost_To_Consumer": {
+                        "default": 1,
+                        "description": "The unit 'cost' assigned to the diagnostic. Setting Cost_To_Consumer to zero for all other interventions, and to a non-zero amount for one intervention, provides a convenient way to track the number of times the intervention has been applied in a simulation.",
+                        "max": 3.402823466e+38,
+                        "min": 0,
+                        "type": "float"
+                    },
+                    "Days_To_Diagnosis": {
+                        "default": 0,
+                        "description": "The number of days from test until diagnosis.",
+                        "max": 3.402823466e+38,
+                        "min": 0,
+                        "type": "float"
+                    },
+                    "Disqualifying_Properties": {
+                        "default": [],
+                        "description": "A list of IndividualProperty key:value pairs that cause an intervention to be aborted. Generally used to control the flow of health care access. For example, to prevent the same individual from accessing health care via two different routes at the same time.",
+                        "type": "Dynamic String Set",
+                        "value_source": ""
+                    },
+                    "Dont_Allow_Duplicates": {
+                        "default": 0,
+                        "description": "If an individual's container has an intervention, set to true (1) to prevent them from receiving another copy of the intervention. Supported by all intervention classes.",
+                        "type": "bool"
+                    },
+                    "Enable_Intervention_Replacement": {
+                        "default": 0,
+                        "depends-on": {
+                            "Dont_Allow_Duplicates": 1
+                        },
+                        "description": "When enabled, distributing intervention will remove all other interventions of the same name on targeted individual.",
+                        "type": "bool"
+                    },
+                    "Enable_IsSymptomatic": {
+                        "default": 0,
+                        "description": "If true, requires an infection to be symptomatic to return a positive test.",
+                        "type": "bool"
+                    },
+                    "Event_Trigger_Distributed": {
+                        "default": "NoTrigger",
+                        "description": "Event to be broadcast when intervention is distributed. See list of available events for possible values.",
+                        "enum": [
+                            "NoTrigger",
+                            "Births",
+                            "EveryUpdate",
+                            "EveryTimeStep",
+                            "NewInfection",
+                            "TBActivation",
+                            "NewClinicalCase",
+                            "NewSevereCase",
+                            "DiseaseDeaths",
+                            "OpportunisticInfectionDeath",
+                            "NonDiseaseDeaths",
+                            "TBActivationSmearPos",
+                            "TBActivationSmearNeg",
+                            "TBActivationExtrapulm",
+                            "TBActivationPostRelapse",
+                            "TBPendingRelapse",
+                            "TBActivationPresymptomatic",
+                            "TestPositiveOnSmear",
+                            "ProviderOrdersTBTest",
+                            "TBTestPositive",
+                            "TBTestNegative",
+                            "TBTestDefault",
+                            "TBRestartHSB",
+                            "TBMDRTestPositive",
+                            "TBMDRTestNegative",
+                            "TBMDRTestDefault",
+                            "TBFailedDrugRegimen",
+                            "TBRelapseAfterDrugRegimen",
+                            "TBStartDrugRegimen",
+                            "TBStopDrugRegimen",
+                            "PropertyChange",
+                            "STIDebut",
+                            "StartedART",
+                            "StoppedART",
+                            "InterventionDisqualified",
+                            "HIVNewlyDiagnosed",
+                            "GaveBirth",
+                            "Pregnant",
+                            "Emigrating",
+                            "Immigrating",
+                            "HIVTestedNegative",
+                            "HIVTestedPositive",
+                            "HIVSymptomatic",
+                            "HIVPreARTToART",
+                            "HIVNonPreARTToART",
+                            "TwelveWeeksPregnant",
+                            "FourteenWeeksPregnant",
+                            "SixWeeksOld",
+                            "EighteenMonthsOld",
+                            "STIPreEmigrating",
+                            "STIPostImmigrating",
+                            "STINewInfection",
+                            "NewExternalHIVInfection",
+                            "NodePropertyChange",
+                            "HappyBirthday",
+                            "EnteredRelationship",
+                            "ExitedRelationship",
+                            "FirstCoitalAct",
+                            "NewlySymptomatic",
+                            "SymptomaticCleared",
+                            "ExposureComplete",
+                            "SheddingComplete",
+                            "PositiveResult",
+                            "NegativeResult",
+                            "Blackout",
+                            "ReceivedTreatment",
+                            "SixMonthsOld",
+                            "OneYearOld",
+                            "MonteCarloDeaths",
+                            "InfectionCleared",
+                            "GP_EVENT_000",
+                            "GP_EVENT_001",
+                            "GP_EVENT_002",
+                            "GP_EVENT_003",
+                            "GP_EVENT_004",
+                            "GP_EVENT_005",
+                            "GP_EVENT_006",
+                            "GP_EVENT_007",
+                            "GP_EVENT_008",
+                            "GP_EVENT_009",
+                            "GP_EVENT_010",
+                            "GP_EVENT_011",
+                            "GP_EVENT_012",
+                            "GP_EVENT_013",
+                            "GP_EVENT_014",
+                            "GP_EVENT_015",
+                            "GP_EVENT_016",
+                            "GP_EVENT_017",
+                            "GP_EVENT_018",
+                            "GP_EVENT_019",
+                            "GP_EVENT_020",
+                            "GP_EVENT_021",
+                            "GP_EVENT_022",
+                            "GP_EVENT_023",
+                            "GP_EVENT_024",
+                            "GP_EVENT_025",
+                            "GP_EVENT_026",
+                            "GP_EVENT_027",
+                            "GP_EVENT_028",
+                            "GP_EVENT_029",
+                            "GP_EVENT_030",
+                            "GP_EVENT_031",
+                            "GP_EVENT_032",
+                            "GP_EVENT_033",
+                            "GP_EVENT_034",
+                            "GP_EVENT_035",
+                            "GP_EVENT_036",
+                            "GP_EVENT_037",
+                            "GP_EVENT_038",
+                            "GP_EVENT_039",
+                            "GP_EVENT_040",
+                            "GP_EVENT_041",
+                            "GP_EVENT_042",
+                            "GP_EVENT_043",
+                            "GP_EVENT_044",
+                            "GP_EVENT_045",
+                            "GP_EVENT_046",
+                            "GP_EVENT_047",
+                            "GP_EVENT_048",
+                            "GP_EVENT_049",
+                            "GP_EVENT_050",
+                            "GP_EVENT_051",
+                            "GP_EVENT_052",
+                            "GP_EVENT_053",
+                            "GP_EVENT_054",
+                            "GP_EVENT_055",
+                            "GP_EVENT_056",
+                            "GP_EVENT_057",
+                            "GP_EVENT_058",
+                            "GP_EVENT_059",
+                            "GP_EVENT_060",
+                            "GP_EVENT_061",
+                            "GP_EVENT_062",
+                            "GP_EVENT_063",
+                            "GP_EVENT_064",
+                            "GP_EVENT_065",
+                            "GP_EVENT_066",
+                            "GP_EVENT_067",
+                            "GP_EVENT_068",
+                            "GP_EVENT_069",
+                            "GP_EVENT_070",
+                            "GP_EVENT_071",
+                            "GP_EVENT_072",
+                            "GP_EVENT_073",
+                            "GP_EVENT_074",
+                            "GP_EVENT_075",
+                            "GP_EVENT_076",
+                            "GP_EVENT_077",
+                            "GP_EVENT_078",
+                            "GP_EVENT_079",
+                            "GP_EVENT_080",
+                            "GP_EVENT_081",
+                            "GP_EVENT_082",
+                            "GP_EVENT_083",
+                            "GP_EVENT_084",
+                            "GP_EVENT_085",
+                            "GP_EVENT_086",
+                            "GP_EVENT_087",
+                            "GP_EVENT_088",
+                            "GP_EVENT_089",
+                            "GP_EVENT_090",
+                            "GP_EVENT_091",
+                            "GP_EVENT_092",
+                            "GP_EVENT_093",
+                            "GP_EVENT_094",
+                            "GP_EVENT_095",
+                            "GP_EVENT_096",
+                            "GP_EVENT_097",
+                            "GP_EVENT_098",
+                            "GP_EVENT_099",
+                            "NUM_EVENT_TRIGGERS"
+                        ],
+                        "type": "enum"
+                    },
+                    "Event_Trigger_Expired": {
+                        "default": "NoTrigger",
+                        "description": "Event to be broadcast when intervention expires. See list of available events for possible values.",
+                        "enum": [
+                            "NoTrigger",
+                            "Births",
+                            "EveryUpdate",
+                            "EveryTimeStep",
+                            "NewInfection",
+                            "TBActivation",
+                            "NewClinicalCase",
+                            "NewSevereCase",
+                            "DiseaseDeaths",
+                            "OpportunisticInfectionDeath",
+                            "NonDiseaseDeaths",
+                            "TBActivationSmearPos",
+                            "TBActivationSmearNeg",
+                            "TBActivationExtrapulm",
+                            "TBActivationPostRelapse",
+                            "TBPendingRelapse",
+                            "TBActivationPresymptomatic",
+                            "TestPositiveOnSmear",
+                            "ProviderOrdersTBTest",
+                            "TBTestPositive",
+                            "TBTestNegative",
+                            "TBTestDefault",
+                            "TBRestartHSB",
+                            "TBMDRTestPositive",
+                            "TBMDRTestNegative",
+                            "TBMDRTestDefault",
+                            "TBFailedDrugRegimen",
+                            "TBRelapseAfterDrugRegimen",
+                            "TBStartDrugRegimen",
+                            "TBStopDrugRegimen",
+                            "PropertyChange",
+                            "STIDebut",
+                            "StartedART",
+                            "StoppedART",
+                            "InterventionDisqualified",
+                            "HIVNewlyDiagnosed",
+                            "GaveBirth",
+                            "Pregnant",
+                            "Emigrating",
+                            "Immigrating",
+                            "HIVTestedNegative",
+                            "HIVTestedPositive",
+                            "HIVSymptomatic",
+                            "HIVPreARTToART",
+                            "HIVNonPreARTToART",
+                            "TwelveWeeksPregnant",
+                            "FourteenWeeksPregnant",
+                            "SixWeeksOld",
+                            "EighteenMonthsOld",
+                            "STIPreEmigrating",
+                            "STIPostImmigrating",
+                            "STINewInfection",
+                            "NewExternalHIVInfection",
+                            "NodePropertyChange",
+                            "HappyBirthday",
+                            "EnteredRelationship",
+                            "ExitedRelationship",
+                            "FirstCoitalAct",
+                            "NewlySymptomatic",
+                            "SymptomaticCleared",
+                            "ExposureComplete",
+                            "SheddingComplete",
+                            "PositiveResult",
+                            "NegativeResult",
+                            "Blackout",
+                            "ReceivedTreatment",
+                            "SixMonthsOld",
+                            "OneYearOld",
+                            "MonteCarloDeaths",
+                            "InfectionCleared",
+                            "GP_EVENT_000",
+                            "GP_EVENT_001",
+                            "GP_EVENT_002",
+                            "GP_EVENT_003",
+                            "GP_EVENT_004",
+                            "GP_EVENT_005",
+                            "GP_EVENT_006",
+                            "GP_EVENT_007",
+                            "GP_EVENT_008",
+                            "GP_EVENT_009",
+                            "GP_EVENT_010",
+                            "GP_EVENT_011",
+                            "GP_EVENT_012",
+                            "GP_EVENT_013",
+                            "GP_EVENT_014",
+                            "GP_EVENT_015",
+                            "GP_EVENT_016",
+                            "GP_EVENT_017",
+                            "GP_EVENT_018",
+                            "GP_EVENT_019",
+                            "GP_EVENT_020",
+                            "GP_EVENT_021",
+                            "GP_EVENT_022",
+                            "GP_EVENT_023",
+                            "GP_EVENT_024",
+                            "GP_EVENT_025",
+                            "GP_EVENT_026",
+                            "GP_EVENT_027",
+                            "GP_EVENT_028",
+                            "GP_EVENT_029",
+                            "GP_EVENT_030",
+                            "GP_EVENT_031",
+                            "GP_EVENT_032",
+                            "GP_EVENT_033",
+                            "GP_EVENT_034",
+                            "GP_EVENT_035",
+                            "GP_EVENT_036",
+                            "GP_EVENT_037",
+                            "GP_EVENT_038",
+                            "GP_EVENT_039",
+                            "GP_EVENT_040",
+                            "GP_EVENT_041",
+                            "GP_EVENT_042",
+                            "GP_EVENT_043",
+                            "GP_EVENT_044",
+                            "GP_EVENT_045",
+                            "GP_EVENT_046",
+                            "GP_EVENT_047",
+                            "GP_EVENT_048",
+                            "GP_EVENT_049",
+                            "GP_EVENT_050",
+                            "GP_EVENT_051",
+                            "GP_EVENT_052",
+                            "GP_EVENT_053",
+                            "GP_EVENT_054",
+                            "GP_EVENT_055",
+                            "GP_EVENT_056",
+                            "GP_EVENT_057",
+                            "GP_EVENT_058",
+                            "GP_EVENT_059",
+                            "GP_EVENT_060",
+                            "GP_EVENT_061",
+                            "GP_EVENT_062",
+                            "GP_EVENT_063",
+                            "GP_EVENT_064",
+                            "GP_EVENT_065",
+                            "GP_EVENT_066",
+                            "GP_EVENT_067",
+                            "GP_EVENT_068",
+                            "GP_EVENT_069",
+                            "GP_EVENT_070",
+                            "GP_EVENT_071",
+                            "GP_EVENT_072",
+                            "GP_EVENT_073",
+                            "GP_EVENT_074",
+                            "GP_EVENT_075",
+                            "GP_EVENT_076",
+                            "GP_EVENT_077",
+                            "GP_EVENT_078",
+                            "GP_EVENT_079",
+                            "GP_EVENT_080",
+                            "GP_EVENT_081",
+                            "GP_EVENT_082",
+                            "GP_EVENT_083",
+                            "GP_EVENT_084",
+                            "GP_EVENT_085",
+                            "GP_EVENT_086",
+                            "GP_EVENT_087",
+                            "GP_EVENT_088",
+                            "GP_EVENT_089",
+                            "GP_EVENT_090",
+                            "GP_EVENT_091",
+                            "GP_EVENT_092",
+                            "GP_EVENT_093",
+                            "GP_EVENT_094",
+                            "GP_EVENT_095",
+                            "GP_EVENT_096",
+                            "GP_EVENT_097",
+                            "GP_EVENT_098",
+                            "GP_EVENT_099",
+                            "NUM_EVENT_TRIGGERS"
+                        ],
+                        "type": "enum"
+                    },
+                    "Intervention_Name": {
+                        "default": "ImmunityBloodTest",
+                        "description": "The optional name used to refer to this intervention as a means to differentiate it from others that use the same class.",
+                        "type": "string"
+                    },
+                    "Negative_Diagnosis_Event": {
+                        "default": "NoTrigger",
+                        "description": "If an individual tests negative (does not have immunity), then an individual type event is broadcast. This may trigger another intervention when the event occurs. Only used when **Event_Or_Config** is set to Event.",
+                        "enum": [
+                            "NoTrigger",
+                            "Births",
+                            "EveryUpdate",
+                            "EveryTimeStep",
+                            "NewInfection",
+                            "TBActivation",
+                            "NewClinicalCase",
+                            "NewSevereCase",
+                            "DiseaseDeaths",
+                            "OpportunisticInfectionDeath",
+                            "NonDiseaseDeaths",
+                            "TBActivationSmearPos",
+                            "TBActivationSmearNeg",
+                            "TBActivationExtrapulm",
+                            "TBActivationPostRelapse",
+                            "TBPendingRelapse",
+                            "TBActivationPresymptomatic",
+                            "TestPositiveOnSmear",
+                            "ProviderOrdersTBTest",
+                            "TBTestPositive",
+                            "TBTestNegative",
+                            "TBTestDefault",
+                            "TBRestartHSB",
+                            "TBMDRTestPositive",
+                            "TBMDRTestNegative",
+                            "TBMDRTestDefault",
+                            "TBFailedDrugRegimen",
+                            "TBRelapseAfterDrugRegimen",
+                            "TBStartDrugRegimen",
+                            "TBStopDrugRegimen",
+                            "PropertyChange",
+                            "STIDebut",
+                            "StartedART",
+                            "StoppedART",
+                            "InterventionDisqualified",
+                            "HIVNewlyDiagnosed",
+                            "GaveBirth",
+                            "Pregnant",
+                            "Emigrating",
+                            "Immigrating",
+                            "HIVTestedNegative",
+                            "HIVTestedPositive",
+                            "HIVSymptomatic",
+                            "HIVPreARTToART",
+                            "HIVNonPreARTToART",
+                            "TwelveWeeksPregnant",
+                            "FourteenWeeksPregnant",
+                            "SixWeeksOld",
+                            "EighteenMonthsOld",
+                            "STIPreEmigrating",
+                            "STIPostImmigrating",
+                            "STINewInfection",
+                            "NewExternalHIVInfection",
+                            "NodePropertyChange",
+                            "HappyBirthday",
+                            "EnteredRelationship",
+                            "ExitedRelationship",
+                            "FirstCoitalAct",
+                            "NewlySymptomatic",
+                            "SymptomaticCleared",
+                            "ExposureComplete",
+                            "SheddingComplete",
+                            "PositiveResult",
+                            "NegativeResult",
+                            "Blackout",
+                            "ReceivedTreatment",
+                            "SixMonthsOld",
+                            "OneYearOld",
+                            "MonteCarloDeaths",
+                            "InfectionCleared",
+                            "GP_EVENT_000",
+                            "GP_EVENT_001",
+                            "GP_EVENT_002",
+                            "GP_EVENT_003",
+                            "GP_EVENT_004",
+                            "GP_EVENT_005",
+                            "GP_EVENT_006",
+                            "GP_EVENT_007",
+                            "GP_EVENT_008",
+                            "GP_EVENT_009",
+                            "GP_EVENT_010",
+                            "GP_EVENT_011",
+                            "GP_EVENT_012",
+                            "GP_EVENT_013",
+                            "GP_EVENT_014",
+                            "GP_EVENT_015",
+                            "GP_EVENT_016",
+                            "GP_EVENT_017",
+                            "GP_EVENT_018",
+                            "GP_EVENT_019",
+                            "GP_EVENT_020",
+                            "GP_EVENT_021",
+                            "GP_EVENT_022",
+                            "GP_EVENT_023",
+                            "GP_EVENT_024",
+                            "GP_EVENT_025",
+                            "GP_EVENT_026",
+                            "GP_EVENT_027",
+                            "GP_EVENT_028",
+                            "GP_EVENT_029",
+                            "GP_EVENT_030",
+                            "GP_EVENT_031",
+                            "GP_EVENT_032",
+                            "GP_EVENT_033",
+                            "GP_EVENT_034",
+                            "GP_EVENT_035",
+                            "GP_EVENT_036",
+                            "GP_EVENT_037",
+                            "GP_EVENT_038",
+                            "GP_EVENT_039",
+                            "GP_EVENT_040",
+                            "GP_EVENT_041",
+                            "GP_EVENT_042",
+                            "GP_EVENT_043",
+                            "GP_EVENT_044",
+                            "GP_EVENT_045",
+                            "GP_EVENT_046",
+                            "GP_EVENT_047",
+                            "GP_EVENT_048",
+                            "GP_EVENT_049",
+                            "GP_EVENT_050",
+                            "GP_EVENT_051",
+                            "GP_EVENT_052",
+                            "GP_EVENT_053",
+                            "GP_EVENT_054",
+                            "GP_EVENT_055",
+                            "GP_EVENT_056",
+                            "GP_EVENT_057",
+                            "GP_EVENT_058",
+                            "GP_EVENT_059",
+                            "GP_EVENT_060",
+                            "GP_EVENT_061",
+                            "GP_EVENT_062",
+                            "GP_EVENT_063",
+                            "GP_EVENT_064",
+                            "GP_EVENT_065",
+                            "GP_EVENT_066",
+                            "GP_EVENT_067",
+                            "GP_EVENT_068",
+                            "GP_EVENT_069",
+                            "GP_EVENT_070",
+                            "GP_EVENT_071",
+                            "GP_EVENT_072",
+                            "GP_EVENT_073",
+                            "GP_EVENT_074",
+                            "GP_EVENT_075",
+                            "GP_EVENT_076",
+                            "GP_EVENT_077",
+                            "GP_EVENT_078",
+                            "GP_EVENT_079",
+                            "GP_EVENT_080",
+                            "GP_EVENT_081",
+                            "GP_EVENT_082",
+                            "GP_EVENT_083",
+                            "GP_EVENT_084",
+                            "GP_EVENT_085",
+                            "GP_EVENT_086",
+                            "GP_EVENT_087",
+                            "GP_EVENT_088",
+                            "GP_EVENT_089",
+                            "GP_EVENT_090",
+                            "GP_EVENT_091",
+                            "GP_EVENT_092",
+                            "GP_EVENT_093",
+                            "GP_EVENT_094",
+                            "GP_EVENT_095",
+                            "GP_EVENT_096",
+                            "GP_EVENT_097",
+                            "GP_EVENT_098",
+                            "GP_EVENT_099",
+                            "NUM_EVENT_TRIGGERS"
+                        ],
+                        "type": "enum"
+                    },
+                    "New_Property_Value": {
+                        "default": "",
+                        "description": "An optional IndividualProperty key:value pair that will be assigned when the intervention is distributed. Generally used to indicate the broad category of health care cascade to which an intervention belongs to prevent individuals from accessing care through multiple pathways.",
+                        "type": "Constrained String",
+                        "value_source": "'<demographics>::*.Individual_Properties.*.Property':'<demographics>::*.Individual_Properties.*.Values'"
+                    },
+                    "Positive_Diagnosis_Config": {
+                        "depends-on": {
+                            "Event_Or_Config": "Config"
+                        },
+                        "description": "The intervention distributed to individuals if they test positive. Only used when Event_Or_Config is set to Config.",
+                        "type": "idmAbstractType:IndividualIntervention"
+                    },
+                    "Positive_Diagnosis_Event": {
+                        "default": "NoTrigger",
+                        "description": "If the test is positive, this specifies an event that can trigger another intervention when the event occurs. Only used if Event_Or_Config is set to Event.",
+                        "enum": [
+                            "NoTrigger",
+                            "Births",
+                            "EveryUpdate",
+                            "EveryTimeStep",
+                            "NewInfection",
+                            "TBActivation",
+                            "NewClinicalCase",
+                            "NewSevereCase",
+                            "DiseaseDeaths",
+                            "OpportunisticInfectionDeath",
+                            "NonDiseaseDeaths",
+                            "TBActivationSmearPos",
+                            "TBActivationSmearNeg",
+                            "TBActivationExtrapulm",
+                            "TBActivationPostRelapse",
+                            "TBPendingRelapse",
+                            "TBActivationPresymptomatic",
+                            "TestPositiveOnSmear",
+                            "ProviderOrdersTBTest",
+                            "TBTestPositive",
+                            "TBTestNegative",
+                            "TBTestDefault",
+                            "TBRestartHSB",
+                            "TBMDRTestPositive",
+                            "TBMDRTestNegative",
+                            "TBMDRTestDefault",
+                            "TBFailedDrugRegimen",
+                            "TBRelapseAfterDrugRegimen",
+                            "TBStartDrugRegimen",
+                            "TBStopDrugRegimen",
+                            "PropertyChange",
+                            "STIDebut",
+                            "StartedART",
+                            "StoppedART",
+                            "InterventionDisqualified",
+                            "HIVNewlyDiagnosed",
+                            "GaveBirth",
+                            "Pregnant",
+                            "Emigrating",
+                            "Immigrating",
+                            "HIVTestedNegative",
+                            "HIVTestedPositive",
+                            "HIVSymptomatic",
+                            "HIVPreARTToART",
+                            "HIVNonPreARTToART",
+                            "TwelveWeeksPregnant",
+                            "FourteenWeeksPregnant",
+                            "SixWeeksOld",
+                            "EighteenMonthsOld",
+                            "STIPreEmigrating",
+                            "STIPostImmigrating",
+                            "STINewInfection",
+                            "NewExternalHIVInfection",
+                            "NodePropertyChange",
+                            "HappyBirthday",
+                            "EnteredRelationship",
+                            "ExitedRelationship",
+                            "FirstCoitalAct",
+                            "NewlySymptomatic",
+                            "SymptomaticCleared",
+                            "ExposureComplete",
+                            "SheddingComplete",
+                            "PositiveResult",
+                            "NegativeResult",
+                            "Blackout",
+                            "ReceivedTreatment",
+                            "SixMonthsOld",
+                            "OneYearOld",
+                            "MonteCarloDeaths",
+                            "InfectionCleared",
+                            "GP_EVENT_000",
+                            "GP_EVENT_001",
+                            "GP_EVENT_002",
+                            "GP_EVENT_003",
+                            "GP_EVENT_004",
+                            "GP_EVENT_005",
+                            "GP_EVENT_006",
+                            "GP_EVENT_007",
+                            "GP_EVENT_008",
+                            "GP_EVENT_009",
+                            "GP_EVENT_010",
+                            "GP_EVENT_011",
+                            "GP_EVENT_012",
+                            "GP_EVENT_013",
+                            "GP_EVENT_014",
+                            "GP_EVENT_015",
+                            "GP_EVENT_016",
+                            "GP_EVENT_017",
+                            "GP_EVENT_018",
+                            "GP_EVENT_019",
+                            "GP_EVENT_020",
+                            "GP_EVENT_021",
+                            "GP_EVENT_022",
+                            "GP_EVENT_023",
+                            "GP_EVENT_024",
+                            "GP_EVENT_025",
+                            "GP_EVENT_026",
+                            "GP_EVENT_027",
+                            "GP_EVENT_028",
+                            "GP_EVENT_029",
+                            "GP_EVENT_030",
+                            "GP_EVENT_031",
+                            "GP_EVENT_032",
+                            "GP_EVENT_033",
+                            "GP_EVENT_034",
+                            "GP_EVENT_035",
+                            "GP_EVENT_036",
+                            "GP_EVENT_037",
+                            "GP_EVENT_038",
+                            "GP_EVENT_039",
+                            "GP_EVENT_040",
+                            "GP_EVENT_041",
+                            "GP_EVENT_042",
+                            "GP_EVENT_043",
+                            "GP_EVENT_044",
+                            "GP_EVENT_045",
+                            "GP_EVENT_046",
+                            "GP_EVENT_047",
+                            "GP_EVENT_048",
+                            "GP_EVENT_049",
+                            "GP_EVENT_050",
+                            "GP_EVENT_051",
+                            "GP_EVENT_052",
+                            "GP_EVENT_053",
+                            "GP_EVENT_054",
+                            "GP_EVENT_055",
+                            "GP_EVENT_056",
+                            "GP_EVENT_057",
+                            "GP_EVENT_058",
+                            "GP_EVENT_059",
+                            "GP_EVENT_060",
+                            "GP_EVENT_061",
+                            "GP_EVENT_062",
+                            "GP_EVENT_063",
+                            "GP_EVENT_064",
+                            "GP_EVENT_065",
+                            "GP_EVENT_066",
+                            "GP_EVENT_067",
+                            "GP_EVENT_068",
+                            "GP_EVENT_069",
+                            "GP_EVENT_070",
+                            "GP_EVENT_071",
+                            "GP_EVENT_072",
+                            "GP_EVENT_073",
+                            "GP_EVENT_074",
+                            "GP_EVENT_075",
+                            "GP_EVENT_076",
+                            "GP_EVENT_077",
+                            "GP_EVENT_078",
+                            "GP_EVENT_079",
+                            "GP_EVENT_080",
+                            "GP_EVENT_081",
+                            "GP_EVENT_082",
+                            "GP_EVENT_083",
+                            "GP_EVENT_084",
+                            "GP_EVENT_085",
+                            "GP_EVENT_086",
+                            "GP_EVENT_087",
+                            "GP_EVENT_088",
+                            "GP_EVENT_089",
+                            "GP_EVENT_090",
+                            "GP_EVENT_091",
+                            "GP_EVENT_092",
+                            "GP_EVENT_093",
+                            "GP_EVENT_094",
+                            "GP_EVENT_095",
+                            "GP_EVENT_096",
+                            "GP_EVENT_097",
+                            "GP_EVENT_098",
+                            "GP_EVENT_099",
+                            "NUM_EVENT_TRIGGERS"
+                        ],
+                        "type": "enum"
+                    },
+                    "Positive_Threshold_AcquisitionImmunity": {
+                        "default": 1,
+                        "description": "Specifies the threshold for acquired immunity, where 1 equals 100% immunity and 0 equals 100% susceptible.",
+                        "max": 1,
+                        "min": 0,
+                        "type": "float"
+                    },
+                    "Sim_Types": [
+                        "*"
+                    ],
+                    "Treatment_Fraction": {
+                        "default": 1,
+                        "description": "The fraction of positive diagnoses that are treated.",
+                        "max": 1,
+                        "min": 0,
+                        "type": "float"
+                    },
+                    "class": "ImmunityBloodTest"
                 },
                 "MigrateIndividuals": {
                     "Disqualifying_Properties": {
@@ -16012,7 +16909,7 @@
                             "Target_Demographic": "ExplicitAgeRanges,ExplicitAgeRangesAndGender"
                         },
                         "description": "The lower end of ages targeted for an intervention, in years.",
-                        "max": 3.402823466e+38,
+                        "max": 9.322804028e+35,
                         "min": 0,
                         "type": "float"
                     },
@@ -16573,7 +17470,7 @@
                             "Target_Demographic": "ExplicitAgeRanges,ExplicitAgeRangesAndGender"
                         },
                         "description": "The lower end of ages targeted for an intervention, in years.",
-                        "max": 3.402823466e+38,
+                        "max": 9.322804028e+35,
                         "min": 0,
                         "type": "float"
                     },
@@ -17029,8 +17926,12 @@
             },
             "NodeSetNodeList": {
                 "Node_List": {
+                    "ascending": 0,
+                    "default": [],
                     "description": "A comma-separated list of node IDs in which this event will occur.",
-                    "type": "idmType:NodeListConfig"
+                    "max": 4294967295,
+                    "min": 0,
+                    "type": "Vector Uint32"
                 },
                 "class": "NodeSetNodeList"
             }
@@ -17230,8 +18131,7 @@
                 "max": 3.402823466e+38,
                 "min": 0,
                 "type": "float"
-            },
-            "class": "Action"
+            }
         },
         "idmType:AgeAndProbability": {
             "Age": {
@@ -17247,8 +18147,7 @@
                 "max": 1,
                 "min": 0,
                 "type": "float"
-            },
-            "class": "AgeAndProbability"
+            }
         },
         "idmType:AgeRange": {
             "Max": {
@@ -17264,8 +18163,52 @@
                 "max": 125,
                 "min": 0,
                 "type": "float"
+            }
+        },
+        "idmType:IReport": {
+            "ReportHumanMigrationTracking": {
+                "class": "ReportHumanMigrationTracking"
             },
-            "class": "AgeRange"
+            "ReportNodeDemographics": {
+                "IP_Key_To_Collect": {
+                    "default": "",
+                    "description": "Name of the key to add a column for.",
+                    "type": "string"
+                },
+                "Stratify_By_Gender": {
+                    "default": 1,
+                    "description": "1 (default) implies stratify by gender, 0 implies do not",
+                    "type": "bool"
+                },
+                "class": "ReportNodeDemographics"
+            },
+            "ReportStrainTracking": {
+                "Ouput_Every_Timestep": {
+                    "default": 0,
+                    "description": "Write after every timestep.",
+                    "type": "bool"
+                },
+                "Report_Name": {
+                    "default": "ReportStrainTracking.csv",
+                    "description": "Output file name.",
+                    "type": "string"
+                },
+                "Time_End": {
+                    "default": 3.402823466e+38,
+                    "description": "No output after this timestep.",
+                    "max": 3.402823466e+38,
+                    "min": 0,
+                    "type": "float"
+                },
+                "Time_Start": {
+                    "default": 0,
+                    "description": "No output prior to this timestep.",
+                    "max": 3.402823466e+38,
+                    "min": 0,
+                    "type": "float"
+                },
+                "class": "ReportStrainTracking"
+            }
         },
         "idmType:IncidenceCounter": {
             "Count_Events_For_Num_Timesteps": {
@@ -17332,7 +18275,7 @@
                     "Target_Demographic": "ExplicitAgeRanges,ExplicitAgeRangesAndGender"
                 },
                 "description": "The lower end of ages targeted for an intervention, in years.",
-                "max": 3.402823466e+38,
+                "max": 9.322804028e+35,
                 "min": 0,
                 "type": "float"
             },
@@ -17635,7 +18578,7 @@
                     "Target_Demographic": "ExplicitAgeRanges,ExplicitAgeRangesAndGender"
                 },
                 "description": "The lower end of ages targeted for an intervention, in years.",
-                "max": 3.402823466e+38,
+                "max": 9.322804028e+35,
                 "min": 0,
                 "type": "float"
             },
@@ -17885,23 +18828,14 @@
                 "max": 2147483647,
                 "min": 0,
                 "type": "integer"
-            },
-            "class": "NodeIdAndCoverage"
-        },
-        "idmType:NodeListConfig": [
-            {
-                "description": "Id of Node",
-                "min": 0,
-                "type": "integer"
             }
-        ],
+        },
         "idmType:PropertyRestriction": {
             "Restrictions": {
                 "default": [],
                 "description": "",
                 "type": "Vector String"
-            },
-            "class": "PropertyRestriction"
+            }
         },
         "idmType:Responder": {
             "Action_List": {
@@ -18125,160 +19059,163 @@
                 "type": "enum"
             }
         },
-        "idmType:TBHIVDrugCollection": {
-            "<TBHIVDrugName>": {
-                "TB_Drug_Cure_Rate": {
-                    "default": 1,
-                    "description": "The daily probability of TB cure in an individual with drug-sensitive TB under drug treatment.",
-                    "max": 1,
-                    "min": 0,
-                    "type": "float"
+        "idmType:TBHIVDrugTypeParameters": {
+            "TB_Drug_Cure_Rate": {
+                "default": 1,
+                "description": "The daily probability of TB cure in an individual with drug-sensitive TB under drug treatment.",
+                "max": 1,
+                "min": 0,
+                "type": "float"
+            },
+            "TB_Drug_Cure_Rate_HIV": {
+                "default": 1,
+                "depends-on": {
+                    "Enable_Coinfection": 1
                 },
-                "TB_Drug_Cure_Rate_HIV": {
-                    "default": 1,
-                    "depends-on": {
-                        "Enable_Coinfection": 1
-                    },
-                    "description": "The daily probability of active TB infection being cured in an HIV+ person under drug treatment.",
-                    "max": 1,
-                    "min": 0,
-                    "type": "float"
+                "description": "The daily probability of active TB infection being cured in an HIV+ person under drug treatment.",
+                "max": 1,
+                "min": 0,
+                "type": "float"
+            },
+            "TB_Drug_Cure_Rate_MDR": {
+                "default": 1,
+                "depends-on": {
+                    "Enable_Coinfection": 1
                 },
-                "TB_Drug_Cure_Rate_MDR": {
-                    "default": 1,
-                    "depends-on": {
-                        "Enable_Coinfection": 1
-                    },
-                    "description": "The daily probability of active MDR infection being cured in an HIV+ or HIV- person under drug treatment.",
-                    "max": 1,
-                    "min": 0,
-                    "type": "float"
+                "description": "The daily probability of active MDR infection being cured in an HIV+ or HIV- person under drug treatment.",
+                "max": 1,
+                "min": 0,
+                "type": "float"
+            },
+            "TB_Drug_Inactivation_Rate": {
+                "default": 1,
+                "description": "The daily rate at which treatment with an anti-TB drug causes inactivation in an individual with drug-sensitive TB.",
+                "max": 1,
+                "min": 0,
+                "type": "float"
+            },
+            "TB_Drug_Inactivation_Rate_HIV": {
+                "default": 1,
+                "depends-on": {
+                    "Enable_Coinfection": 1
                 },
-                "TB_Drug_Inactivation_Rate": {
-                    "default": 1,
-                    "description": "The daily rate at which treatment with an anti-TB drug causes inactivation in an individual with drug-sensitive TB.",
-                    "max": 1,
-                    "min": 0,
-                    "type": "float"
+                "description": "The daily probability of active drug-sensitive TB infection becoming latent in an HIV+ person, not currently on ART, under drug treatment.",
+                "max": 1,
+                "min": 0,
+                "type": "float"
+            },
+            "TB_Drug_Inactivation_Rate_MDR": {
+                "default": 1,
+                "depends-on": {
+                    "Enable_Coinfection": 1
                 },
-                "TB_Drug_Inactivation_Rate_HIV": {
-                    "default": 1,
-                    "depends-on": {
-                        "Enable_Coinfection": 1
-                    },
-                    "description": "The daily probability of active drug-sensitive TB infection becoming latent in an HIV+ person, not currently on ART, under drug treatment.",
-                    "max": 1,
-                    "min": 0,
-                    "type": "float"
+                "description": "The daily probability of active MDR infection becoming latent in an HIV+ or HIV-  person under drug treatment.",
+                "max": 1,
+                "min": 0,
+                "type": "float"
+            },
+            "TB_Drug_Mortality_Rate": {
+                "default": 0,
+                "description": "The daily rate at which treatment with an anti-TB drug causes death  in an individual with drug-sensitive TB.",
+                "max": 1,
+                "min": 0,
+                "type": "float"
+            },
+            "TB_Drug_Mortality_Rate_HIV": {
+                "default": 0,
+                "depends-on": {
+                    "Enable_Coinfection": 1
                 },
-                "TB_Drug_Inactivation_Rate_MDR": {
-                    "default": 1,
-                    "depends-on": {
-                        "Enable_Coinfection": 1
-                    },
-                    "description": "The daily probability of active MDR infection becoming latent in an HIV+ or HIV-  person under drug treatment.",
-                    "max": 1,
-                    "min": 0,
-                    "type": "float"
+                "description": "The daily probability of death for HIV+ individual with drug sensitive active infection under drug treatment.",
+                "max": 1,
+                "min": 0,
+                "type": "float"
+            },
+            "TB_Drug_Mortality_Rate_MDR": {
+                "default": 0,
+                "depends-on": {
+                    "Enable_Coinfection": 1
                 },
-                "TB_Drug_Mortality_Rate": {
-                    "default": 0,
-                    "description": "The daily rate at which treatment with an anti-TB drug causes death  in an individual with drug-sensitive TB.",
-                    "max": 1,
-                    "min": 0,
-                    "type": "float"
+                "description": "The daily probability of death for individual with MDR active infection under drug treatment.",
+                "max": 1,
+                "min": 0,
+                "type": "float"
+            },
+            "TB_Drug_Name": {
+                "default": "",
+                "description": "The unique name of the drug.",
+                "type": "string"
+            },
+            "TB_Drug_Primary_Decay_Time_Constant": {
+                "default": 0,
+                "description": "The number of days before the efficacy of a specific anti-TB drug begins to decay.",
+                "max": 100000,
+                "min": 0,
+                "type": "float"
+            },
+            "TB_Drug_Relapse_Rate": {
+                "default": 0,
+                "description": "The daily probability of TB inactivation and subsequent relapse in an individual with drug-sensitive TB under drug treatment.",
+                "max": 1,
+                "min": 0,
+                "type": "float"
+            },
+            "TB_Drug_Relapse_Rate_HIV": {
+                "default": 0,
+                "depends-on": {
+                    "Enable_Coinfection": 1
                 },
-                "TB_Drug_Mortality_Rate_HIV": {
-                    "default": 0,
-                    "depends-on": {
-                        "Enable_Coinfection": 1
-                    },
-                    "description": "The daily probability of death for HIV+ individual with drug sensitive active infection under drug treatment.",
-                    "max": 1,
-                    "min": 0,
-                    "type": "float"
+                "description": "The daily probability that a drug-sensitive active infection in an HIV+ individual not currently on ART will inactivate but subsequently relapse under drug treatment.",
+                "max": 1,
+                "min": 0,
+                "type": "float"
+            },
+            "TB_Drug_Relapse_Rate_MDR": {
+                "default": 0,
+                "depends-on": {
+                    "Enable_Coinfection": 1
                 },
-                "TB_Drug_Mortality_Rate_MDR": {
-                    "default": 0,
-                    "depends-on": {
-                        "Enable_Coinfection": 1
-                    },
-                    "description": "The daily probability of death for individual with MDR active infection under drug treatment.",
-                    "max": 1,
-                    "min": 0,
-                    "type": "float"
+                "description": "The daily probability that an active MDR-TB infection (in HIV+ or HIV-) will inactivate but subsequently relapse under drug treatment.",
+                "max": 1,
+                "min": 0,
+                "type": "float"
+            },
+            "TB_Drug_Resistance_Rate": {
+                "default": 0,
+                "description": "The daily probability that an individual with drug-sensitive TB will acquire MDR-TB under drug treatment. Only individuals who return to the latent state or fail can acquire MDR-TB.",
+                "max": 1,
+                "min": 0,
+                "type": "float"
+            },
+            "TB_Drug_Resistance_Rate_HIV": {
+                "default": 0,
+                "depends-on": {
+                    "Enable_Coinfection": 1
                 },
-                "TB_Drug_Primary_Decay_Time_Constant": {
-                    "default": 0,
-                    "description": "The number of days before the efficacy of a specific anti-TB drug begins to decay.",
-                    "max": 100000,
-                    "min": 0,
-                    "type": "float"
+                "description": "The daily probability that an (HIV+) individual with drug-sensitive TB will acquire MDR-TB under drug treatment.",
+                "max": 1,
+                "min": 0,
+                "type": "float"
+            },
+            "TB_Reduced_Acquire": {
+                "default": 0,
+                "depends-on": {
+                    "Enable_Coinfection": 1
                 },
-                "TB_Drug_Relapse_Rate": {
-                    "default": 0,
-                    "description": "The daily probability of TB inactivation and subsequent relapse in an individual with drug-sensitive TB under drug treatment.",
-                    "max": 1,
-                    "min": 0,
-                    "type": "float"
+                "description": "Proportion reduction in acquisition of new TB infection under drug treatment.",
+                "max": 1,
+                "min": 0,
+                "type": "float"
+            },
+            "TB_Reduced_Transmit": {
+                "default": 0,
+                "depends-on": {
+                    "Enable_Coinfection": 1
                 },
-                "TB_Drug_Relapse_Rate_HIV": {
-                    "default": 0,
-                    "depends-on": {
-                        "Enable_Coinfection": 1
-                    },
-                    "description": "The daily probability that a drug-sensitive active infection in an HIV+ individual not currently on ART will inactivate but subsequently relapse under drug treatment.",
-                    "max": 1,
-                    "min": 0,
-                    "type": "float"
-                },
-                "TB_Drug_Relapse_Rate_MDR": {
-                    "default": 0,
-                    "depends-on": {
-                        "Enable_Coinfection": 1
-                    },
-                    "description": "The daily probability that an active MDR-TB infection (in HIV+ or HIV-) will inactivate but subsequently relapse under drug treatment.",
-                    "max": 1,
-                    "min": 0,
-                    "type": "float"
-                },
-                "TB_Drug_Resistance_Rate": {
-                    "default": 0,
-                    "description": "The daily probability that an individual with drug-sensitive TB will acquire MDR-TB under drug treatment. Only individuals who return to the latent state or fail can acquire MDR-TB.",
-                    "max": 1,
-                    "min": 0,
-                    "type": "float"
-                },
-                "TB_Drug_Resistance_Rate_HIV": {
-                    "default": 0,
-                    "depends-on": {
-                        "Enable_Coinfection": 1
-                    },
-                    "description": "The daily probability that an (HIV+) individual with drug-sensitive TB will acquire MDR-TB under drug treatment.",
-                    "max": 1,
-                    "min": 0,
-                    "type": "float"
-                },
-                "TB_Reduced_Acquire": {
-                    "default": 0,
-                    "depends-on": {
-                        "Enable_Coinfection": 1
-                    },
-                    "description": "Proportion reduction in acquisition of new TB infection under drug treatment.",
-                    "max": 1,
-                    "min": 0,
-                    "type": "float"
-                },
-                "TB_Reduced_Transmit": {
-                    "default": 0,
-                    "depends-on": {
-                        "Enable_Coinfection": 1
-                    },
-                    "description": "Proportion reduction in TB transmission under drug treatment.",
-                    "max": 1,
-                    "min": 0,
-                    "type": "float"
-                }
+                "description": "Proportion reduction in TB transmission under drug treatment.",
+                "max": 1,
+                "min": 0,
+                "type": "float"
             }
         },
         "idmType:TargetedDistribution": {
@@ -18330,8 +19267,7 @@
                 "max": 3.402823466e+38,
                 "min": 0,
                 "type": "float"
-            },
-            "class": "TargetedDistribution"
+            }
         },
         "idmType:WaningEffect": {
             "Age_Multiplier": {
@@ -18465,7 +19401,17 @@
         ],
         "Use_Defaults": {
             "default": 0,
-            "description": "Set to true (1) if you don't want to have to specify all params for event coordinators and interventions. Use at own risk.",
+            "description": "Set to 1 to apply default values to unspecified parameters.",
+            "type": "bool"
+        }
+    },
+    "reports": {
+        "Reports": [
+            "idmType:IReport"
+        ],
+        "Use_Defaults": {
+            "default": 0,
+            "description": "Set to 1 to apply default values to unspecified parameters.",
             "type": "bool"
         }
     }

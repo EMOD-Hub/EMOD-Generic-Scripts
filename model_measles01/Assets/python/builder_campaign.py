@@ -18,6 +18,9 @@ from emod_constants import CAMP_FILE, BASE_YEAR
 
 def campaignBuilder():
 
+    # Get schema
+    sch_data = gdata.schema_json
+
     # Variables for this simulation
     MCV1_RATE = gdata.var_params['MCV1']
     MCV2_FRAC = gdata.var_params['MCV2']
@@ -27,7 +30,9 @@ def campaignBuilder():
 
     SIA_START = gdata.var_params['sia_start_year']
     SIA_COVERAGE = gdata.var_params['sia_coverage']
+    SIA_INT_YRS = gdata.var_params['sia_interval_yrs']
     SIA_MIN_AGE_YR = gdata.var_params['sia_min_age_yr']
+    SIA_MAX_AGE_YR = gdata.var_params['sia_max_age_yr']
 
     MAT_FACTOR = gdata.var_params['mat_factor']
 
@@ -38,19 +43,21 @@ def campaignBuilder():
     BR_MULT_X = gdata.brate_mult_x
     BR_MULT_Y = gdata.brate_mult_y
     start_day = 365.0*(gdata.start_year-BASE_YEAR)
-    camp_event = ce_br_force(ALL_NODES, BR_MULT_X, BR_MULT_Y, start_day)
+    camp_event = ce_br_force(sch_data, ALL_NODES, BR_MULT_X, BR_MULT_Y,
+                             start_day=start_day)
     camp_module.add(camp_event)
 
     # R0 seasonality
     start_day = 365.0*(gdata.start_year-BASE_YEAR)
-    camp_event = ce_inf_force(ALL_NODES, 15.0, 60.0, 1.30,
-                              dt=gdata.t_step_days)
+    camp_event = ce_inf_force(sch_data, ALL_NODES, 15.0, 60.0,
+                              step_size=1.30, dt=gdata.t_step_days)
     camp_module.add(camp_event)
 
     # RI
     start_day = 365.0*(gdata.start_year-BASE_YEAR)
     acq_fact = MAT_FACTOR/2.0
-    camp_event = ce_RI(ALL_NODES, coverage=MCV1_RATE, start_day=start_day,
+    camp_event = ce_RI(sch_data, ALL_NODES,
+                       coverage=MCV1_RATE, start_day=start_day,
                        base_take=0.95, acq_fact=acq_fact, age_dep=AGE_DEP,
                        age_one=MCV1_AGE, frac_two=MCV2_FRAC, age_std=60.0)
     camp_module.add(camp_event)
@@ -62,13 +69,19 @@ def campaignBuilder():
     acq_fact = MAT_FACTOR/2.0
 
     while (sia_year < gdata.run_years):
-        sia_year = sia_year + max(2.0, np.random.poisson(sia_rate))
         start_sia = 365.0*sia_year+start_day
 
-        camp_event = ce_SIA(ALL_NODES, start_day=start_sia,
-                            yrs_min=SIA_MIN_AGE_YR, coverage=SIA_COVERAGE,
-                            base_take=0.95, acq_fact=acq_fact, age_dep=AGE_DEP)
+        camp_event = ce_SIA(sch_data, ALL_NODES, start_day=start_sia,
+                            yrs_max=SIA_MAX_AGE_YR, yrs_min=SIA_MIN_AGE_YR,
+                            coverage=SIA_COVERAGE, base_take=0.95,
+                            acq_fact=acq_fact, age_dep=AGE_DEP)
         camp_module.add(camp_event)
+
+        d_years = SIA_INT_YRS
+        if (d_years < 0):
+            d_years = max(2.0, np.random.poisson(sia_rate))
+        else:
+        sia_year = sia_year + d_years
 
     # End file construction
     camp_module.save(filename=CAMP_FILE)
