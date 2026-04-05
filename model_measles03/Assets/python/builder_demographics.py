@@ -26,6 +26,7 @@ def demographicsBuilder():
     LOG10_IMP = gdata.var_params['log10_import_mult']
     REF_CODE = gdata.var_params['ref_code']
     REF_YEAR = gdata.var_params['ref_year']
+    NUM_NODES = gdata.var_params['num_nodes']
 
     # Demographic reference data file
     dat_file = f'pop_dat_{REF_CODE}.csv'
@@ -40,13 +41,17 @@ def demographicsBuilder():
     # Populate nodes in primary file
     node_list = list()
     node_id = 1
-    imp_rate = R0/6.0 * gdata.init_pop * 1.615e-7 * np.power(10.0, LOG10_IMP)
-    nname = 'EXAMPLE:A{:05d}'.format(node_id)
-    node_obj = Node(lat=0.0, lon=0.0, pop=gdata.init_pop,
-                    name=nname, forced_id=node_id)
-    irs_dict = {DEMOG_IRS: imp_rate}
-    node_obj.node_attributes.extra_attributes = irs_dict
-    node_list.append(node_obj)
+
+    for k1 in range(NUM_NODES):
+        node_pop = float(gdata.init_pop) / NUM_NODES
+        imp_rate = R0/6.0 * node_pop * 1.615e-7 * np.power(10.0, LOG10_IMP)
+        nname = 'EXAMPLE:A{:05d}'.format(node_id)
+        node_obj = Node(lat=0.0, lon=0.0, pop=node_pop,
+                        name=nname, forced_id=node_id)
+        irs_dict = {DEMOG_IRS: imp_rate}
+        node_obj.node_attributes.extra_attributes = irs_dict
+        node_list.append(node_obj)
+        node_id = node_id + 1
 
     # Create primary file
     ref_name = 'Demographics_Datafile'
