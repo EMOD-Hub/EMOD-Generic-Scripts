@@ -1,0 +1,50 @@
+Bootstrap: localimage
+From: Assets/EMOD_OS_Fedora43.sif
+
+%post
+    dnf upgrade -y
+
+    dnf install -y python-devel
+    dnf install -y mpich-devel
+    dnf install -y git
+    dnf install -y glibc-devel
+    dnf install -y gcc-c++
+
+    dnf clean all
+
+    python3 -m pip install pip --upgrade
+    python3 -m pip install scons
+
+    export USER=CalculonUser-EMOD
+
+    git clone https://github.com/EMOD-Hub/EMOD-Generic
+
+    cd EMOD-Generic
+
+    git fetch
+    git checkout Generic-Ongoing
+
+    export PATH=$PATH:/usr/lib64/mpich/bin
+
+    scons --Release --jobs=4 --Disease=Generic
+
+    cd ..
+
+    cp EMOD-Generic/build/x64/Release/Eradication/Eradication /Eradication
+
+    rm -r EMOD-Generic
+
+%runscript
+
+
+%environment
+
+
+%test
+
+
+%labels
+    Author kfrey@idmod.org
+
+%help
+    Minimal container for building EMOD.

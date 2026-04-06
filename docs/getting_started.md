@@ -4,7 +4,7 @@
 
 2. Install requirements via `pip` using the IDM artifactory:
 
-    `pip install . --extra-index-url=https://packages.idmod.org/api/pypi/pypi-production/simple`
+    `pip install .`
 
 3. Run an experiment:
 

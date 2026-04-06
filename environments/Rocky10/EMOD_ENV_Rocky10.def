@@ -1,0 +1,32 @@
+Bootstrap: localimage
+From: Assets/EMOD_OS_Rocky10.sif
+
+%post
+    dnf upgrade -y
+
+    dnf install -y python
+    dnf install -y python-pip
+    dnf install -y mpich
+
+    dnf clean all
+
+    python3 -m venv py_env
+    . py_env/bin/activate
+
+    pip install pip --upgrade
+    pip install emod-api~=3.1
+
+%runscript
+
+
+%environment
+
+
+%test
+
+
+%labels
+    Author kfrey@idmod.org
+
+%help
+    Minimal container for running EMOD using emod-api for file support.

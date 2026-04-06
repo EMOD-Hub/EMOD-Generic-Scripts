@@ -1,0 +1,32 @@
+Bootstrap: localimage
+From: Assets/EMOD_OS_Fedora43.sif
+
+%post
+    dnf upgrade -y
+
+    dnf install -y python3
+    dnf install -y python3-pip
+    dnf install -y mpich
+
+    dnf clean all
+
+    python3 -m venv py_env
+    . py_env/bin/activate
+
+    pip3 install pip --upgrade
+    pip3 install emod-api~=3.1
+
+%runscript
+
+
+%environment
+
+
+%test
+
+
+%labels
+    Author kfrey@idmod.org
+
+%help
+    Minimal container for running EMOD using emod-api for file support.

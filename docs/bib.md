@@ -1,8 +1,8 @@
 [emod-api]: https://emod-hub.github.io/emod-api/
-[emod-generic]: https://docs.idmod.org/projects/emod-generic/en/latest/parameter-overview.html
+[emod-generic]: https://emod-hub.github.io/EMOD-Generic/
 [emodpy]: https://emod-hub.github.io/emodpy/
-[emodpy-hiv]: https://docs.idmod.org/projects/emodpy-hiv/
-[emodpy-malaria]: https://docs.idmod.org/projects/emodpy-malaria/
+[emodpy-hiv]: https://emod-hub.github.io/emodpy-hiv/
+[emodpy-malaria]: https://emod-hub.github.io/emodpy-malaria/
 [idmod]: https://www.idmod.org/
 [idmtools]: https://docs.idmod.org/projects/idmtools/
 [idmtools_cli]: https://docs.idmod.org/projects/idmtools/en/latest/cli/cli_index.html

@@ -16,6 +16,9 @@ from emod_constants import CAMP_FILE, BASE_YEAR
 
 def campaignBuilder():
 
+    # Get schema
+    sch_data = gdata.schema_json
+
     # Variables for this simulation
     START_YEAR = gdata.var_params['start_year']
 
@@ -26,7 +29,8 @@ def campaignBuilder():
     BR_MULT_X = gdata.brate_mult_x
     BR_MULT_Y = gdata.brate_mult_y
     start_day = 365.0*(START_YEAR-BASE_YEAR)
-    camp_event = ce_br_force(ALL_NODES, BR_MULT_X, BR_MULT_Y, start_day)
+    camp_event = ce_br_force(sch_data, ALL_NODES, BR_MULT_X, BR_MULT_Y,
+                             start_day=start_day)
     camp_module.add(camp_event)
 
     # End file construction

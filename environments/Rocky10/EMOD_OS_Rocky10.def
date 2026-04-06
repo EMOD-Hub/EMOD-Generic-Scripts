@@ -1,0 +1,20 @@
+Bootstrap: docker
+From: rockylinux/rockylinux:10.1
+
+%post
+    dnf clean all
+
+%runscript
+
+
+%environment
+
+
+%test
+
+
+%labels
+    Author kfrey@idmod.org
+
+%help
+    Minimal container. Creates an Asset on COMPS; avoids repeated pull from docker.

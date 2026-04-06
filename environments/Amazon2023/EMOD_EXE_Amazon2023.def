@@ -4,26 +4,21 @@ From: Assets/EMOD_OS_Amazon2023.sif
 %post
     dnf upgrade -y
 
-    dnf install python-devel -y
-    dnf install mpich-devel -y
-    dnf install sqlite-devel -y
-    dnf install git -y
-    dnf install glibc-devel -y
-    dnf install gcc-c++ -y
+    dnf install -y python3.13-devel
+    dnf install -y python3.13-pip
+    dnf install -y mpich-devel
+    dnf install -y git
+    dnf install -y glibc-devel
+    dnf install -y gcc-c++
 
     dnf clean all
 
-    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-    python3 get-pip.py
-    rm get-pip.py
-
-    python3 -m pip install pip --upgrade
-    python3 -m pip install scons
+    python3.13 -m pip install pip --upgrade
+    python3.13 -m pip install scons
 
     export USER=CalculonUser-EMOD
 
     export PATH=$PATH:/usr/lib64/mpich/bin
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/mpich/lib
 
     git clone https://github.com/EMOD-Hub/EMOD-Generic
 

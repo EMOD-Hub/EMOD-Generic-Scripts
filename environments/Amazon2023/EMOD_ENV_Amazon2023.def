@@ -4,17 +4,17 @@ From: Assets/EMOD_OS_Amazon2023.sif
 %post
     dnf upgrade -y
 
-    dnf -y install python
-    dnf -y install python-pip
-    dnf -y install mpich
+    dnf install -y python3.13
+    dnf install -y python3.13-pip
+    dnf install -y mpich
 
     dnf clean all
 
-    python3 -m venv py_env
+    python3.13 -m venv py_env
     . py_env/bin/activate
 
-    pip install pip              --upgrade
-    pip install emod-api==2.0.26 --extra-index-url https://packages.idmod.org/api/pypi/pypi-production/simple
+    pip install pip --upgrade
+    pip install emod-api~=3.1
 
 %runscript
 

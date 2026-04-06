@@ -56,13 +56,16 @@ def write_param_dict():
     vals = 365.0*np.random.choice(np.arange(3, 19)/12, size=NSIMS)
     P_VAR['MCV1_age'] = (np.round(vals, 2)).tolist()
 
-    # Reference year for population; uses UN WPP for DRC
+    # Reference country code and year for population pyramid
+    P_CON['ref_code'] = 'COD'
     P_CON['ref_year'] = 2040
 
     # SIA parameters
     P_CON['sia_start_year'] = 1000
+    P_CON['sia_interval_yrs'] = -1
     P_CON['sia_coverage'] = 0.60
     P_CON['sia_min_age_yr'] = 0.75
+    P_CON['sia_max_age_yr'] = 5.00
 
     # Log10 of multiplier on exogeneous case importation
     P_CON['log10_import_mult'] = 1.0

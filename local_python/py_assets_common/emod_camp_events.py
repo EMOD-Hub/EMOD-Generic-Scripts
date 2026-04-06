@@ -12,7 +12,7 @@ CE = 'CampaignEvent'
 
 NSNL = 'NodeSetNodeList'
 
-SEC = 'StandardEventCoordinator'
+SEC = 'StandardInterventionDistributionEventCoordinator'
 CNEC = 'CoverageByNodeEventCoordinator'
 CHWEC = 'CommunityHealthWorkerEventCoordinator'
 
@@ -22,6 +22,9 @@ MID = 'MultiInterventionDistributor'
 DI = 'DelayedIntervention'
 VAX = 'Vaccine'
 OI = 'OutbreakIndividual'
+IMPP = 'ImportPressure'
+NBRM = 'NodeBirthRateMult'
+NIM = 'NodeInfectivityMult'
 
 VEC_AGE = [0/12*365, 3/12*365, 5/12*365, 7/12*365, 9/12*365]
 VEC_TAKE = [0.0, 0.0, 0.65, 0.92, 1.0]
@@ -43,15 +46,15 @@ def build_node_list(reg_list, node_dict):
 # *****************************************************************************
 
 
-def ce_import_pressure(node_list,
+def ce_import_pressure(schjson, node_list,
                        start_day=0.0, duration=1.0, magnitude=1.0,
                        age_yrs=40.0, clade=0, genome=0):
 
     # Import pressure
-    camp_event = s2c.get_class_with_defaults(CE, SPATH)
-    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
-    camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
-    camp_iv = s2c.get_class_with_defaults('ImportPressure', SPATH)
+    camp_event = s2c.get_class_with_defaults(CE, schema_json=schjson)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, schema_json=schjson)
+    camp_coord = s2c.get_class_with_defaults(SEC, schema_json=schjson)
+    camp_iv = s2c.get_class_with_defaults(IMPP, schema_json=schjson)
 
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
@@ -98,14 +101,14 @@ def ce_random_numbers(node_list,
 # *****************************************************************************
 
 
-def ce_br_force(node_list, times, values,
+def ce_br_force(schjson, node_list, times, values,
                 start_day=0.0):
 
     # Birth rate multiplier
-    camp_event = s2c.get_class_with_defaults(CE, SPATH)
-    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
-    camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
-    camp_iv = s2c.get_class_with_defaults('NodeBirthRateMult', SPATH)
+    camp_event = s2c.get_class_with_defaults(CE, schema_json=schjson)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, schema_json=schjson)
+    camp_coord = s2c.get_class_with_defaults(SEC, schema_json=schjson)
+    camp_iv = s2c.get_class_with_defaults(NBRM, schema_json=schjson)
 
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
@@ -123,14 +126,14 @@ def ce_br_force(node_list, times, values,
 # *****************************************************************************
 
 
-def ce_inf_force(node_list, step_init, step_width, step_size=1.0,
-                 start_day=0.0, nreps=-1, dt=1.0):
+def ce_inf_force(schjson, node_list, step_init, step_width,
+                 step_size=1.0, start_day=0.0, nreps=-1, dt=1.0):
 
     # Infectivity multiplier
-    camp_event = s2c.get_class_with_defaults(CE, SPATH)
-    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
-    camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
-    camp_iv = s2c.get_class_with_defaults('NodeInfectivityMult', SPATH)
+    camp_event = s2c.get_class_with_defaults(CE, schema_json=schjson)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, schema_json=schjson)
+    camp_coord = s2c.get_class_with_defaults(SEC, schema_json=schjson)
+    camp_iv = s2c.get_class_with_defaults(NIM, schema_json=schjson)
 
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
@@ -191,7 +194,7 @@ def ce_inf_mod(node_list,
 # *****************************************************************************
 
 
-def ce_RI(node_list,
+def ce_RI(schjson, node_list,
           coverage=None, start_day=0.0, base_take=1.0,
           coverage_x=None, coverage_y=None,
           age_one=300.0, frac_two=None, age_two=475.0, age_std=90.0,
@@ -206,13 +209,13 @@ def ce_RI(node_list,
             coverage_y = [coverage]
 
     # Vaccine
-    camp_event = s2c.get_class_with_defaults(CE, SPATH)
-    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
-    camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
-    camp_iv01 = s2c.get_class_with_defaults(NLHTS, SPATH)
-    camp_iv02 = s2c.get_class_with_defaults(MID, SPATH)
-    camp_iv03 = s2c.get_class_with_defaults(DI, SPATH)
-    camp_iv04 = s2c.get_class_with_defaults(VAX, SPATH)
+    camp_event = s2c.get_class_with_defaults(CE, schema_json=schjson)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, schema_json=schjson)
+    camp_coord = s2c.get_class_with_defaults(SEC, schema_json=schjson)
+    camp_iv01 = s2c.get_class_with_defaults(NLHTS, schema_json=schjson)
+    camp_iv02 = s2c.get_class_with_defaults(MID, schema_json=schjson)
+    camp_iv03 = s2c.get_class_with_defaults(DI, schema_json=schjson)
+    camp_iv04 = s2c.get_class_with_defaults(VAX, schema_json=schjson)
 
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day
@@ -248,8 +251,8 @@ def ce_RI(node_list,
 
     # Second RI dose
     if (frac_two):
-        camp_iv05 = s2c.get_class_with_defaults(DI, SPATH)
-        camp_iv06 = s2c.get_class_with_defaults(VAX, SPATH)
+        camp_iv05 = s2c.get_class_with_defaults(DI, schema_json=schjson)
+        camp_iv06 = s2c.get_class_with_defaults(VAX, schema_json=schjson)
 
         camp_iv05.Actual_IndividualIntervention_Configs = [camp_iv06]
         camp_iv05.Coverage = frac_two
@@ -316,16 +319,16 @@ def ce_OPV_RI(node_list,
 # *****************************************************************************
 
 
-def ce_SIA(node_list,
+def ce_SIA(schjson, node_list,
            start_day=0.0, yrs_min=0.75, yrs_max=5.0,
            coverage=0.8, base_take=1.0, acq_fact=0.0, age_dep=False):
 
     # Vaccine
-    camp_event = s2c.get_class_with_defaults(CE, SPATH)
-    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
-    camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
-    camp_iv01 = s2c.get_class_with_defaults(DI, SPATH)
-    camp_iv02 = s2c.get_class_with_defaults(VAX, SPATH)
+    camp_event = s2c.get_class_with_defaults(CE, schema_json=schjson)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, schema_json=schjson)
+    camp_coord = s2c.get_class_with_defaults(SEC, schema_json=schjson)
+    camp_iv01 = s2c.get_class_with_defaults(DI, schema_json=schjson)
+    camp_iv02 = s2c.get_class_with_defaults(VAX, schema_json=schjson)
 
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day

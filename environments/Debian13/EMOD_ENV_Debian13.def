@@ -5,18 +5,18 @@ From: Assets/EMOD_OS_Debian13.sif
     apt-get update
     apt-get upgrade -y
 
-    apt-get install python3 -y
-    apt-get install python3-pip -y
-    apt-get install python3-venv -y
-    apt-get install mpich -y
+    apt-get install -y python3
+    apt-get install -y python3-pip
+    apt-get install -y python3-venv
+    apt-get install -y mpich
 
     apt-get clean
 
     python3 -m venv py_env
     . py_env/bin/activate
 
-    pip3 install pip              --upgrade
-    pip3 install emod-api==2.0.26 --extra-index-url https://packages.idmod.org/api/pypi/pypi-production/simple
+    pip3 install pip --upgrade
+    pip3 install emod-api~=3.1
 
 %runscript
 

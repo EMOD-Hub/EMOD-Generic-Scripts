@@ -5,14 +5,13 @@ From: Assets/EMOD_OS_Debian13.sif
     apt-get update
     apt-get upgrade -y
 
-    apt-get install python3-dev -y
-    apt-get install libmpich-dev -y
-    apt-get install libsqlite3-dev -y
-    apt-get install git -y
-    apt-get install libc-dev -y
-    apt-get install g++ -y
+    apt-get install -y python3-dev
+    apt-get install -y libmpich-dev
+    apt-get install -y git
+    apt-get install -y libc-dev
+    apt-get install -y g++
 
-    apt-get install scons -y
+    apt-get install -y scons
 
     apt-get clean
 

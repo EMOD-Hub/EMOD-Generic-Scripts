@@ -1,19 +1,16 @@
 FROM ubuntu:24.04
 #
 RUN apt-get update
-RUN apt-get -y install software-properties-common
-RUN apt-get update
-RUN add-apt-repository universe
-RUN apt-get -y upgrade
+RUN apt-get upgrade -y
 #
-RUN apt-get -y install python3-dev
-RUN apt-get -y install libmpich-dev
-RUN apt-get -y install libsqlite3-dev
-RUN apt-get -y install git
-RUN apt-get -y install libc-dev
-RUN apt-get -y install g++
+RUN apt-get install -y python3-dev
+RUN apt-get install -y libmpich-dev
+RUN apt-get install -y libsqlite3-dev
+RUN apt-get install -y git
+RUN apt-get install -y libc-dev
+RUN apt-get install -y g++
 #
-RUN apt-get -y install scons
+RUN apt-get install -y scons
 #
 RUN apt-get clean
 #

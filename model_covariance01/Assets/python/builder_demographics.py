@@ -6,7 +6,8 @@
 
 import global_data as gdata
 
-from emod_api.demographics.Demographics import Demographics, Node
+from emod_api.demographics.demographics import Demographics
+from emod_api.demographics.node import Node
 
 from emod_constants import DEMOG_FILE
 
@@ -26,18 +27,19 @@ def demographicsBuilder():
 
     # Create primary file
     ref_name = 'Example_Covariance_Sims'
-    demog_obj = Demographics(nodes=node_list, idref=ref_name)
+    demog_obj = Demographics(nodes=node_list, idref=ref_name,
+                             set_defaults=False)
 
     # Update defaults in primary file
-    demog_obj.raw['Defaults']['IndividualAttributes'].clear()
-    demog_obj.raw['Defaults']['NodeAttributes'].clear()
+    demog_obj.default_node.individual_attributes.parameter_dict = dict()
+    demog_obj.default_node.node_attributes.parameter_dict = dict()
 
     iadict = dict()
     iadict['AcquisitionHeterogeneityVariance'] = IND_RISK_VAR
-    demog_obj.raw['Defaults']['IndividualAttributes'].update(iadict)
+    demog_obj.default_node.individual_attributes.parameter_dict.update(iadict)
 
     # Write primary demographics file
-    demog_obj.generate_file(name=DEMOG_FILE)
+    demog_obj.to_file(path=DEMOG_FILE)
 
     # Save filename to global data for use in other functions
     gdata.demog_files.append(DEMOG_FILE)

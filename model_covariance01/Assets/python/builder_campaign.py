@@ -16,6 +16,9 @@ from emod_constants import CAMP_FILE
 
 def campaignBuilder():
 
+    # Get schema
+    sch_data = gdata.schema_json
+
     # Variables for this simulation
     # N/A
 
@@ -23,7 +26,7 @@ def campaignBuilder():
     ALL_NODES = gdata.demog_object.node_ids
 
     # Import pressure
-    camp_event = ce_import_pressure(ALL_NODES, duration=5.0)
+    camp_event = ce_import_pressure(sch_data, ALL_NODES, duration=5.0)
     camp_module.add(camp_event)
 
     # End file construction
