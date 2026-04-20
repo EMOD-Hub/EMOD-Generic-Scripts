@@ -18,8 +18,6 @@ demog_files = list()
 demog_object = None
 
 # Other stuff
-init_pop = 250000
-
 inf_prd_mean = 18.0
 
 brate_mult_x = None

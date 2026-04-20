@@ -3,6 +3,7 @@
 # *****************************************************************************
 
 import json
+import os
 import sqlite3
 
 import global_data as gdata
@@ -11,7 +12,8 @@ import numpy as np
 
 from emod_postproc_func import post_proc_poppyr, post_proc_prev, post_proc_cost
 from emod_constants import SQL_TIME, SQL_MCW, SQL_AGE, O_FILE, MO_DAYS, \
-                           SQL_FILE, BASE_YEAR
+                           SQL_FILE, BASE_YEAR, RST_FILE, RST_TIME, RST_NODE, \
+                           RST_TOT_INF
 
 # *****************************************************************************
 
@@ -31,6 +33,13 @@ def application(output_path):
 
     # Retain campaign cost output channel
     post_proc_cost(output_path, parsed_dat[key_str])
+
+    # Post-process strain reporter
+    infdat = np.loadtxt(os.path.join(output_path, RST_FILE),
+                        delimiter=',', skiprows=1, ndmin=2)
+
+    infcol = infdat[:, [RST_TIME, RST_NODE, RST_TOT_INF]]
+    parsed_dat[key_str]['rst'] = infcol.tolist()
 
     # Connect to SQL database; retreive new entries
     connection_obj = sqlite3.connect(SQL_FILE)
