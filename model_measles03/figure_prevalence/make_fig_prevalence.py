@@ -61,7 +61,7 @@ def make_fig():
 
             sim_idx = int(skey)
 
-            inf_col = np.array(data_brick[skey]['rst'])  # (Time, Node, Infections)
+            inf_col = np.array(data_brick[skey]['rst'])  # (Time, Node, TotInf)
             for k1 in range(inf_col.shape[0]):
                 time_idx = int(inf_col[k1, 0]/t_step_days)
                 node_idx = int(inf_col[k1, 1] - 1)  # Node indicies are 1-based
@@ -72,7 +72,6 @@ def make_fig():
 
         non_zero_dat = (inf_dat[fidx, :, :] > 0)
         non_zero_avg = np.mean(non_zero_dat, axis=(0,1))  # Lump sims and nodes
-        non_zero_std = np.std(non_zero_dat, axis=(0,1))  # Lump sims and nodes
 
         axs01.plot(tvec/365.0, non_zero_avg, linewidth=2,
                    label='Nodes {:d}'.format(NNODES))
