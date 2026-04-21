@@ -27,6 +27,7 @@ def demographicsBuilder():
     REF_CODE = gdata.var_params['ref_code']
     REF_YEAR = gdata.var_params['ref_year']
     NUM_NODES = gdata.var_params['num_nodes']
+    INIT_POP = gdata.var_params['init_pop']
 
     # Demographic reference data file
     dat_file = f'pop_dat_{REF_CODE}.csv'
@@ -43,7 +44,7 @@ def demographicsBuilder():
     node_id = 1
 
     for k1 in range(NUM_NODES):
-        node_pop = float(gdata.init_pop) / NUM_NODES
+        node_pop = float(INIT_POP) / NUM_NODES
         imp_rate = R0/6.0 * node_pop * 1.615e-7 * np.power(10.0, LOG10_IMP)
         nname = 'EXAMPLE:A{:05d}'.format(node_id)
         node_obj = Node(lat=0.0, lon=0.0, pop=node_pop,

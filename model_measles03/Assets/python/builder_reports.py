@@ -4,7 +4,7 @@
 #
 # *****************************************************************************
 
-from emod_report_func import build_file, write_file
+from emod_report_func import build_file, write_file, report_strain
 
 # *****************************************************************************
 
@@ -15,7 +15,7 @@ def reportsBuilder():
     json_set = build_file()
 
     # Configurations
-    pass
+    report_strain(json_set, every_timestep=True)
 
     #  Write file
     write_file(json_set)

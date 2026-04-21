@@ -30,7 +30,7 @@ def write_param_dict():
     # Setup
     param_dict = dict()
 
-    param_dict[EXP_NAME] = 'Measles03-SIAs3Yrs60pct-70RI'
+    param_dict[EXP_NAME] = 'Measles03-NoSIAs-70RI-Nodes002'
     param_dict[NUM_SIMS] = 250
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
@@ -64,7 +64,7 @@ def write_param_dict():
     P_CON['num_nodes'] = 2
 
     # SIA parameters
-    P_CON['sia_start_year'] = 10
+    P_CON['sia_start_year'] = 1000
     P_CON['sia_interval_yrs'] = 3
     P_CON['sia_coverage'] = 0.60
     P_CON['sia_min_age_yr'] = 0.75
