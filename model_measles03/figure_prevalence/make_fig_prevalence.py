@@ -74,11 +74,13 @@ def make_fig():
         non_zero_avg = np.mean(non_zero_dat, axis=(0,1))  # Lump sims and nodes
         non_zero_std = np.std(non_zero_dat, axis=(0,1))  # Lump sims and nodes
 
-        axs01.plot(tvec/365.0, non_zero_avg, color='C0', linewidth=2)
+        axs01.plot(tvec/365.0, non_zero_avg, linewidth=2,
+                   label='Nodes {:d}'.format(NNODES))
         axs01.set_ylabel('Non-zero prevalence (fraction)', fontsize=16)
         axs01.set_xlabel('Year', fontsize=16)
 
     plt.tight_layout()
+    plt.legend()
     plt.savefig('fig_prevalence_01.png'.format(dirname))
     plt.close()
 
