@@ -28,6 +28,7 @@ def demographicsBuilder():
     REF_YEAR = gdata.var_params['ref_year']
     NUM_NODES = gdata.var_params['num_nodes']
     INIT_POP = gdata.var_params['init_pop']
+    INIT_REFF = gdata.var_params['init_Reff']
 
     # Demographic reference data file
     dat_file = f'pop_dat_{REF_CODE}.csv'
@@ -70,7 +71,8 @@ def demographicsBuilder():
     gdata.demog_files.append(DEMOG_FILE)
 
     # Write initial susceptibility overlay
-    nfname = demog_is_over(ref_name, node_list, R0, vd_tup[3])
+    nfname = demog_is_over(ref_name, node_list, R0, vd_tup[3],
+                           targ_reff=INIT_REFF)
     gdata.demog_files.append(nfname)
 
     # Write vital dynamics overlay

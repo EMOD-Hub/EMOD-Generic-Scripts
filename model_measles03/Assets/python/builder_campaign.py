@@ -10,7 +10,8 @@ import numpy as np
 
 import emod_api.campaign as camp_module
 
-from emod_camp_events import ce_br_force, ce_inf_force, ce_RI, ce_SIA
+from emod_camp_events import ce_br_force, ce_inf_force, ce_RI, ce_SIA, \
+                             ce_add_infected
 from emod_constants import CAMP_FILE, BASE_YEAR
 
 # *****************************************************************************
@@ -36,6 +37,8 @@ def campaignBuilder():
 
     MAT_FACTOR = gdata.var_params['mat_factor']
 
+    INF_AGENTS = gdata.var_params['num_inf_agents']
+
     # Note: campaign module itself is the file object; no Campaign class
     ALL_NODES = gdata.demog_object.node_ids
 
@@ -51,6 +54,12 @@ def campaignBuilder():
     start_day = 365.0*(gdata.start_year-BASE_YEAR)
     camp_event = ce_inf_force(sch_data, ALL_NODES, 15.0, 60.0,
                               step_size=1.30, dt=gdata.t_step_days)
+    camp_module.add(camp_event)
+
+    # Add infected agents at time zero
+    start_day = 365.0*(gdata.start_year-BASE_YEAR)
+    camp_event = ce_add_infected(sch_data, ALL_NODES, start_day=0.0,
+                                 num_infected=INF_AGENTS)
     camp_module.add(camp_event)
 
     # RI

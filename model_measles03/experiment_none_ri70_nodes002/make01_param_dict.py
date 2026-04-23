@@ -63,6 +63,12 @@ def write_param_dict():
     # Number of nodes
     P_CON['num_nodes'] = 2
 
+    # Initial effective reproductive number
+    P_CON['init_Reff'] = 1.1
+
+    # Initial number of infected agents added to each node at time zero
+    P_CON['num_inf_agents'] = 0
+
     # SIA parameters
     P_CON['sia_start_year'] = 1000
     P_CON['sia_interval_yrs'] = 3

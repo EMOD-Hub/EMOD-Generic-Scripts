@@ -17,8 +17,8 @@ from global_data import run_years, AGE_HIST_BINS, IHME_MORT_X, IHME_MORT_Y
 
 # *****************************************************************************
 
-DIRNAMES = ['experiment_none_ri70',
-            'experiment_sia3yr60cv_ri70']
+DIRNAMES = ['experiment_none_ri70_nodes002',
+            'experiment_sia3yr60cv_ri70_nodes002']
 
 # *****************************************************************************
 

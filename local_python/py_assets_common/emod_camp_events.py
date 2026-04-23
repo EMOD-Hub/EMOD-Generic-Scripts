@@ -22,6 +22,7 @@ MID = 'MultiInterventionDistributor'
 DI = 'DelayedIntervention'
 VAX = 'Vaccine'
 OI = 'OutbreakIndividual'
+OB = 'Outbreak'
 IMPP = 'ImportPressure'
 NBRM = 'NodeBirthRateMult'
 NIM = 'NodeInfectivityMult'
@@ -66,6 +67,36 @@ def ce_import_pressure(schjson, node_list,
 
     camp_iv.Durations = [duration]
     camp_iv.Daily_Import_Pressures = [magnitude]
+    camp_iv.Import_Age = age_yrs*YR_DAYS
+    camp_iv.Import_Female_Prob = 0.0
+    camp_iv.Import_Agent_MC_Weight = 1.0
+    camp_iv.Clade = clade
+    camp_iv.Genome = genome
+
+    return camp_event
+
+# *****************************************************************************
+
+
+def ce_add_infected(schjson, node_list,
+                    start_day=0.0, num_infected=0,
+                    age_yrs=40.0, clade=0, genome=0):
+
+    # Import pressure
+    camp_event = s2c.get_class_with_defaults(CE, schema_json=schjson)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, schema_json=schjson)
+    camp_coord = s2c.get_class_with_defaults(SEC, schema_json=schjson)
+    camp_iv = s2c.get_class_with_defaults(OB, schema_json=schjson)
+
+    camp_event.Event_Coordinator_Config = camp_coord
+    camp_event.Start_Day = start_day
+    camp_event.Nodeset_Config = camp_nodes
+
+    camp_nodes.Node_List = node_list
+
+    camp_coord.Intervention_Config = camp_iv
+
+    camp_iv.Number_Cases_Per_Node = num_infected
     camp_iv.Import_Age = age_yrs*YR_DAYS
     camp_iv.Import_Female_Prob = 0.0
     camp_iv.Import_Agent_MC_Weight = 1.0

@@ -30,7 +30,7 @@ def write_param_dict():
     # Setup
     param_dict = dict()
 
-    param_dict[EXP_NAME] = 'Measles03-SIAs3Yrs60pct-70RI'
+    param_dict[EXP_NAME] = 'Measles03-SIAs3Yrs60pct-70RI-Nodes002'
     param_dict[NUM_SIMS] = 250
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
@@ -62,6 +62,12 @@ def write_param_dict():
 
     # Number of nodes
     P_CON['num_nodes'] = 2
+
+    # Initial effective reproductive number
+    P_CON['init_Reff'] = 1.1
+
+    # Initial number of infected agents added to each node at time zero
+    P_CON['num_inf_agents'] = 0
 
     # SIA parameters
     P_CON['sia_start_year'] = 10

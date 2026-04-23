@@ -98,7 +98,8 @@ def min_fun(x1, age_year, age_prob, targ_frac):
 # *****************************************************************************
 
 
-def demog_is_over(ref_name, node_list, R0, age_x, age_y=None, idx=0):
+def demog_is_over(ref_name, node_list, R0, age_x, age_y=None,
+                  idx=0, targ_reff=1.1):
 
     if (not os.path.exists(PATH_OVERLAY)):
         os.mkdir(PATH_OVERLAY)
@@ -107,7 +108,7 @@ def demog_is_over(ref_name, node_list, R0, age_x, age_y=None, idx=0):
         age_y = POP_AGE_DAYS
 
     # Calculate initial susceptibilities
-    targ_frac = 1.1*(1.0/R0)  # Tries to aim for Reff of 1.1
+    targ_frac = targ_reff*(1.0/R0)  # Tries to aim for Reff of 1.1
 
     # Implicit solve of exponential decay mapped onto age distribution. Target
     # area-under-the-curve is specified by targ_frac. Just aims to get close.
