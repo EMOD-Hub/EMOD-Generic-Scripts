@@ -9,7 +9,7 @@ description = "Demonstration models using the Generic-Ongoing branch of EMOD."
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
-    {name = "Kurt Frey", email = "kurt.frey@gatesfoundation.org"}
+    {name = "Kurt Frey", email = "kurt.frey@gatesfoundation.org"},
 ]
 keywords = ["modeling", "IDM"]
 dependencies = [
@@ -19,6 +19,11 @@ license = "MIT"
 classifiers = [
     "Intended Audience :: Science/Research",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering :: Bio-Informatics"
 ]
@@ -30,15 +35,17 @@ docs = [
     "mkdocstrings-python",
     "mkdocs-autoapi",
     "mkdocs-glightbox",
+    "mkdocs-table-reader-plugin",
 ]
 lint = [
     "flake8",
 ]
-tests = [
+test = [
 ]
 
 [project.urls]
 Repository = "https://github.com/EMOD-Hub/EMOD-Generic-Scripts"
+Documentation = "https://emod.idmod.org/EMOD-Generic-Scripts/"
 Issues = "https://github.com/EMOD-Hub/EMOD-Generic-Scripts/issues"
 
 [tool.setuptools]

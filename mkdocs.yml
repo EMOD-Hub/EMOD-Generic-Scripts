@@ -12,8 +12,8 @@ theme:
   logo: images/EMOD_logo.png
   favicon: images/favicon.ico
   features:
-    # - navigation.footer
     - content.code.copy
+    # - navigation.footer
   palette:
     - scheme: default
       toggle:
@@ -48,12 +48,14 @@ nav:
     - examples/model_rubella01.md
     - examples/model_transtree01.md
   - API reference: autoapi/
+  - Related projects: https://emod.idmod.org/
 
 plugins:
   - search:
   - autorefs:
   - include-markdown:
   - glightbox:
+  - table-reader:
   - mkdocs-autoapi:
       autoapi_ignore:
         - build/**/*
@@ -69,6 +71,7 @@ markdown_extensions:
   - admonition:
   - attr_list:  # enables HTMl and CSS classes to inline elements
   - def_list:
+  - footnotes:
   - md_in_html:  # enables grids
   - pymdownx.arithmatex:  # Latex processing for math equations
       generic: true
@@ -76,6 +79,9 @@ markdown_extensions:
   - pymdownx.blocks.details:  # allows nesting of collapsible code
   - pymdownx.caret:  # superscripts
   - pymdownx.details:  # collapsible elements
+  - pymdownx.emoji:  # emojis and icons
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight:  # syntax highlighting for code blocks
       linenums: true  # adds line numbers to code blocks automatically
       anchor_linenums: true  # adds HTML anchors (#L1, #L2, etc.) to each line so you can link to specific ones.
@@ -104,16 +110,14 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/EMOD-Hub/
-    - icon: fontawesome/regular/envelope
-      link: mailto:idm@gatesfoundation.org
+    - icon: octicons/comment-discussion-24
+      link: https://github.com/EMOD-Hub/issues-and-discussions
     - icon: octicons/globe-24
       link: https://idmod.org
     - icon: simple/youtube
       link: http://www.youtube.com/@institutefordiseasemodelin1987
     - icon: fontawesome/brands/linkedin
       link: https://linkedin.com/company/institute-disease-modeling
-    - icon: fontawesome/brands/slack
-      link: https://gatesfoundation.enterprise.slack.com/
   analytics:
     provider: custom
     property: GTM-NK4K647
