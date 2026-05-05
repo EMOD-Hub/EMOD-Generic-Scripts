@@ -63,6 +63,13 @@ def write_param_dict():
     # Number of nodes
     P_CON['num_nodes'] = 20
 
+    # Target population density per km^2; (low ~ 5; high ~5000)
+    P_CON['targ_pop_den_per_km2'] = 250
+
+    # Gravity model parameters
+    P_CON['net_inf_ln_mult'] = 0.0
+    P_CON['net_inf_power'] = 2.0
+
     # Initial effective reproductive number
     P_CON['init_Reff'] = 1.1
 

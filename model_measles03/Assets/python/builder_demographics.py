@@ -29,6 +29,7 @@ def demographicsBuilder():
     NUM_NODES = gdata.var_params['num_nodes']
     INIT_POP = gdata.var_params['init_pop']
     INIT_REFF = gdata.var_params['init_Reff']
+    TARG_DENS = gdata.var_params['targ_pop_den_per_km2']
 
     # Demographic reference data file
     dat_file = f'pop_dat_{REF_CODE}.csv'
@@ -44,11 +45,15 @@ def demographicsBuilder():
     node_list = list()
     node_id = 1
 
+    # Scale factors
+    xy_scale = np.sqrt(INIT_POP/TARG_DENS)/ 111.0
+
     for k1 in range(NUM_NODES):
         node_pop = float(INIT_POP) / NUM_NODES
         imp_rate = R0/6.0 * node_pop * 1.615e-7 * np.power(10.0, LOG10_IMP)
         nname = 'EXAMPLE:A{:05d}'.format(node_id)
-        node_obj = Node(lat=0.0, lon=0.0, pop=node_pop,
+        xy_val = np.random.uniform(high=xy_scale, size=2)
+        node_obj = Node(lat=xy_val[0], lon=xy_val[1], pop=node_pop,
                         name=nname, forced_id=node_id)
         irs_dict = {DEMOG_IRS: imp_rate}
         node_obj.node_attributes.extra_attributes = irs_dict
