@@ -1,5 +1,5 @@
 Bootstrap: localimage
-From: Assets/EMOD_OS_Ubuntu24.sif
+From: Assets/EMOD_OS_Ubuntu26.sif
 
 %post
     apt-get update
