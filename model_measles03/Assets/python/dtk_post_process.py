@@ -20,6 +20,9 @@ from emod_constants import SQL_TIME, SQL_MCW, SQL_AGE, O_FILE, MO_DAYS, \
 
 def application(output_path):
 
+    # Variables for this simulation
+    WRITE_SPATIAL = gdata.var_params['write_spatial_output']
+
     # Prep output dictionary
     SIM_IDX = gdata.sim_index
     key_str = '{:05d}'.format(SIM_IDX)
@@ -35,11 +38,12 @@ def application(output_path):
     post_proc_cost(output_path, parsed_dat[key_str])
 
     # Post-process strain reporter
-    infdat = np.loadtxt(os.path.join(output_path, RST_FILE),
-                        delimiter=',', skiprows=1, ndmin=2)
+    if (WRITE_SPATIAL):
+        infdat = np.loadtxt(os.path.join(output_path, RST_FILE),
+                            delimiter=',', skiprows=1, ndmin=2)
 
-    infcol = infdat[:, [RST_TIME, RST_NODE, RST_TOT_INF]]
-    parsed_dat[key_str]['rst'] = infcol.tolist()
+        infcol = infdat[:, [RST_TIME, RST_NODE, RST_TOT_INF]]
+        parsed_dat[key_str]['rst'] = infcol.tolist()
 
     # Connect to SQL database; retreive new entries
     connection_obj = sqlite3.connect(SQL_FILE)

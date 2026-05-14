@@ -62,6 +62,7 @@ def write_param_dict():
 
     # Number of nodes
     P_CON['num_nodes'] = 2
+    P_CON['write_spatial_output'] = True
 
     # Target population density per km^2; (low ~ 5; high ~5000)
     P_CON['targ_pop_den_per_km2'] = 250
