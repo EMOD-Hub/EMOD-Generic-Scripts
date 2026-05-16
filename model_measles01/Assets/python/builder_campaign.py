@@ -80,8 +80,7 @@ def campaignBuilder():
         d_years = SIA_INT_YRS
         if (d_years < 0):
             d_years = max(2.0, np.random.poisson(sia_rate))
-        else:
-            sia_year = sia_year + d_years
+        sia_year = sia_year + d_years
 
     # End file construction
     camp_module.save(filename=CAMP_FILE)
