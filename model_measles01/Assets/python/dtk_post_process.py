@@ -3,15 +3,14 @@
 # *****************************************************************************
 
 import json
-import sqlite3
 
 import global_data as gdata
 
 import numpy as np
 
-from emod_postproc_func import post_proc_poppyr, post_proc_prev, post_proc_cost
-from emod_constants import SQL_TIME, SQL_MCW, SQL_AGE, O_FILE, MO_DAYS, \
-                           SQL_FILE, BASE_YEAR
+from emod_postproc_func import post_proc_poppyr, post_proc_prev, \
+                               post_proc_sql, post_proc_cost
+from emod_constants import MO_DAYS, O_FILE, BASE_YEAR
 
 # *****************************************************************************
 
@@ -32,17 +31,8 @@ def application(output_path):
     # Retain campaign cost output channel
     post_proc_cost(output_path, parsed_dat[key_str])
 
-    # Connect to SQL database; retreive new entries
-    connection_obj = sqlite3.connect(SQL_FILE)
-    cursor_obj = connection_obj.cursor()
-
-    sql_cmd = "SELECT * FROM SIM_EVENTS WHERE SIM_TIME >= {:.1f}".format(0.0)
-    cursor_obj.execute(sql_cmd)
-    rlist = cursor_obj.fetchall()
-
-    dvec_time = np.array([val[SQL_TIME] for val in rlist], dtype=float)
-    dvec_mcw = np.array([val[SQL_MCW] for val in rlist], dtype=float)
-    dvec_age = np.array([val[SQL_AGE] for val in rlist], dtype=float)
+    # Update SQL data
+    (dvec_time, _, dvec_mcw, dvec_age) = post_proc_sql(0.0)
 
     # Aggregate new infections by month
     START_TIME = 365.0*(gdata.start_year-BASE_YEAR)
@@ -52,13 +42,12 @@ def application(output_path):
     (inf_mo, tstamps) = np.histogram(dvec_time,
                                      bins=BIN_EDGES,
                                      weights=dvec_mcw)
-
     parsed_dat[key_str]['timeseries'] = inf_mo.tolist()
 
     # Age at infection histograms by year
-    YR_BINS = [365]
+    DAY_BINS = [365]
     START_TIME = 365.0*(gdata.start_year-BASE_YEAR)
-    BIN_EDGES = np.cumsum(int(gdata.run_years)*YR_BINS) + START_TIME - 0.5
+    BIN_EDGES = np.cumsum(int(gdata.run_years)*DAY_BINS) + START_TIME - 0.5
     BIN_EDGES = np.insert(BIN_EDGES, 0, START_TIME - 0.5)
 
     parsed_dat[key_str]['age_data'] = list()
