@@ -52,7 +52,7 @@ def make_fig():
         mcv1_age_lvl = np.unique(mcv1_age_vec).tolist()
 
         xyrs = np.arange(0, run_years, 1) + 1/2
-        xages = AGE_HIST_BINS[1:] + np.diff(AGE_HIST_BINS)/2
+        xages = AGE_HIST_BINS[:-1] + np.diff(AGE_HIST_BINS)/2
         mort_prob = np.interp(xages, IHME_MORT_X, IHME_MORT_Y)
 
         for skey in data_brick:
