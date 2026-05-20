@@ -2,19 +2,6 @@
 
 See documentation at https://emod-hub.github.io/EMOD-Generic-Scripts/ for additional information.
 
-## Project status
-
-EMOD-Hub projects are provided as open source software under the MIT License for
-community use, research, and development.
-
-**Unless otherwise noted, these projects are no longer actively maintained or supported
-by IDM or the Gates Foundation.**
-
-Community contributions are welcome, and trusted collaborators may review and
-merge pull requests, but no guarantees are made regarding support, pull request
-review, security response, maintenance, or release timelines.
-
----------------------
 
 ## Contents:
 
@@ -81,6 +68,7 @@ To build the documentation locally, do the following:
 
 ---------------------
 
+
 ## Disclaimer
 
 The code in this repository was developed by IDM and other collaborators to support our
@@ -90,3 +78,16 @@ opportunity to build upon it for their own work. We make no representations that
 works as intended or that we will provide support, address issues that are found, or accept
 pull requests. You are welcome to create your own fork and modify the code to suit your own
 modeling needs as permitted under the MIT License.
+
+
+## Project status
+
+EMOD-Hub projects are provided as open source software under the MIT License for
+community use, research, and development.
+
+**Unless otherwise noted, these projects are no longer actively maintained or supported
+by IDM or the Gates Foundation.**
+
+Community contributions are welcome, and trusted collaborators may review and
+merge pull requests, but no guarantees are made regarding support, pull request
+review, security response, maintenance, or release timelines.
