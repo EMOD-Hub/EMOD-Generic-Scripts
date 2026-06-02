@@ -6,25 +6,23 @@ import numpy as np
 
 # *****************************************************************************
 
+
+def grav_coeff_guess(exp_vals: list[float], ln_offset: list[float] = None):
     """
     Helper function to calculate approximate gravity model coefficients for a
-    list of gravity model exponents. Approximate fit using rough empirical
-    correlation. Ought to be tuned with data; should be adequate as an initial
-    guess.
+    list of gravity model exponents. Fit using empirical correlation. Ought to
+    be tuned with data; should be adequate as an initial guess.
 
     Args:
         exp_vals (list[float]): List of gravity model exponent values.
 
-        ln_offset (list[float]): List of offsets for each exponent. Adjustment
-            assumes log-scale offset.
+        ln_offset (list[float]): List of offsets for each exponent. Adjusts
+            the calculated constant based on a log-scale offset.
 
     Returns:
         (list[float]): Estimated gravity model coffefficient for each gravity
-            model exponent provided as an input argument.
+            model exponent provided in input.
      """
-
-
-def grav_coeff_guess(exp_vals: list[float], ln_offset: list[float] = None):
 
     if (np.min(exp_vals) < 0.0 or np.max(exp_vals) > 8.0):
         raise Exception('Network exponent out of range.')
@@ -34,9 +32,6 @@ def grav_coeff_guess(exp_vals: list[float], ln_offset: list[float] = None):
                       9.774, 12.22, 14.44, 16.56, 18.65, 20.75])
 
     ln_coeffs = np.interp(exp_vals, x_ref, y_ref) + np.array(ln_offset)
-
-
-    ni_coeff = np.exp(ln_coeffs).to_list()
 
     return (np.exp(ln_coeffs)).to_list()
 

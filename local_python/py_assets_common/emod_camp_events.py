@@ -4,7 +4,7 @@
 
 from emod_api import schema_to_class as s2c
 
-from emod_constants import SPATH, YR_DAYS
+from emod_constants import SPATH, YR_DAYS, DIST_CONST, DIST_UNIFR, DIST_GAUSS
 
 # *****************************************************************************
 
@@ -267,7 +267,7 @@ def ce_RI(schjson, node_list,
     camp_iv02.Intervention_List = [camp_iv03]
 
     camp_iv03.Actual_IndividualIntervention_Configs = [camp_iv04]
-    camp_iv03.Delay_Period_Distribution = "GAUSSIAN_DISTRIBUTION"
+    camp_iv03.Delay_Period_Distribution = DIST_GAUSS
     camp_iv03.Delay_Period_Gaussian_Mean = age_one
     camp_iv03.Delay_Period_Gaussian_Std_Dev = age_std
 
@@ -287,7 +287,7 @@ def ce_RI(schjson, node_list,
 
         camp_iv05.Actual_IndividualIntervention_Configs = [camp_iv06]
         camp_iv05.Coverage = frac_two
-        camp_iv05.Delay_Period_Distribution = "GAUSSIAN_DISTRIBUTION"
+        camp_iv05.Delay_Period_Distribution = DIST_GAUSS
         camp_iv05.Delay_Period_Gaussian_Mean = age_two
         camp_iv05.Delay_Period_Gaussian_Std_Dev = age_std
 
@@ -336,7 +336,7 @@ def ce_OPV_RI(node_list,
     camp_iv02.Intervention_List = [camp_iv03]
 
     camp_iv03.Actual_IndividualIntervention_Configs = [camp_iv04]
-    camp_iv03.Delay_Period_Distribution = "GAUSSIAN_DISTRIBUTION"
+    camp_iv03.Delay_Period_Distribution = DIST_GAUSS
     camp_iv03.Delay_Period_Gaussian_Mean = age_one
     camp_iv03.Delay_Period_Gaussian_Std_Dev = age_std
 
@@ -376,7 +376,7 @@ def ce_SIA(schjson, node_list,
 
     camp_iv01.Actual_IndividualIntervention_Configs = [camp_iv02]
     camp_iv01.Cost_To_Consumer = 1.0
-    camp_iv01.Delay_Period_Distribution = "UNIFORM_DISTRIBUTION"
+    camp_iv01.Delay_Period_Distribution = DIST_UNIFR
     camp_iv01.Delay_Period_Min = 0.0
     camp_iv01.Delay_Period_Max = 14.0
 
@@ -482,7 +482,7 @@ def ce_quarantine(node_list, trigger,
     camp_coord.Max_Distributed_Per_Day = 1e9
     camp_coord.Days_Between_Shipments = 1000
     camp_coord.Amount_In_Shipment = 0
-    camp_coord.Initial_Amount_Distribution = 'CONSTANT_DISTRIBUTION'
+    camp_coord.Initial_Amount_Distribution = DIST_CONST
     camp_coord.Initial_Amount_Constant = 1e9
 
     camp_iv.Vaccine_Take = coverage
@@ -543,9 +543,9 @@ def ce_visit_nodes(node_orig, node_dest,
         camp_coord.Property_Restrictions_Within_Node = only_group
 
     camp_iv.NodeID_To_Migrate_To = node_dest
-    camp_iv.Duration_Before_Leaving_Distribution = 'CONSTANT_DISTRIBUTION'
+    camp_iv.Duration_Before_Leaving_Distribution = DIST_CONST
     camp_iv.Duration_Before_Leaving_Constant = 0
-    camp_iv.Duration_At_Node_Distribution = 'CONSTANT_DISTRIBUTION'
+    camp_iv.Duration_At_Node_Distribution = DIST_CONST
     camp_iv.Duration_At_Node_Constant = duration
 
     return camp_event
