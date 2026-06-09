@@ -234,4 +234,6 @@ def update_docker_image():
     p = subprocess.Popen(cmd)
     p.wait()
 
+    return None
+
 # *****************************************************************************
