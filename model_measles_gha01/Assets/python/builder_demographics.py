@@ -10,7 +10,8 @@ import global_data as gdata
 
 import numpy as np
 
-from emod_api.demographics.Demographics import Demographics, Node
+from emod_api.demographics.demographics import Demographics
+from emod_api.demographics.node import Node
 
 from emod_demog_func import demog_vd_calc, demog_vd_over, demog_is_over
 from emod_constants import DEMOG_FILE, DEMOG_IRS
@@ -21,9 +22,6 @@ from emod_constants import DEMOG_FILE, DEMOG_IRS
 def demographicsBuilder():
 
     # Variables for this simulation
-    PROC_DISPER = gdata.var_params['proc_overdispersion']
-    SUB_ADM02 = True
-    IND_RISK_VAR = gdata.var_params['ind_variance_risk']
     R0 = gdata.var_params['R0']
     LOG10_IMP = gdata.var_params['log10_import_rate']
 
@@ -32,15 +30,13 @@ def demographicsBuilder():
     fname_pop = os.path.join('Assets', 'data', dat_file)
 
     # Calculate vital dynamics
-    vd_tup = demog_vd_calc(fname_pop, gdata.start_year)
+    vd_tup = demog_vd_calc(fname_pop, gdata.start_year, steady_state=False)
 
     gdata.brate_mult_x = vd_tup[5]
     gdata.brate_mult_y = vd_tup[6]
 
     # Load population data
-    fname = 'demog_data_ADM02.csv'
-    if (SUB_ADM02):
-        fname = 'demog_data_ADM02_sub_100km.csv'
+    fname = 'demog_data_ADM02_sub_100km.csv'
     fname = os.path.join('Assets', 'data', fname)
     with open(fname) as fid01:
         flines = [lval.strip().split(',') for lval in fid01.readlines()[1:]]
@@ -68,9 +64,7 @@ def demographicsBuilder():
         node_obj.node_attributes.extra_attributes = irs_dict
 
     # Nameset for admin02
-    adm02_subset = list_nam.tolist()
-    if (SUB_ADM02):
-        adm02_subset = [n_val.rsplit(':', 1)[0] for n_val in list_nam]
+    adm02_subset = [n_val.rsplit(':', 1)[0] for n_val in list_nam]
     list_adm02 = sorted(list(set(adm02_subset)))
     adm01_subset = [n_val.rsplit(':', 1)[0] for n_val in list_adm02]
     list_adm01 = sorted(list(set(adm01_subset)))
@@ -90,33 +84,28 @@ def demographicsBuilder():
     gdata.adm01_idlist = adm01_dict
 
     # Create primary file
-    ref_name = 'measles-custom'
-    demog_obj = Demographics(nodes=node_list, idref=ref_name)
+    ref_name = 'Demographics_Datafile'
+    demog_obj = Demographics(nodes=node_list, idref=ref_name,
+                             set_defaults=False)
+
+    # Update defaults in primary file
+    demog_obj.default_node.individual_attributes.parameter_dict = dict()
+    demog_obj.default_node.node_attributes.parameter_dict = dict()
+
+    # Write primary demographics file
+    demog_obj.to_file(path=DEMOG_FILE)
 
     # Save filename to global data for use in other functions
     gdata.demog_files.append(DEMOG_FILE)
-
-    # Update defaults in primary file
-    demog_obj.raw['Defaults']['IndividualAttributes'].clear()
-    iadict = {'AcquisitionHeterogeneityVariance': IND_RISK_VAR}
-    demog_obj.raw['Defaults']['IndividualAttributes'].update(iadict)
-
-    demog_obj.raw['Defaults']['NodeAttributes'].clear()
-    nadict = {'InfectivityOverdispersion': PROC_DISPER,
-              'InfectivityMultiplier': 1.0}
-    demog_obj.raw['Defaults']['NodeAttributes'].update(nadict)
-
-    # Write vital dynamics overlay
-    nfname = demog_vd_over(ref_name, node_list, vd_tup[4],
-                           vd_tup[1], vd_tup[2], vd_tup[3])
-    gdata.demog_files.append(nfname)
 
     # Write initial susceptibility overlay
     nfname = demog_is_over(ref_name, node_list, R0, vd_tup[3])
     gdata.demog_files.append(nfname)
 
-    # Write primary demographics file
-    demog_obj.generate_file(name=DEMOG_FILE)
+    # Write vital dynamics overlay
+    nfname = demog_vd_over(ref_name, node_list, vd_tup[4],
+                           vd_tup[1], vd_tup[2], vd_tup[3])
+    gdata.demog_files.append(nfname)
 
     # Save the demographics object for use in other functions
     gdata.demog_object = demog_obj

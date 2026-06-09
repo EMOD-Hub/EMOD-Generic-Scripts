@@ -200,14 +200,14 @@ def ce_inf_force(schjson, node_list, step_init, step_width,
 # *****************************************************************************
 
 
-def ce_inf_mod(node_list,
+def ce_inf_mod(schjson, node_list,
                start_day=0.0, dt_days=365.0, mult_val=1.0):
 
     # Infectivity multiplier
-    camp_event = s2c.get_class_with_defaults(CE, SPATH)
-    camp_nodes = s2c.get_class_with_defaults(NSNL, SPATH)
-    camp_coord = s2c.get_class_with_defaults(SEC, SPATH)
-    camp_iv = s2c.get_class_with_defaults('NodeInfectivityMult', SPATH)
+    camp_event = s2c.get_class_with_defaults(CE, schema_json=schjson)
+    camp_nodes = s2c.get_class_with_defaults(NSNL, schema_json=schjson)
+    camp_coord = s2c.get_class_with_defaults(SEC, schema_json=schjson)
+    camp_iv = s2c.get_class_with_defaults(NIM, schema_json=schjson)
 
     camp_event.Event_Coordinator_Config = camp_coord
     camp_event.Start_Day = start_day

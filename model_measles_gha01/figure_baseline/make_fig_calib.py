@@ -15,7 +15,7 @@ from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, EXP_V
 
 # *****************************************************************************
 
-DIRNAMES = ['experiment_gha_base01']
+DIRNAMES = ['experiment_gha_base']
 
 # *****************************************************************************
 

@@ -33,6 +33,6 @@ def grav_coeff_guess(exp_vals: list[float], ln_offset: list[float] = None):
 
     ln_coeffs = np.interp(exp_vals, x_ref, y_ref) + np.array(ln_offset)
 
-    return (np.exp(ln_coeffs)).to_list()
+    return (np.exp(ln_coeffs)).tolist()
 
 # *****************************************************************************

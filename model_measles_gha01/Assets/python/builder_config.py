@@ -24,7 +24,6 @@ def update_config_obj(config):
     NI_MAXFRAC = gdata.var_params['net_inf_maxfrac']
     END_YEAR = gdata.var_params['end_year']
     AGENT_RATE = gdata.var_params['agent_rate']
-    CORR_ACQ_TRANS = gdata.var_params['corr_acq_trans']
 
     # Config parameters object (read only dictionary)
     cp = config.parameters
@@ -43,7 +42,7 @@ def update_config_obj(config):
 
     # Intrahost
     cp.Base_Infectivity_Distribution = DIST_GAMMA
-    cp.Base_Infectivity_Scale = R0/gdata.inf_dur_mean
+    cp.Base_Infectivity_Scale = R0/gdata.inf_prd_mean
     cp.Base_Infectivity_Shape = 1.0
 
     cp.Incubation_Period_Distribution = DIST_GAMMA
@@ -51,7 +50,7 @@ def update_config_obj(config):
     cp.Incubation_Period_Shape = 3.5
 
     cp.Infectious_Period_Distribution = DIST_GAUSS
-    cp.Infectious_Period_Gaussian_Mean = gdata.inf_dur_mean
+    cp.Infectious_Period_Gaussian_Mean = gdata.inf_prd_mean
     cp.Infectious_Period_Gaussian_Std_Dev = 2.0
 
     cp.Enable_Nonuniform_Shedding = 1.0
@@ -61,8 +60,6 @@ def update_config_obj(config):
     cp.Enable_Disease_Mortality = 0
 
     cp.Symptomatic_Infectious_Offset = 11.0
-
-    cp.Acquisition_Transmission_Correlation = CORR_ACQ_TRANS
 
     # Immunity
     cp.Enable_Immunity = 1
@@ -86,10 +83,9 @@ def update_config_obj(config):
     cp.Campaign_Filename = CAMP_FILE
 
     # Infectivity
-    cp.Enable_Acquisition_Heterogeneity = 1
-    cp.Enable_Infection_Rate_Overdispersion = 1
-    cp.Enable_Infectivity_Scaling = 1
-    
+    cp.Enable_Acquisition_Heterogeneity = 0
+    cp.Enable_Infection_Rate_Overdispersion = 0
+
     cp.Enable_Network_Infectivity = 1
     cp.Network_Infectivity_Coefficient = grav_coeff_guess(NI_POWER, NI_LN_MULT)
     cp.Network_Infectivity_Exponent = NI_POWER
@@ -102,7 +98,7 @@ def update_config_obj(config):
     cp.Individual_Sampling_Type = 'ADAPTED_SAMPLING_BY_IMMUNE_STATE'
     cp.Min_Node_Population_Samples = gdata.demog_min_pop
     cp.Base_Individual_Sample_Rate = 1.0/AGENT_RATE
-    cp.Relative_Sample_Rate_Immune = 0.02
+    cp.Relative_Sample_Rate_Immune = 0.01
     cp.Immune_Threshold_For_Downsampling = 1.0e-5
     cp.Immune_Downsample_Min_Age = 365.0
 

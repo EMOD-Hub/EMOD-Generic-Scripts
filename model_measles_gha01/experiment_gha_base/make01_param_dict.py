@@ -46,6 +46,10 @@ def write_param_dict():
     # Run number (EMOD random seed)
     P_VAR['run_number'] = list(range(NSIMS))
 
+    # Infectivity
+    vals = 10.0 + np.random.gamma(30.0, scale=0.133, size=NSIMS)
+    P_VAR['R0'] = (np.round(vals, 2)).tolist()
+
     # Year to end simulation
     P_CON['end_year'] = 2025
 
@@ -54,9 +58,7 @@ def write_param_dict():
     P_CON['SIA_cover_GHA_2013'] = 0.40
     P_CON['SIA_cover_GHA_2018'] = 0.15
 
-    # Infectivity
-    vals = 7.0 + np.random.gamma(30.0, scale=0.133, size=NSIMS)
-    P_VAR['R0'] = (np.round(vals, 2)).tolist()
+
 
     # R0 seasonality
     P_CON['R0_peak_day'] = 65.0
@@ -71,17 +73,8 @@ def write_param_dict():
     P_CON['net_inf_ln_mult'] = 0.2
     P_CON['net_inf_maxfrac'] = 0.1
 
-    # Correlation between acqusition and transmission heterogeneity
-    P_CON['corr_acq_trans'] = 0.8
-
-    # Individual risk variance
-    P_CON['ind_variance_risk'] = 0.4
-
     # Base agent weight; less than 10 may have memory issues
     P_CON['agent_rate'] = 25.0
-
-    # Node level overdispersion; 0.0 = Poisson
-    P_CON['proc_overdispersion'] = 0.4
 
     # Reactive campaign case threshold (observed) for admin-1
     P_CON['adm01_case_threshold'] = 1.0e6

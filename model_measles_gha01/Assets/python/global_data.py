@@ -7,6 +7,10 @@
 # Control params
 sim_index = 0
 var_params = dict()
+schema_json = dict()
+
+# Python in-process
+first_call_bool = True
 
 # Filename params
 demog_files = list()
@@ -22,7 +26,6 @@ adm02_idlist = None
 
 adm01_cases = None
 
-first_call_bool = True
 prev_proc_time = -1.0
 max_node_id = 0
 
@@ -33,7 +36,7 @@ data_vec_mcw = None
 adm01_list = None
 nobs_vec = None
 
-inf_dur_mean = 18.0
+inf_prd_mean = 18.0
 
 brate_mult_x = None
 brate_mult_y = None
