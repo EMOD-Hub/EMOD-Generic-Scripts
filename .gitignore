@@ -34,3 +34,5 @@ venv.bak/
 # Local simulations
 LOCAL_EXP_PATH.txt
 docker_suites/
+local_python/container_assets/Eradication
+local_python/container_assets/schema.json
