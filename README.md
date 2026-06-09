@@ -13,8 +13,8 @@ See documentation at https://emod.idmod.org/EMOD-Generic-Scripts for additional 
 | model_covid01            | Baseline simulations for SARS-CoV-2 in EMOD. |
 | model_demographics01     | Example demographics for UK measles simulations. |
 | model_demographics_wpp01 | [Example demographics using UN WPP data as inputs.](https://emod.idmod.org/EMOD-Generic-Scripts/examples/model_demographics_wpp01/) |
+| model_measles            | [Estimates of measles burden under various policies for age of MCV1.](https://emod.idmod.org/EMOD-Generic-Scripts/examples/model_measles/) |
 | model_measles_cod01      | Documentation. |
-| model_measles            | [Estimates of measles burden under various policies for age of MCV1.](https://emod.idmod.org/EMOD-Generic-Scripts/examples/model_measles01/) |
 | model_measles_gha01      | [Examination of RDT use and measles outbreak response using Ghana as an example context.](https://emod.idmod.org/EMOD-Generic-Scripts/examples/model_measles_gha01/) |
 | model_measles_nga01      | Documentation. |
 | model_measles_nga02      | Documentation. |
