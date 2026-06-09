@@ -17,6 +17,7 @@ DEFAULT_OS = 'Debian13'
 
 LOCAL_EXP_ROOT = 'docker_suites'
 LOCAL_EXP_DIR = 'LOCAL_EXP_PATH.txt'
+LOCAL_DOCK_PACK = 'ghcr.io/emod-hub/emod-ubuntu-runtime-api:latest'
 
 PY_PATH = r'python3'
 

@@ -4,6 +4,7 @@
 
 import json
 import os
+import subprocess
 
 from idmtools.core.platform_factory import Platform
 from idmtools.assets import Asset, AssetCollection
@@ -15,12 +16,15 @@ from idmtools_platform_comps.ssmt_work_items.comps_workitems \
 
 from emodpy.emod_task import EMODTask
 
+from emod_generic import bootstrap
+
 from py_assets_common.emod_constants import ID_EXE, ID_ENV, ID_SCHEMA, \
                                             DOCK_PACK, VE_PY_PATHS, \
                                             EXP_V, EXP_NAME, NUM_SIMS, \
                                             COMPS_ID_FILE, LOCAL_EXP_ROOT, \
                                             LOCAL_EXP_DIR, DEFAULT_OS, \
-                                            I_FILE, I_FILE_FMT
+                                            I_FILE, I_FILE_FMT, \
+                                            LOCAL_DOCK_PACK
 
 # *****************************************************************************
 
@@ -76,10 +80,17 @@ def exp_from_def_file(path_param_dict, path_python, path_exe, path_data,
     task_obj.common_assets.add_asset(param_asset)
 
     if (run_local):
+        # Record CWD
+        cwd_bak = os.getcwd()
+
         # Executable and schema from local directory
         f_dir = os.path.dirname(os.path.abspath(__file__))
         path_assets = os.path.join(f_dir, 'container_assets')
+        bootstrap.setup(local_dir=path_assets)
         task_obj.common_assets.add_directory(path_assets)
+
+        # Restore CWD
+        os.chdir(cwd_bak)
     else:
         # Environment on COMPS
         task_obj.set_sif(os.path.join(path_exe, ID_ENV), plat_obj)
@@ -160,9 +171,9 @@ def start_exp(path_python, path_data, path_exp_def,
 
     # Prepare the platform
     if (run_local):
-        # Requires emod_env in Docker Desktop
+        update_docker_image()
         plat_obj = Platform(type='Container', job_directory=LOCAL_EXP_ROOT,
-                            docker_image='emod_env:latest')
+                            docker_image=LOCAL_DOCK_PACK)
     else:
         p_str = ['Lowest', 'BelowNormal', 'Normal', 'AboveNormal', 'Highest']
         p_val = p_str[priority]
@@ -189,10 +200,10 @@ def start_exp(path_python, path_data, path_exp_def,
     if (run_local):
         # Write path sims
         cpath0 = plat_obj.get_container_directory(exp_obj)
-        cpath1 = os.path.split(cpath0)
-        cpath2 = os.path.split(cpath1[0])
+        cpath1 = os.path.split(cpath0)[-1]
+
         with open(LOCAL_EXP_DIR, 'w') as fid01:
-            fid01.write(os.path.join(LOCAL_EXP_ROOT, cpath2[-1], cpath1[-1]))
+            fid01.write(os.path.join(LOCAL_EXP_ROOT, cpath1))
     else:
         # Save experiment id to file
         exp_obj.to_id_file(COMPS_ID_FILE)
@@ -200,5 +211,27 @@ def start_exp(path_python, path_data, path_exp_def,
         print(exp_obj.uid.hex)
 
     return None
+
+# *****************************************************************************
+
+
+def update_docker_image():
+    """
+    Updates the EMOD-Hub Ubuntu runtime image to include emod-api
+
+    Args:
+
+    Returns:
+
+    """
+
+    # Path to Dockerfile
+    f_dir = os.path.dirname(os.path.abspath(__file__))
+    dockerfile = os.path.join(f_dir, 'container_assets', 'Dockerfile')
+
+    # Build image locally
+    cmd = ['docker', 'build', '-t', LOCAL_DOCK_PACK, '-f', dockerfile, '.']
+    p = subprocess.Popen(cmd)
+    p.wait()
 
 # *****************************************************************************

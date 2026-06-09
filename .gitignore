@@ -32,4 +32,5 @@ env.bak/
 venv.bak/
 
 # Local simulations
-Suite_*/
+LOCAL_EXP_PATH.txt
+docker_suites/
