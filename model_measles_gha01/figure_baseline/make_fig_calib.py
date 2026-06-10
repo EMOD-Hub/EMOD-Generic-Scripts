@@ -79,7 +79,7 @@ def make_fig():
 
         print(min(cal_vec[gidx]), max(cal_vec[gidx]))
         plt.tight_layout()
-        plt.savefig('fig_baseline01.png')
+        plt.savefig('fig_baseline001.png')
         plt.close()
 
     return None

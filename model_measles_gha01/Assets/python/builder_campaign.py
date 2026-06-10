@@ -97,7 +97,6 @@ def campaignBuilder():
                             coverage=SIA_COVER, base_take=0.95)
         camp_module.add(camp_event)
 
-
     # Infectivity trough from COVID
     start_day = 365.0*(2020.0-BASE_YEAR)
     camp_event = ce_inf_mod(sch_data, ALL_NODES,
