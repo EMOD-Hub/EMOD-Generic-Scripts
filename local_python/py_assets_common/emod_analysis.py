@@ -11,8 +11,22 @@ EPS = np.finfo(float).eps
 # *****************************************************************************
 
 
-def norpois_vec(yobs, ysim, yscal=1.0):
+def norpois_vec(yobs: list[float], ysim: list[float], yscal: float = 1.0):
+'''
+    Poisson-based estimation of log-liklihood for a timeseries. The vector of
+    observed values is used as the occurances (k) and the vector of simulated
+    values is used as the rates (lam). Stirling's approximation is applied to
+    the probability:
+        ln P = k*ln(lam/k) - lam - k - 0.5*ln(2*pi*k)
 
+    Simulated rates are modified by a scale factor that represents the case to
+    infection ratio. A small positive value is added to the scale factor
+    modified rate to ensure the simulated rate of observed cases is never zero.
+
+    Args:
+
+    Returns:
+'''
     lliktot = 0.0
     Gtot = 0.0
     Htot = 0.0

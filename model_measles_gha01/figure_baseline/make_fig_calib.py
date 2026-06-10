@@ -49,22 +49,24 @@ def make_fig():
             cal_vec[sim_idx] = sim_obj['cal_val']
 
         gidx = (scale_vec[:, 0] >= 0)
+        oidx = np.argsort(cal_vec[gidx])
 
         sparam = param_dict[EXP_V]
         skeys = list(sparam.keys())
         skeys.remove('run_number')
         print(skeys)
         nfigs = len(skeys)
+        nfig0 = nfigs - 1
 
         # Figure
-        fig01 = plt.figure(figsize=(8*nfigs, 8*nfigs))
+        fig01 = plt.figure(figsize=(4*nfigs, 4*nfigs))
 
         for k1 in range(nfigs):
             for k2 in range(k1, nfigs):
                 if (k1 == k2):
                     continue
 
-                axs01 = fig01.add_subplot(nfigs, nfigs, k1*nfigs+k2+1)
+                axs01 = fig01.add_subplot(nfig0, nfig0, k1*nfig0 + k2)
                 axs01.grid(visible=True, which='major', ls='-', lw=0.5)
                 axs01.grid(visible=True, which='minor', ls=':', lw=0.1)
                 axs01.set_axisbelow(True)
@@ -74,7 +76,8 @@ def make_fig():
 
                 axs01.set_xlabel(skeys[k1])
                 axs01.set_ylabel(skeys[k2])
-                axs01.scatter(xval[gidx], yval[gidx], c=cal_vec[gidx],
+                axs01.scatter(xval[gidx][oidx], yval[gidx][oidx],
+                              c=cal_vec[gidx][oidx], s=4,
                               vmin=-4.0e3, vmax=-2.5e3)
 
         print(min(cal_vec[gidx]), max(cal_vec[gidx]))
