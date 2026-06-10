@@ -12,7 +12,7 @@ EPS = np.finfo(float).eps
 
 
 def norpois_vec(yobs: list[float], ysim: list[float], yscal: float = 1.0):
-'''
+    '''
     Poisson-based estimation of log-liklihood for a timeseries. The vector of
     observed values is used as the occurances (k) and the vector of simulated
     values is used as the rates (lam). Stirling's approximation is applied to
@@ -26,7 +26,7 @@ def norpois_vec(yobs: list[float], ysim: list[float], yscal: float = 1.0):
     Args:
 
     Returns:
-'''
+    '''
     lliktot = 0.0
     Gtot = 0.0
     Htot = 0.0
