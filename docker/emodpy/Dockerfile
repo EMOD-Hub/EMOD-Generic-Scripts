@@ -1,11 +1,11 @@
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 #
 RUN apt-get update
 RUN apt-get -y upgrade
 #
-RUN apt-get -y install python3
-RUN apt-get -y install python3-pip
-RUN apt-get -y install python3-venv
+RUN apt-get install -y python3
+RUN apt-get install -y python3-pip
+RUN apt-get install -y python3-venv
 #
 RUN apt-get clean
 #
@@ -14,4 +14,4 @@ RUN python3 -m venv $PY_VENV
 ENV PATH="$PY_VENV/bin:$PATH"
 #
 RUN pip3 install pip --upgrade
-RUN pip3 install emodpy~=3.1
+RUN pip3 install emodpy~=3.2
