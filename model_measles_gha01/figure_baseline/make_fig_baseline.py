@@ -12,6 +12,8 @@ import matplotlib.patches as patch
 sys.path.append(os.path.abspath(os.path.join('..', '..', 'local_python')))
 sys.path.append(os.path.abspath(os.path.join('..', 'Assets', 'python')))
 
+from py_assets_common.emod_analysis import norpois_opt
+
 from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, BASE_YEAR
 
 # *****************************************************************************
@@ -44,6 +46,12 @@ def make_fig():
         scale_vec = np.zeros((nsims, 1))-1
         cal_vec = np.zeros(nsims)
 
+        # Reference data
+        tpath = os.path.join('..', 'Assets', 'data', 'GHA_epi.json')
+        with open(tpath) as fid01:
+            ref_dat = json.load(fid01)
+        ref_cases = np.array(ref_dat['cases_mo'])
+
         for sim_idx_str in dbrick:
             if (not sim_idx_str.isdigit()):
                 continue
@@ -53,6 +61,15 @@ def make_fig():
             inf_data[sim_idx, :] = np.array(sim_obj['timeseries'])
             scale_vec[sim_idx, 0] = sim_obj['rep_rate']
             cal_vec[sim_idx] = sim_obj['cal_val']
+
+        for k1 in range(inf_data.shape[0]):
+            inf_mo = inf_data[k1,:]
+            (obj_val, scal_vec) = norpois_opt(ref_cases, inf_mo)
+            print(k1)
+            print(obj_val - cal_vec[k1])
+            print()
+
+
 
         gidx = (scale_vec[:, 0] >= 0)
         gidx = gidx & (cal_vec > CCUT)

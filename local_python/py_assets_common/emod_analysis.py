@@ -11,7 +11,8 @@ EPS = np.finfo(float).eps
 # *****************************************************************************
 
 
-def norpois_vec(yobs: list[float], ysim: list[float], yscal: float = 1.0):
+def norpois_vec(yobs: list[float], ysim: list[float],
+                mval: float = 0.0, bval: float = 1.0):
     '''
     Poisson-based estimation of log-liklihood for a timeseries. The vector of
     observed values is used as the occurances (k) and the vector of simulated
@@ -19,67 +20,104 @@ def norpois_vec(yobs: list[float], ysim: list[float], yscal: float = 1.0):
     the probability:
         ln P = k*ln(lam/k) - lam - k - 0.5*ln(2*pi*k)
 
-    Simulated rates are modified by a scale factor that represents the case to
-    infection ratio. A small positive value is added to the scale factor
-    modified rate to ensure the simulated rate of observed cases is never zero.
+    A small positive value is added to the simulated rates so they are never
+    exactly zero. The adjusted rates are then modified by a scale factor
+    that represents the case to infection ratio. Scale factor adjustements
+    have an `m*x + b` form that allows for linear changes over time. The values
+    in the timeseries are assumed to be equally spaced, so the `x` value in
+    the scale factor is the index of the value in the vector.
+        lam = (ysim + delt)*(mval*x + bval)
+        k = yobs
+
+    First and second derivatives of the `mval` and `bval` coefficients in the
+    scale factor are also calculated. Derivatives of the `bval` coefficient are
+    with respect to `ln(bval)` to ensure positivity.
 
     Args:
 
     Returns:
+
     '''
-    lliktot = 0.0
-    Gtot = 0.0
-    Htot = 0.0
-    mlam = 0.1
+
+    Ltot = 0.0
+    Gtot = np.zeros((2,1))
+    Htot = np.zeros((2,2))
+    delt = 0.1
 
     for k1 in range(len(yobs)):
-        yobsval = float(yobs[k1])
-        ysimval = float(ysim[k1])
-        llik = 0.0
-        G = 0.0
-        H = 0.0
+        yobs0 = float(yobs[k1])
+        ysim0 = float(ysim[k1]) + delt
+        rfac = mval*k1 + bval
 
-        if (yobsval > 0):
-            llik = yobsval*np.log((yscal*ysimval + mlam)/yobsval) \
-                   - yscal*ysimval - mlam + yobsval \
-                   - 0.5*np.log(2.0*np.pi*yobsval)
-            G = yobsval - ysimval*yscal
-            H = - ysimval*yscal
-        elif (yobsval == 0):
-            llik = -ysimval*yscal - mlam
-            G = -ysimval*yscal
-            H = -ysimval*yscal
+        if (rfac <= 0.0):
+            print(k1, mval, bval)
+            raise ValueError("Observation rate is negative.")
 
-        lliktot = lliktot + llik
-        Gtot = Gtot + G
-        Htot = Htot + H
+        if (yobs0 > 0):
+            Ltot += yobs0*np.log((ysim0*rfac)/yobs0) - \
+                    ysim0*rfac + yobs0 - 0.5*np.log(2.0*np.pi*yobs0)
 
-    if (Htot != 0.0):
-        sstptot = Gtot/Htot
-    else:
-        sstptot = 0.0
+            Gtot[0, 0] += yobs0*k1/rfac - ysim0*k1
+            Gtot[1, 0] += yobs0*bval/rfac - ysim0*bval
 
-    return (lliktot, sstptot)
+            Htot[0, 0] += -yobs0*k1*k1/rfac/rfac
+            Htot[1, 0] += -yobs0*bval*k1/rfac/rfac
+            Htot[0, 1] += -yobs0*bval*k1/rfac/rfac
+            Htot[1, 1] += yobs0*bval/rfac - yobs0*bval*bval/rfac/rfac - \
+                          ysim0*bval
+
+        elif (yobs0 == 0):
+            Ltot += -ysim0*rfac
+
+            Gtot[0, 0] += -ysim0*k1
+            Gtot[1, 0] += -ysim0*bval
+
+            Htot[1, 1] += -ysim0*bval
+
+    dval = np.linalg.solve(Htot, Gtot)
+
+    return (Ltot, dval)
 
 # *****************************************************************************
 
 
-def norpois_opt(yobs, ysim):
+def norpois_opt(yobs: list[float], ysim: list[float]):
+    '''
+    '''
 
-    lyscal = 0.0
+    nobs = len(yobs)
+    nsim = len(ysim)
+
+    if (nsim < nobs):
+        raise ValueError("Simulation vector is too short.")
+
+    sval = np.zeros((2,1))
 
     while (True):
-        (lliktot, sstptot) = norpois_vec(yobs, ysim, np.exp(lyscal))
+        (Ltot, dval) = norpois_vec(yobs, ysim, sval[0, 0],
+                                    np.exp(sval[1, 0]))
 
-        # Step size control
-        if (abs(sstptot) > 5.0):
-            sstptot = np.sign(sstptot)*5.0
-
-        lyscal = lyscal - sstptot
-        if (abs(sstptot) < 1.0e-4):
+        # Convergence check
+        dmag = np.max(np.abs(dval))
+        if (dmag < 1.0e-4):
             break
 
-    return (lliktot, np.exp(lyscal))
+        sval_new = sval - dval
+        rfac_new = sval_new[0, 0]*nobs + np.exp(sval_new[1, 0])
+        while (rfac_new <= 0):
+            dval = dval / 3.0
+            sval_new = sval - dval
+            rfac_new = sval_new[0, 0]*nobs + np.exp(sval_new[1, 0])
+
+        sval = sval_new
+        print(dval)
+        print(sval)
+        print()
+
+    # Adjust intercept to linear scale
+    sval[1, 0] = np.exp(sval[1, 0])
+
+    return (Ltot, (sval[0,0], sval[1, 0]))
 
 # *****************************************************************************
 
