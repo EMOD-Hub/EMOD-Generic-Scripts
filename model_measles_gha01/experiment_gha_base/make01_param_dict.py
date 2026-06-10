@@ -31,7 +31,7 @@ def write_param_dict():
     param_dict = dict()
 
     param_dict[EXP_NAME] = 'Measles-GHA-Base'
-    param_dict[NUM_SIMS] = 600
+    param_dict[NUM_SIMS] = 10000
     param_dict[EXP_V] = dict()
     param_dict[EXP_C] = dict()
 
@@ -47,18 +47,20 @@ def write_param_dict():
     P_VAR['run_number'] = list(range(NSIMS))
 
     # Infectivity
-    vals = 10.0 + np.random.gamma(30.0, scale=0.133, size=NSIMS)
+    #vals = 10.0 + np.random.gamma(30.0, scale=0.133, size=NSIMS)
+    vals = np.random.uniform(11.0, 14.0, size=NSIMS)
     P_VAR['R0'] = (np.round(vals, 2)).tolist()
 
     # Year to end simulation
     P_CON['end_year'] = 2025
 
     # Coverage of SIAs in WHO calendar
-    P_CON['SIA_cover_GHA_2010'] = 0.75
-    P_CON['SIA_cover_GHA_2013'] = 0.40
-    P_CON['SIA_cover_GHA_2018'] = 0.15
-
-
+    #P_CON['SIA_cover_GHA_2010'] = 0.75
+    #P_CON['SIA_cover_GHA_2013'] = 0.40
+    #P_CON['SIA_cover_GHA_2018'] = 0.15
+    P_VAR['SIA_cover_GHA_2010'] = (np.random.uniform(0.4, 0.8, size=NSIMS)).tolist()
+    P_VAR['SIA_cover_GHA_2013'] = (np.random.uniform(0.4, 0.8, size=NSIMS)).tolist()
+    P_VAR['SIA_cover_GHA_2018'] = (np.random.uniform(0.05, 0.35, size=NSIMS)).tolist()
 
     # R0 seasonality
     P_CON['R0_peak_day'] = 65.0
@@ -70,7 +72,8 @@ def write_param_dict():
 
     # Parameters for gravity model for network connections
     P_CON['net_inf_power'] = 2.0
-    P_CON['net_inf_ln_mult'] = 0.2
+    #P_CON['net_inf_ln_mult'] = 0.2
+    P_VAR['net_inf_ln_mult'] = (np.random.uniform(-0.8, 0.2, size=NSIMS)).tolist()
     P_CON['net_inf_maxfrac'] = 0.1
 
     # Base agent weight; less than 10 may have memory issues
