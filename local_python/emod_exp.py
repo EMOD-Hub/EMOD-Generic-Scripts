@@ -16,8 +16,6 @@ from idmtools_platform_comps.ssmt_work_items.comps_workitems \
 
 from emodpy.emod_task import EMODTask
 
-from emod_generic import bootstrap
-
 from py_assets_common.emod_constants import ID_EXE, ID_ENV, ID_SCHEMA, \
                                             DOCK_PACK, VE_PY_PATHS, \
                                             EXP_V, EXP_NAME, NUM_SIMS, \
@@ -80,6 +78,9 @@ def exp_from_def_file(path_param_dict, path_python, path_exe, path_data,
     task_obj.common_assets.add_asset(param_asset)
 
     if (run_local):
+        # Only require emod-generic if local sim
+        from emod_generic import bootstrap
+
         # Record CWD
         cwd_bak = os.getcwd()
 
