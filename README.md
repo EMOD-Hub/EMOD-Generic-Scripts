@@ -18,7 +18,7 @@ See documentation at https://emod.idmod.org/EMOD-Generic-Scripts for additional 
 | model_measles_gha01      | [Examination of RDT use and measles outbreak response using Ghana as an example context.](https://emod.idmod.org/EMOD-Generic-Scripts/examples/model_measles_gha01/) |
 | model_network01          | [Demonstration simulations for transmission of infectivity on a network.](https://emod.idmod.org/EMOD-Generic-Scripts/examples/model_network01/) |
 | model_polio_nga01        | [Example outbreak simulations for cVDPV2 in Nigeria.](https://docs.idmod.org/projects/emod-generic-scripts/en/latest/examples/model_polio_nga01.html) |
-| model_rubella            | [Projections of rubella infections and estimates of CRS burden following RCV introduction.](https://emod.idmod.org/EMOD-Generic-Scripts/examples/model_rubella01/) |
+| model_rubella01          | [Projections of rubella infections and estimates of CRS burden following RCV introduction.](https://emod.idmod.org/EMOD-Generic-Scripts/examples/model_rubella01/) |
 | model_transtree01        | [Demonstration of the infector labeling feature and generation of explicit transmission networks.](https://emod.idmod.org/EMOD-Generic-Scripts/examples/model_transtree01/) |
 | refdat_mcv1              | IHME MCV1 coverage estimates used to construct input files for EMOD simulations. |
 | refdat_namesets          | Namesets used for region identification. |
