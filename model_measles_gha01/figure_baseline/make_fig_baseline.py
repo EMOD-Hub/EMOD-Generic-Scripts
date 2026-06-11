@@ -26,7 +26,7 @@ DIRNAMES = ['experiment_gha_base']
 def make_fig():
 
     YMAX = 400
-    CCUT = -4e3
+    CCUT = -3300
 
     for dirname in DIRNAMES:
 
@@ -42,8 +42,9 @@ def make_fig():
         nsims = int(param_dict[NUM_SIMS])
         tvals = dbrick.pop('tstamps')
 
-        inf_data = np.zeros((nsims, len(tvals)))
-        scale_vec = np.zeros((nsims, 1))-1
+        inf_data = np.zeros((nsims, len(tvals))) - 1
+        scale_vec = np.zeros((nsims, 2))
+        scale_mat = np.zeros((nsims, len(tvals)))
         cal_vec = np.zeros(nsims)
 
         # Reference data
@@ -59,19 +60,12 @@ def make_fig():
             sim_obj = dbrick[sim_idx_str]
 
             inf_data[sim_idx, :] = np.array(sim_obj['timeseries'])
-            scale_vec[sim_idx, 0] = sim_obj['rep_rate']
+            scale_vec[sim_idx, :] = sim_obj['rep_rate']
+            (mval, bval) = sim_obj['rep_rate']
+            scale_mat[sim_idx, :] = np.exp(mval*np.arange(len(tvals)) + bval)
             cal_vec[sim_idx] = sim_obj['cal_val']
 
-        for k1 in range(inf_data.shape[0]):
-            inf_mo = inf_data[k1,:]
-            (obj_val, scal_vec) = norpois_opt(ref_cases, inf_mo)
-            print(k1)
-            print(obj_val - cal_vec[k1])
-            print()
-
-
-
-        gidx = (scale_vec[:, 0] >= 0)
+        gidx = (inf_data[:, 0] >= 0)
         gidx = gidx & (cal_vec > CCUT)
 
         # Figure
@@ -108,7 +102,7 @@ def make_fig():
 
         xval = np.array(tvals)/365+BASE_YEAR
 
-        inf_data_sort = np.sort(inf_data[gidx, :]*scale_vec[gidx], axis=0)
+        inf_data_sort = np.sort(inf_data[gidx, :]*scale_mat[gidx, :], axis=0)
         for patwid in [0.475, 0.375, 0.25]:
             xydat = np.zeros((2*inf_data_sort.shape[1], 2))
             xydat[:, 0] = np.hstack((xval, xval[::-1]))
@@ -120,7 +114,7 @@ def make_fig():
                                      alpha=0.7-patwid, edgecolor=None)
             axs01.add_patch(poly_shp)
 
-        yval = np.mean(inf_data[gidx]*scale_vec[gidx], axis=0)
+        yval = np.mean(inf_data[gidx, :]*scale_mat[gidx, :], axis=0)
         axs01.plot(xval, yval, color='C0', linewidth=2)
 
         axs01.set_xlim(2010, 2025)
@@ -138,7 +132,7 @@ def make_fig():
             llabel = 'SIA'
             if (ref_dat_sia[sia_name]['age_yr_max'] > 5.0):
                 lstyle = '--'
-                lwidth = 5
+                lwidth = 4
                 llabel = 'RCV Catch-up'
             axs01.plot(sia01, [0, YMAX], color='c',
                        linewidth=lwidth, ls=lstyle)
@@ -154,8 +148,11 @@ def make_fig():
         axs01.set_ylabel('Number of Simulations', fontsize=16)
         axs01.set_xlabel('Objective Function', fontsize=16)
 
-        axs01.hist(cal_vec[gidx], edgecolor='k',
-                   bins=np.arange(-8e3, -2e3, 200))
+        axs01.hist(cal_vec, edgecolor='k', alpha=0.2, facecolor='C0',
+                   bins=np.arange(-6e3, -2e3, 100))
+        axs01.hist(cal_vec[gidx], edgecolor='k', facecolor='C0',
+                   bins=np.arange(-6e3, -2e3, 100))
+
 
         # Reporting rate
         axs01 = fig01.add_subplot(1, 3, 3)
@@ -164,10 +161,20 @@ def make_fig():
         axs01.grid(visible=True, which='major', ls='-', lw=0.5, label='')
         axs01.grid(visible=True, which='minor', ls=':', lw=0.1)
         axs01.set_axisbelow(True)
-        axs01.set_ylabel('Probability', fontsize=16)
-        axs01.set_xlabel('Reporting Rate (%)', fontsize=16)
+        axs01.set_ylabel('Base Reporting Rate - 2011 (%)', fontsize=16)
+        axs01.set_xlabel('Annual Change (YoY %)', fontsize=16)
 
-        axs01.hist(100*scale_vec[gidx], edgecolor='k', bins=50, density=True)
+        axs01.set_xlim(-15, 40)
+        axs01.set_ylim(0, 6)
+
+        axs01.plot(100*(np.exp(12*scale_vec[gidx, 0])-1),
+                   100*(np.exp(scale_vec[gidx, 1])), 'k.')
+        axs01.plot(100*(np.exp(12*scale_vec[:, 0])-1),
+                   100*(np.exp(scale_vec[:, 1])), 'k.', alpha=0.1)
+        axs01.plot(np.mean(100*(np.exp(12*scale_vec[gidx, 0])-1), axis=0),
+                   np.mean(100*(np.exp(scale_vec[gidx, 1])), axis=0),
+                   marker='.', markersize=20, color='C1',
+                   markeredgecolor='C3', markeredgewidth=2)
 
         plt.tight_layout()
         plt.savefig('fig_baseline01.png')

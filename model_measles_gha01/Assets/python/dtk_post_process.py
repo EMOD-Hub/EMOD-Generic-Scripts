@@ -72,8 +72,8 @@ def application(output_path):
 
     # Calibration score from timeseries data
     (obj_val, scal_vec) = norpois_opt(ref_cases, inf_mo)
-    parsed_dat[key_str]['cal_val'] = float(obj_val)
-    parsed_dat[key_str]['rep_rate'] = float(scal_vec)
+    parsed_dat[key_str]['cal_val'] = obj_val
+    parsed_dat[key_str]['rep_rate'] = scal_vec
 
     # Write output dictionary
     with open(O_FILE, 'w') as fid01:
