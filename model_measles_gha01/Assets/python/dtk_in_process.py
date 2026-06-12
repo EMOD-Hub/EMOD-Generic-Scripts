@@ -95,7 +95,8 @@ def application(timestep):
 
     if (targ_nodes):
         sia_day = TIME_VAL+30.0
-        camp_event = ce_SIA(targ_nodes, start_day=sia_day, coverage=0.50,
+        camp_event = ce_SIA(gdata.schema_json, targ_nodes,
+                            start_day=sia_day, coverage=0.50,
                             yrs_min=0.75, yrs_max=5.0)
         camp_module.add(camp_event)
 
