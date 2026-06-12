@@ -12,8 +12,6 @@ import matplotlib.patches as patch
 sys.path.append(os.path.abspath(os.path.join('..', '..', 'local_python')))
 sys.path.append(os.path.abspath(os.path.join('..', 'Assets', 'python')))
 
-from py_assets_common.emod_analysis import norpois_opt
-
 from py_assets_common.emod_constants import NUM_SIMS, P_FILE, D_FILE, BASE_YEAR
 
 # *****************************************************************************
@@ -152,7 +150,6 @@ def make_fig():
                    bins=np.arange(-6e3, -2e3, 100))
         axs01.hist(cal_vec[gidx], edgecolor='k', facecolor='C0',
                    bins=np.arange(-6e3, -2e3, 100))
-
 
         # Reporting rate
         axs01 = fig01.add_subplot(1, 3, 3)
