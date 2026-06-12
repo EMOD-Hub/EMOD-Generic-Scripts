@@ -14,11 +14,11 @@ Measles infectivity moved between nodes based on a gravity-type network model. A
 
 Each agent represented 25 individuals. Prevalence could fall to zero during the simulation, but exogeneous importation ensured long-term elimination did not occur. Importation probability was proportional to population. Simulations started in 2008. Outputs prior to 2011 were ignored because initial measles immunity is only roughly approximate and a few years of simulated time are required to establish internal consistency. Each simulation time step represents 5 days.
 
-Parameters in the baseline model were adjusted to fit observed timeseries of measles incidence. A Poisson-based likelihood function was maximized over one free parameter that scales total incidence and was interpreted as a reporting rate.
+Parameters in the baseline model were adjusted to fit observed timeseries of measles incidence. A Poisson-based likelihood function was maximized over two free parameters that scale total incidence; this scaling was interpreted as a reporting rate.
 
 ![Figure 3: Baseline timeseries and reporting rate](figures/ref_gha_timeseries.png)
 
-Posterior estimates suggest around 4% of measles infections are captured in case reports.
+Posterior estimates suggest around 2% of measles infections are captured in case reports, and a modest annual improvement to the reporting rate.
 
 Test scenarios implemented hypothetical regional outbreak response SIAs starting in 2022. These responses were triggered based on varying thresholds of observed cases. Spatially heterogeneous reporting rates were assumed with a mean reporting rate of 4%
 
