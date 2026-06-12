@@ -32,4 +32,7 @@ env.bak/
 venv.bak/
 
 # Local simulations
-Suite_*/
+LOCAL_EXP_PATH.txt
+docker_suites/
+local_python/container_assets/Eradication
+local_python/container_assets/schema.json

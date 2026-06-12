@@ -44,8 +44,8 @@ def application(output_path):
     BIN_EDGES = np.insert(BIN_EDGES, 0, START_TIME + 0.5)
 
     (inf_mo, tstamps) = np.histogram(gdata.data_vec_time,
-                                     bins = BIN_EDGES,
-                                     weights = gdata.data_vec_mcw)
+                                     bins=BIN_EDGES,
+                                     weights=gdata.data_vec_mcw)
 
     # Monthly timeseries
     parsed_dat[key_str]['timeseries'] = inf_mo.tolist()
@@ -67,13 +67,13 @@ def application(output_path):
     BIN_EDGES = np.insert(BIN_EDGES, 0, START_TIME + 0.5)
 
     (inf_mo, _) = np.histogram(gdata.data_vec_time,
-                               bins = BIN_EDGES,
-                               weights = gdata.data_vec_mcw)
+                               bins=BIN_EDGES,
+                               weights=gdata.data_vec_mcw)
 
     # Calibration score from timeseries data
     (obj_val, scal_vec) = norpois_opt(ref_cases, inf_mo)
-    parsed_dat[key_str]['cal_val'] = float(obj_val)
-    parsed_dat[key_str]['rep_rate'] = float(scal_vec)
+    parsed_dat[key_str]['cal_val'] = obj_val
+    parsed_dat[key_str]['rep_rate'] = scal_vec
 
     # Write output dictionary
     with open(O_FILE, 'w') as fid01:

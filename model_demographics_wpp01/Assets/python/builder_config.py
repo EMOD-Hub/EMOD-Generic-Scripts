@@ -6,7 +6,8 @@
 
 import global_data as gdata
 
-from emod_constants import CAMP_FILE, REPORTS_FILE, BASE_YEAR
+from emod_constants import CAMP_FILE, REPORTS_FILE, BASE_YEAR, \
+                           DIST_CONST, DIST_CMPLX
 
 # *****************************************************************************
 
@@ -33,13 +34,13 @@ def update_config_obj(config):
     cp.Wall_Time_Maximum_In_Minutes = gdata.max_clock
 
     # Intrahost
-    cp.Base_Infectivity_Distribution = 'CONSTANT_DISTRIBUTION'
+    cp.Base_Infectivity_Distribution = DIST_CONST
     cp.Base_Infectivity_Constant = 0.0
 
-    cp.Incubation_Period_Distribution = 'CONSTANT_DISTRIBUTION'
+    cp.Incubation_Period_Distribution = DIST_CONST
     cp.Incubation_Period_Constant = 0.0
 
-    cp.Infectious_Period_Distribution = 'CONSTANT_DISTRIBUTION'
+    cp.Infectious_Period_Distribution = DIST_CONST
     cp.Infectious_Period_Constant = 0.0
 
     cp.Symptomatic_Infectious_Offset = 0.0
@@ -70,7 +71,7 @@ def update_config_obj(config):
     cp.Enable_Birth = 1
     cp.Birth_Rate_Dependence = 'POPULATION_DEP_RATE'
     cp.Enable_Aging = 1
-    cp.Age_Initialization_Distribution_Type = 'DISTRIBUTION_COMPLEX'
+    cp.Age_Initialization_Distribution_Type = DIST_CMPLX
     cp.Enable_Natural_Mortality = 1
     enum_str = 'NONDISEASE_MORTALITY_BY_YEAR_AND_AGE_FOR_EACH_GENDER'
     cp.Death_Rate_Dependence = enum_str

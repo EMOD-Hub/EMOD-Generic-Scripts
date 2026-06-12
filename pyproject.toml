@@ -40,6 +40,9 @@ docs = [
 lint = [
     "flake8",
 ]
+local = [
+    "emod-generic",
+]
 test = [
 ]
 

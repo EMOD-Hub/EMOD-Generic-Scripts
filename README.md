@@ -1,6 +1,6 @@
 # EMOD-Generic-Scripts
 
-See documentation at https://emod-hub.github.io/EMOD-Generic-Scripts/ for additional information.
+See documentation at https://emod.idmod.org/EMOD-Generic-Scripts for additional information.
 
 
 ## Contents:
@@ -9,19 +9,17 @@ See documentation at https://emod-hub.github.io/EMOD-Generic-Scripts/ for additi
 | --- | --- |
 | env_Alma10 <br /> env_Amazon2023 <br /> env_Debian13 <br /> env_Fedora42 <br /> env_Rocky10 <br /> env_Ubuntu26 | Definition files for Apptainer containers with various operating systems. Produces the the EMOD executable and schema file; creates an environment for running EMOD on COMPS with the python packages available to the embedded python interpreter. All files remain on COMPS and are provided to the various workflows as Asset Collection IDs. |
 | local_python             | Contains additional python scripts with helper functions common to all of the workflows. |
-| model_covariance01       | [Demonstration simulations for heterogeneity in individual behavior.](https://docs.idmod.org/projects/emod-generic-scripts/en/latest/examples/model_covariance01.html) |
-| model_covid01            | Baseline simulations for SARS-CoV-2 in EMOD. Collab with MvG. |
+| model_covariance01       | [Demonstration simulations for heterogeneity in individual behavior.](https://emod.idmod.org/EMOD-Generic-Scripts/examples/model_covariance01/) |
+| model_covid01            | Baseline simulations for SARS-CoV-2 in EMOD. |
 | model_demographics01     | Example demographics for UK measles simulations. |
-| model_demographics_wpp01 | [Example demographics using UN WPP data as inputs.](https://docs.idmod.org/projects/emod-generic-scripts/en/latest/examples/model_demographics_wpp01.html) |
+| model_demographics_wpp01 | [Example demographics using UN WPP data as inputs.](https://emod.idmod.org/EMOD-Generic-Scripts/examples/model_demographics_wpp01/) |
+| model_measles            | [Estimates of measles burden under various policies for age of MCV1.](https://emod.idmod.org/EMOD-Generic-Scripts/examples/model_measles/) |
 | model_measles_cod01      | Documentation. |
-| model_measles_gha01      | [Examination of RDT use and measles outbreak response using Ghana as an example context.](https://docs.idmod.org/projects/emod-generic-scripts/en/latest/examples/model_measles_gha01.html) |
-| model_measles_nga01      | Documentation. |
-| model_measles_nga02      | Documentation. |
-| model_measles01          | [Estimates of measles burden under various policies for age of MCV1.](https://docs.idmod.org/projects/emod-generic-scripts/en/latest/examples/model_measles01.html) |
-| model_network01          | [Demonstration simulations for transmission of infectivity on a network.](https://docs.idmod.org/projects/emod-generic-scripts/en/latest/examples/model_network01.html) |
+| model_measles_gha01      | [Examination of RDT use and measles outbreak response using Ghana as an example context.](https://emod.idmod.org/EMOD-Generic-Scripts/examples/model_measles_gha01/) |
+| model_network01          | [Demonstration simulations for transmission of infectivity on a network.](https://emod.idmod.org/EMOD-Generic-Scripts/examples/model_network01/) |
 | model_polio_nga01        | [Example outbreak simulations for cVDPV2 in Nigeria.](https://docs.idmod.org/projects/emod-generic-scripts/en/latest/examples/model_polio_nga01.html) |
-| model_rubella01          | [Projections of rubella infections and estimates of CRS burden following RCV introduction.](https://docs.idmod.org/projects/emod-generic-scripts/en/latest/examples/model_rubella01.html) |
-| model_transtree01        | [Demonstration of the infector labeling feature and generation of explicit transmission networks.](https://docs.idmod.org/projects/emod-generic-scripts/en/latest/examples/model_transtree01.html) |
+| model_rubella01          | [Projections of rubella infections and estimates of CRS burden following RCV introduction.](https://emod.idmod.org/EMOD-Generic-Scripts/examples/model_rubella01/) |
+| model_transtree01        | [Demonstration of the infector labeling feature and generation of explicit transmission networks.](https://emod.idmod.org/EMOD-Generic-Scripts/examples/model_transtree01/) |
 | refdat_mcv1              | IHME MCV1 coverage estimates used to construct input files for EMOD simulations. |
 | refdat_namesets          | Namesets used for region identification. |
 | refdat_poppyr            | UN WPP age structured population estimates used to construct input files for EMOD simulations. |
@@ -67,17 +65,6 @@ To build the documentation locally, do the following:
     ```
 
 ---------------------
-
-
-## Disclaimer
-
-The code in this repository was developed by IDM and other collaborators to support our
-joint research on flexible agent-based modeling. We've made it publicly available under
-the MIT License to provide others with a better understanding of our research and an
-opportunity to build upon it for their own work. We make no representations that the code
-works as intended or that we will provide support, address issues that are found, or accept
-pull requests. You are welcome to create your own fork and modify the code to suit your own
-modeling needs as permitted under the MIT License.
 
 
 ## Project status

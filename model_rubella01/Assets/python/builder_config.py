@@ -6,7 +6,8 @@
 
 import global_data as gdata
 
-from emod_constants import CAMP_FILE, REPORTS_FILE, BASE_YEAR
+from emod_constants import CAMP_FILE, REPORTS_FILE, BASE_YEAR, \
+                           DIST_CMPLX, DIST_GAUSS, DIST_CONST
 
 # *****************************************************************************
 
@@ -33,14 +34,14 @@ def update_config_obj(config):
     cp.Wall_Time_Maximum_In_Minutes = gdata.max_clock
 
     # Intrahost
-    cp.Base_Infectivity_Distribution = 'CONSTANT_DISTRIBUTION'
+    cp.Base_Infectivity_Distribution = DIST_CONST
     cp.Base_Infectivity_Constant = R0/gdata.inf_prd_mean
 
-    cp.Incubation_Period_Distribution = 'GAUSSIAN_DISTRIBUTION'
+    cp.Incubation_Period_Distribution = DIST_GAUSS
     cp.Incubation_Period_Gaussian_Mean = 17.0
     cp.Incubation_Period_Gaussian_Std_Dev = 2.0
 
-    cp.Infectious_Period_Distribution = 'GAUSSIAN_DISTRIBUTION'
+    cp.Infectious_Period_Distribution = DIST_GAUSS
     cp.Infectious_Period_Gaussian_Mean = gdata.inf_prd_mean
     cp.Infectious_Period_Gaussian_Std_Dev = 2.0
 
@@ -58,13 +59,12 @@ def update_config_obj(config):
 
     cp.Maternal_Acquire_Config.Initial_Effect = 1.0
     cp.Maternal_Acquire_Config.Enable_Box_Duration_Distribution = 1
-    enum_str = 'GAUSSIAN_DISTRIBUTION'
-    cp.Maternal_Acquire_Config.Box_Duration_Distribution = enum_str
+    cp.Maternal_Acquire_Config.Box_Duration_Distribution = DIST_GAUSS
     cp.Maternal_Acquire_Config.Box_Duration_Gaussian_Mean = 90.0
     cp.Maternal_Acquire_Config.Box_Duration_Gaussian_Std_Dev = 48.0
 
     cp.Enable_Initial_Susceptibility_Distribution = 1
-    cp.Susceptibility_Initialization_Distribution_Type = 'DISTRIBUTION_COMPLEX'
+    cp.Susceptibility_Initialization_Distribution_Type = DIST_CMPLX
 
     # Interventions
     cp.Enable_Interventions = 1
@@ -96,7 +96,7 @@ def update_config_obj(config):
     cp.Enable_Birth = 1
     cp.Birth_Rate_Dependence = 'POPULATION_DEP_RATE'
     cp.Enable_Aging = 1
-    cp.Age_Initialization_Distribution_Type = 'DISTRIBUTION_COMPLEX'
+    cp.Age_Initialization_Distribution_Type = DIST_CMPLX
     cp.Enable_Natural_Mortality = 1
     enum_str = 'NONDISEASE_MORTALITY_BY_YEAR_AND_AGE_FOR_EACH_GENDER'
     cp.Death_Rate_Dependence = enum_str

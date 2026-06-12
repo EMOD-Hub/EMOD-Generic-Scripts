@@ -8,7 +8,8 @@ import global_data as gdata
 
 import numpy as np
 
-from emod_constants import CAMP_FILE, REPORTS_FILE
+from emod_constants import CAMP_FILE, REPORTS_FILE, \
+                           DIST_GAUSS, DIST_NONE, DIST_LOGNR
 
 # *****************************************************************************
 
@@ -41,15 +42,15 @@ def update_config_obj(config):
     inf_ln_sig = np.sqrt(np.log(inf_ln_var/inf_ln_mean/inf_ln_mean+1.0))
     inf_ln_mu = np.log(inf_ln_mean) - 0.5*inf_ln_sig*inf_ln_sig
 
-    cp.Base_Infectivity_Distribution = 'LOG_NORMAL_DISTRIBUTION'
+    cp.Base_Infectivity_Distribution = DIST_LOGNR
     cp.Base_Infectivity_Log_Normal_Mu = inf_ln_mu
     cp.Base_Infectivity_Log_Normal_Sigma = inf_ln_sig
 
-    cp.Incubation_Period_Distribution = 'GAUSSIAN_DISTRIBUTION'
+    cp.Incubation_Period_Distribution = DIST_GAUSS
     cp.Incubation_Period_Gaussian_Mean = 3.0
     cp.Incubation_Period_Gaussian_Std_Dev = 0.8
 
-    cp.Infectious_Period_Distribution = 'GAUSSIAN_DISTRIBUTION'
+    cp.Infectious_Period_Distribution = DIST_GAUSS
     cp.Infectious_Period_Gaussian_Mean = inf_prd_mean
     cp.Infectious_Period_Gaussian_Std_Dev = 0.8
 
@@ -74,7 +75,7 @@ def update_config_obj(config):
 
     # Demographics
     cp.Enable_Demographics_Builtin = 0
-    cp.Age_Initialization_Distribution_Type = 'DISTRIBUTION_OFF'
+    cp.Age_Initialization_Distribution_Type = DIST_NONE
     cp.Enable_Vital_Dynamics = 0
     cp.Enable_Acquisition_Heterogeneity = 1
     cp.Demographics_Filenames = gdata.demog_files

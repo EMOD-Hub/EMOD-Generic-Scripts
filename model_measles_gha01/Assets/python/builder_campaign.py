@@ -13,14 +13,18 @@ import numpy as np
 
 import emod_api.campaign as camp_module
 
-from emod_camp_events import build_node_list, ce_br_force, ce_RI, ce_SIA, \
-                             ce_inf_force, ce_inf_mod
+from emod_camp_events import ce_br_force, ce_inf_force, ce_RI, ce_SIA, \
+                             ce_inf_mod
+from emod_camp_events import build_node_list
 from emod_constants import CAMP_FILE, BASE_YEAR
 
 # *****************************************************************************
 
 
 def campaignBuilder():
+
+    # Get schema
+    sch_data = gdata.schema_json
 
     # Variables for this simulation
     PEAK_SIZE = gdata.var_params['R0_peak_magnitude']
@@ -37,7 +41,15 @@ def campaignBuilder():
     BR_MULT_X = gdata.brate_mult_x
     BR_MULT_Y = gdata.brate_mult_y
     start_day = 365.0*(gdata.start_year-BASE_YEAR)
-    camp_event = ce_br_force(ALL_NODES, BR_MULT_X, BR_MULT_Y, start_day)
+    camp_event = ce_br_force(sch_data, ALL_NODES, BR_MULT_X, BR_MULT_Y,
+                             start_day=start_day)
+    camp_module.add(camp_event)
+
+    # R0 seasonality
+    start_day = 365.0*(gdata.start_year-BASE_YEAR)
+    camp_event = ce_inf_force(sch_data, ALL_NODES, PEAK_TIME, PEAK_WIDE,
+                              step_size=PEAK_SIZE, start_day=start_day,
+                              dt=gdata.t_step_days)
     camp_module.add(camp_event)
 
     # RI
@@ -62,8 +74,9 @@ def campaignBuilder():
         mcv1_list = [init_mcv1] + (mcv1_vec[time_vec > 0.0]).tolist() + \
                     [np.mean(mcv1_vec[-3:])]
 
-        camp_event = ce_RI(n_list, start_day=DAY_MIN,
-                           coverage_x=time_list, coverage_y=mcv1_list)
+        camp_event = ce_RI(sch_data, n_list, start_day=DAY_MIN,
+                           coverage_x=time_list, coverage_y=mcv1_list,
+                           base_take=0.95,)
         camp_module.add(camp_event)
 
     # SIAs
@@ -79,20 +92,16 @@ def campaignBuilder():
         age_yr_max = dict_sia[sia_name]['age_yr_max']
         age_yr_min = dict_sia[sia_name]['age_yr_min']
 
-        camp_event = ce_SIA(ALL_NODES, start_day=sia_day, coverage=SIA_COVER,
-                            yrs_min=age_yr_min, yrs_max=age_yr_max)
+        camp_event = ce_SIA(sch_data, ALL_NODES, start_day=sia_day,
+                            yrs_max=age_yr_max, yrs_min=age_yr_min,
+                            coverage=SIA_COVER, base_take=0.95)
         camp_module.add(camp_event)
-
-    # R0 seasonality
-    start_day = 365.0*(gdata.start_year-BASE_YEAR)
-    camp_event = ce_inf_force(ALL_NODES, PEAK_TIME, PEAK_WIDE, PEAK_SIZE,
-                              start_day=start_day, dt=gdata.t_step_days)
-    camp_module.add(camp_event)
 
     # Infectivity trough from COVID
     start_day = 365.0*(2020.0-BASE_YEAR)
-    camp_event = ce_inf_mod(ALL_NODES, start_day=start_day,
-                            dt_days=365.0*2.7, mult_val=0.60)
+    camp_event = ce_inf_mod(sch_data, ALL_NODES,
+                            start_day=start_day, dt_days=365.0*2.7,
+                            mult_val=0.60)
     camp_module.add(camp_event)
 
     # End file construction

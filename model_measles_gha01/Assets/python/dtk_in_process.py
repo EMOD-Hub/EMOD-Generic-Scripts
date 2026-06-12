@@ -27,7 +27,6 @@ def application(timestep):
     LOG_REP_RATE = gdata.var_params['log10_min_reporting']
 
     ADM01_DICT = gdata.adm01_idlist
-    ADM01_CASE = gdata.adm01_cases
 
     # First call to in-process; initialize as needed
     if (gdata.first_call_bool):
@@ -39,7 +38,7 @@ def application(timestep):
 
         gdata.adm01_cases = {adm01: 0 for adm01 in ADM01_DICT}
 
-        adm02_rate = {adm02: np.random.beta(0.33, 8.0) 
+        adm02_rate = {adm02: np.random.beta(0.33, 8.0)
                       for adm02 in gdata.adm02_idlist}
 
         with open('adm02_obsrate.json', 'w') as fid01:
@@ -93,11 +92,11 @@ def application(timestep):
     # New campaign file
     camp_module.reset()
     CAMP_FILE = 'campaign_{:05d}.json'.format(int(TIME_VAL))
-    ALL_NODES = gdata.demog_object.node_ids
 
     if (targ_nodes):
         sia_day = TIME_VAL+30.0
-        camp_event = ce_SIA(targ_nodes, start_day=sia_day, coverage=0.50,
+        camp_event = ce_SIA(gdata.schema_json, targ_nodes,
+                            start_day=sia_day, coverage=0.50,
                             yrs_min=0.75, yrs_max=5.0)
         camp_module.add(camp_event)
 
