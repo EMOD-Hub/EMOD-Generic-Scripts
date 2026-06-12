@@ -25,7 +25,7 @@ DIRNAMES = ['experiment_gha_test']
 
 def make_fig():
 
-    CCUT = -4e3
+    CCUT = -3300
 
     for dirname in DIRNAMES:
 
@@ -43,8 +43,7 @@ def make_fig():
 
         tvals = dbrick.pop('tstamps')
 
-        inf_data = np.zeros((nsims, len(tvals)))
-        scale_vec = np.zeros((nsims, 1))-1
+        inf_data = np.zeros((nsims, len(tvals))) - 1
         cal_vec = np.zeros(nsims)
 
         for sim_idx_str in dbrick:
@@ -54,10 +53,9 @@ def make_fig():
             sim_obj = dbrick[sim_idx_str]
 
             inf_data[sim_idx, :] = np.array(sim_obj['timeseries'])
-            scale_vec[sim_idx, 0] = sim_obj['rep_rate']
             cal_vec[sim_idx] = sim_obj['cal_val']
 
-        gidx = (scale_vec[:, 0] >= 0)
+        gidx = (inf_data[:, 0] >= 0)
         gidx = gidx & (cal_vec > CCUT)
 
         ntval = np.array(tvals)/365.0 + BASE_YEAR
@@ -115,11 +113,11 @@ def make_fig():
 
         plt.contour(np.power(10.0, xvec[:-1, :-1]+dxval/2),
                     yvec[:-1, :-1]+dyval/2, zmat,
-                    levels=[25e3, 40e3, 60e3, 80e3],
-                    linewidths=3, vmin=0, vmax=100e3)
+                    levels=[25e3, 40e3, 60e3, 80e3, 100e3, 120e3],
+                    linewidths=3, vmin=0, vmax=120e3)
 
         axs01.scatter(np.power(10.0, xval[gdx2]), yval[gdx2], c=cval[gdx2],
-                      s=2, vmin=0, vmax=100e3, alpha=0.7)
+                      s=2, vmin=0, vmax=120e3, alpha=0.7)
 
         ticloc = [0.001, 0.01, 0.1]
         ticlab = ['0.1%', '1.0%', '10%']
@@ -132,8 +130,8 @@ def make_fig():
 
         axs01.plot([0.04, 0.04], [0, 1000], 'k:')
 
-        ticloc = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
-        ticlab = ['0', '20k', '40k', '60k', '80k', '100k']
+        ticloc = [0, 1/6, 2/6, 3/6, 4/6, 5/6, 1]
+        ticlab = ['0', '20k', '40k', '60k', '80k', '100k', '120k']
 
         cbar_handle.set_ticks(ticks=ticloc)
         cbar_handle.set_ticklabels(ticlab)
